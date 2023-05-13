@@ -1,0 +1,58 @@
+#
+# Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
+#
+# File name: libs.versions.toml
+# Last modified: 13/05/2023, 19:16
+# Project name: air-hub-master-server
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+# file except in compliance with the License. You may obtain a copy of the License at
+#
+#     <http://www.apache.org/license/LICENSE-2.0>
+#
+# Unless required by applicable law or agreed to in writing, software distributed under
+# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+# OF ANY KIND, either express or implied. See the License for the specific language
+# governing permissions and limitations under the license.
+#
+
+# libs.versions.toml
+
+[versions]
+springBoot          = '3.0.6'
+liquibase           = '4.19.0'
+lombok              = '1.18.26'
+h2Driver            = '2.1.214'
+mysqlDriver         = '8.0.31'
+jjwt                = '0.11.5'
+ehCache             = '3.10.8'
+jaxb                = '2.3.1'
+jUnit               = '5.8.1'
+
+springBootDep       = '1.0.15.RELEASE'
+
+[libraries]
+spring-boot-starter-web             = { module = 'org.springframework.boot:spring-boot-starter-web',            version.ref = 'springBoot' }
+spring-boot-starter-cache           = { module = 'org.springframework.boot:spring-boot-starter-cache',          version.ref = 'springBoot' }
+spring-boot-starter-security        = { module = 'org.springframework.boot:spring-boot-starter-security',       version.ref = 'springBoot' }
+spring-boot-starter-data-jpa        = { module = 'org.springframework.boot:spring-boot-starter-data-jpa',       version.ref = 'springBoot' }
+spring-boot-starter-validation      = { module = 'org.springframework.boot:spring-boot-starter-validation',     version.ref = 'springBoot' }
+spring-boot-starter-test            = { module = 'org.springframework.boot:spring-boot-starter-test',           version.ref = 'springBoot' }
+spring-boot-security-test           = { module = 'org.springframework.security:spring-security-test',           version.ref = 'springBoot' }
+spring-boot-devtools                = { module = 'org.springframework.boot:spring-boot-devtools',               version.ref = 'springBoot' }
+liquibase                           = { module = 'org.liquibase:liquibase-core',                                version.ref = 'liquibase' }
+h2-driver                           = { module = 'com.h2database:h2',                                           version.ref = 'h2Driver' }
+mysql-driver                        = { module = 'mysql:mysql-connector-java',                                  version.ref = 'mysqlDriver' }
+lombok                              = { module = 'org.projectlombok:lombok',                                    version.ref = 'lombok' }
+jjwt-api                            = { module = 'io.jsonwebtoken:jjwt-api',                                    version.ref = 'jjwt' }
+jjwt-impl                           = { module = 'io.jsonwebtoken:jjwt-impl',                                   version.ref = 'jjwt' }
+jjwt-jackson                        = { module = 'io.jsonwebtoken:jjwt-jackson',                                version.ref = 'jjwt' }
+ehcache                             = { module = 'org.ehcache:ehcache',                                         version.ref = 'ehCache' }
+jaxb-api                            = { module = 'javax.xml.bind:jaxb-api',                                     version.ref = 'jaxb' }
+jaxb-impl                           = { module = 'com.sun.xml.bind:jaxb-impl',                                  version.ref = 'jaxb' }
+junit-api                           = { module = 'org.junit.jupiter:junit-jupiter-api',                         version.ref = 'jUnit' }
+junit-engine                        = { module = 'org.junit.jupiter:junit-jupiter-engine',                      version.ref = 'jUnit' }
+
+[plugins]
+spring-boot-plugin                  = { id     = 'org.springframework.boot',                                    version.ref = 'springBoot' }
+spring-dept-plugin                  = { id     = 'io.spring.dependency-management',                             version.ref = 'springBootDep' }
