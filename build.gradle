@@ -49,6 +49,7 @@ dependencies {
     implementation          libs.ehcache
     implementation          libs.jaxb.api
     implementation          libs.jaxb.impl
+    implementation          libs.openapi.webmvc.starter
 
     developmentOnly         libs.spring.boot.devtools
     implementation          libs.spring.boot.starter.web
@@ -62,7 +63,6 @@ dependencies {
     testImplementation      libs.junit.api
     testRuntimeOnly         libs.junit.engine
     testImplementation      libs.spring.boot.starter.test
-    testImplementation      libs.spring.boot.security.test
 }
 
 tasks.named('test') {
