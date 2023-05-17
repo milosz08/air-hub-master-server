@@ -32,3 +32,21 @@ spring:
 
 logging:
     config: classpath:logback/logback-spring.cfg.xml
+
+jmpsl:
+    core:
+        locale:
+            available-locales: pl
+            default-locale: pl
+    security:
+        oauth2-active: false
+        ota:
+            length: 10
+        password-encoder-strength: 10
+        jwt:
+            issuer: airhubmaster
+            expired-minutes: 5
+            refresh-token-expired-days: 30
+        cors:
+            client: android:airhubmaster
+            max-age: 3600

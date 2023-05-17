@@ -29,6 +29,7 @@ ehCache             = '3.10.8'
 jaxb                = '2.3.1'
 jUnit               = '5.8.1'
 openApi             = '2.1.0'
+jmpsl               = '1.0.2_04'
 
 springBootDep       = '1.0.15.RELEASE'
 
@@ -53,6 +54,8 @@ jaxb-impl                           = { module = 'com.sun.xml.bind:jaxb-impl',  
 junit-api                           = { module = 'org.junit.jupiter:junit-jupiter-api',                         version.ref = 'jUnit' }
 junit-engine                        = { module = 'org.junit.jupiter:junit-jupiter-engine',                      version.ref = 'jUnit' }
 openapi-webmvc-starter              = { module = 'org.springdoc:springdoc-openapi-starter-webmvc-ui',           version.ref = 'openApi' }
+jmpsl-core                          = { module = 'pl.miloszgilga:jmpsl-core',                                   version.ref = 'jmpsl' }
+jmpsl-security                      = { module = 'pl.miloszgilga:jmpsl-security',                               version.ref = 'jmpsl' }
 
 [plugins]
 spring-boot-plugin                  = { id     = 'org.springframework.boot',                                    version.ref = 'springBoot' }

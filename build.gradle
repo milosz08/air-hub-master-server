@@ -36,6 +36,8 @@ configurations {
 
 repositories {
     mavenCentral()
+    mavenLocal()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -50,6 +52,9 @@ dependencies {
     implementation          libs.jaxb.api
     implementation          libs.jaxb.impl
     implementation          libs.openapi.webmvc.starter
+
+    implementation          libs.jmpsl.core
+    implementation          libs.jmpsl.security
 
     developmentOnly         libs.spring.boot.devtools
     implementation          libs.spring.boot.starter.web

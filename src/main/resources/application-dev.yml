@@ -40,3 +40,8 @@ spring:
         driver-class-name: org.h2.Driver
     jpa:
         show-sql: true
+
+jmpsl:
+    security:
+        jwt:
+            secret: h64h3hbntohbjk50rp9hgkj03gormgobrwnmgoriwjmhgoithjkgo
