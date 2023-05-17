@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
   ~
@@ -23,5 +25,9 @@
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <!-- datatables migrations -->
+    <include file="migrations/2023-05-17_00000_create-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-05-17_00001_create-ota-tokens-table.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-05-17_00002_create-refresh-tokens-table.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-05-17_00003_create-blacklist-jwts-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
