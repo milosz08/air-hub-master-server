@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
  *
- * File name: AirHubMasterServerApplication.java
- * Last modified: 13/05/2023, 19:27
+ * File name: AppLocaleSet.java
+ * Last modified: 17/05/2023, 17:47
  * Project name: air-hub-master-server
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,21 +16,24 @@
  * governing permissions and limitations under the license.
  */
 
-package pl.miloszgilga;
+package pl.miloszgilga.i18n;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import org.jmpsl.core.i18n.ILocaleEnumSet;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@SpringBootApplication
-@EnableJpaRepositories
-@EnableTransactionManagement
-public class AirHubMasterServerApplication {
+@Getter
+@RequiredArgsConstructor
+public enum AppLocaleSet implements ILocaleEnumSet {
 
-    public static void main(String[] args) {
-        SpringApplication.run(AirHubMasterServerApplication.class, args);
-    }
+    // respones
+    SUCCESSFULL_REGISTERED_RES                          ("airhubmaster.message.SuccessfullRegisteredRes"),
+    SUCCESSFULL_LOGOUT_RES                              ("airhubmaster.message.SuccessfullLogoutRes");
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private final String holder;
 }
