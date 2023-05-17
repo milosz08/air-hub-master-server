@@ -19,6 +19,13 @@
 # application.yml
 
 spring:
+    web:
+        resources:
+            add-mappings: false
+        locale: pl_PL
+    mvc:
+        log-resolved-exception: false
+        throw-exception-if-no-handler-found: true
     config:
         import: optional:file:.env[.properties]
     main:
