@@ -31,7 +31,11 @@ public enum AppLocaleSet implements ILocaleEnumSet {
 
     // respones
     SUCCESSFULL_REGISTERED_RES                          ("airhubmaster.message.SuccessfullRegisteredRes"),
-    SUCCESSFULL_LOGOUT_RES                              ("airhubmaster.message.SuccessfullLogoutRes");
+    SUCCESSFULL_LOGOUT_RES                              ("airhubmaster.message.SuccessfullLogoutRes"),
+    SUCCESSFULL_ACTIVATED_ACCOUNT_RES                   ("airhubmaster.message.SuccessfullActivateAccountRes"),
+
+    // exceptions
+    USER_NOT_FOUND_EXC                                  ("airhubmaster.exception.UserNotFoundExc");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -19,10 +19,15 @@
 package pl.miloszgilga.domain.ota_token;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Repository
 public interface IOtaTokenRepository extends JpaRepository<OtaTokenEntity, Long> {
+
+    @Query(value = "select count(e.id) > 0 from OtaTokenEntity e where e.token = :token")
+    boolean checkIfTokenAlreadyExist(@Param("token") String token);
 }

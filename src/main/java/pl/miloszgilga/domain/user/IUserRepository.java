@@ -19,10 +19,20 @@
 package pl.miloszgilga.domain.user;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Repository
 public interface IUserRepository extends JpaRepository<UserEntity, Long> {
+
+    @Query(value = "from UserEntity e where e.login = :loginOrEmail or e.emailAddress = :loginOrEmail")
+    Optional<UserEntity> findUserByLoginOrEmail(@Param("loginOrEmail") String loginOrEmail);
+
+    @Query(value = "select count(e.id) > 0 from UserEntity e where e.login = :loginOrEmail or e.emailAddress = :loginOrEmail")
+    boolean checkIfUserAlreadyExist(@Param("loginOrEmail") String loginOrEmail);
 }

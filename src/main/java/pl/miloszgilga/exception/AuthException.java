@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
  *
- * File name: IRefreshTokenRepository.java
- * Last modified: 17/05/2023, 19:45
+ * File name: AuthException.java
+ * Last modified: 18/05/2023, 18:08
  * Project name: air-hub-master-server
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,20 +16,20 @@
  * governing permissions and limitations under the license.
  */
 
-package pl.miloszgilga.domain.refresh_token;
+package pl.miloszgilga.exception;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpStatus;
+import org.jmpsl.core.exception.RestServiceAuthServerException;
 
-import java.util.Optional;
+import pl.miloszgilga.i18n.AppLocaleSet;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@Repository
-public interface IRefreshTokenRepository extends JpaRepository<RefreshTokenEntity, Long> {
+public class AuthException {
 
-    @Query(value = "from RefreshTokenEntity e join fetch e.user u where u.login = :login")
-    Optional<RefreshTokenEntity> findRefreshTokenByUserLogin(@Param("login") String login);
+    public static class UserNotFoundException extends RestServiceAuthServerException {
+        public UserNotFoundException() {
+            super(HttpStatus.NOT_FOUND, AppLocaleSet.USER_NOT_FOUND_EXC);
+        }
+    }
 }
