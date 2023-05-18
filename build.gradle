@@ -52,11 +52,13 @@ dependencies {
     implementation          libs.jaxb.api
     implementation          libs.jaxb.impl
     implementation          libs.openapi.webmvc.starter
+    implementation          libs.commons.text
 
     implementation          libs.jmpsl.core
     implementation          libs.jmpsl.security
 
     developmentOnly         libs.spring.boot.devtools
+    developmentOnly         libs.spring.boot.config.processor
     implementation          libs.spring.boot.starter.web
     implementation          libs.spring.boot.starter.cache
     implementation          libs.spring.boot.starter.security
