@@ -19,19 +19,22 @@
 package pl.miloszgilga.security;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.core.env.Environment;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+
 import org.jmpsl.security.SecurityUtil;
 import org.jmpsl.security.filter.MiddlewareExceptionFilter;
 import org.jmpsl.security.resolver.AccessDeniedResolverForRest;
 import org.jmpsl.security.resolver.AuthResolverForRest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import static pl.miloszgilga.config.ApiReferenceConstant.PREFIX;
 
@@ -63,7 +66,7 @@ public class SpringSecurityConfigurer {
                 .accessDeniedHandler(accessDeniedResolverForRest)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/error").permitAll()
+                .requestMatchers("/", "/error", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .requestMatchers(PREFIX + "/auth/login").permitAll()
                 .requestMatchers(PREFIX + "/auth/register").permitAll()
                 .requestMatchers(PREFIX + "/auth/activate-account").permitAll()
@@ -80,5 +83,4 @@ public class SpringSecurityConfigurer {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 }
