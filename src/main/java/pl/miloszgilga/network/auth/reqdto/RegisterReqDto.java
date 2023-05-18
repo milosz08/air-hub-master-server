@@ -30,6 +30,8 @@ import org.jmpsl.core.validator.IPasswordValidatorModel;
 import org.jmpsl.core.validator.ValidateMatchingPasswords;
 
 import pl.miloszgilga.validator.Regex;
+import pl.miloszgilga.validator.email.ValidateAlreadyExistingEmail;
+import pl.miloszgilga.validator.login.ValidateAlreadyExistingLogin;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,10 +50,12 @@ public class RegisterReqDto implements IPasswordValidatorModel {
 
     @NotBlank(message = "jpa.validator.login.notBlank")
     @Pattern(regexp = Regex.LOGIN, message = "jpa.validator.login.regex")
+    @ValidateAlreadyExistingLogin(message = "jpa.validator.login.alreadyExist")
     private String login;
 
     @NotBlank(message = "jpa.validator.email.notBlank")
     @Email(message = "jpa.validator.email.regex")
+    @ValidateAlreadyExistingEmail(message = "jpa.validator.email.alreadyExist")
     private String emailAddress;
 
     @NotBlank(message = "jpa.validator.password.notBlank")
