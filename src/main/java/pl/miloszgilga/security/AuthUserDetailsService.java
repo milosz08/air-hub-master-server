@@ -18,30 +18,36 @@
 
 package pl.miloszgilga.security;
 
+import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import org.jmpsl.security.SecurityUtil;
+
+import pl.miloszgilga.domain.user.UserEntity;
 import pl.miloszgilga.domain.user.IUserRepository;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class AuthUserDetailsService implements UserDetailsService {
 
     private final IUserRepository userRepository;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    AuthUserDetailsService(IUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String loginOrEmail) throws UsernameNotFoundException {
+        final UserEntity user = userRepository.findUserByLoginOrEmail(loginOrEmail).orElseThrow(() -> {
+            log.error("Unable to load user with credentials data (login or email): {}", loginOrEmail);
+            return new UsernameNotFoundException("Unable to load user in AuthUserDetailsService");
+        });
+        return SecurityUtil.fabricateUser(user);
     }
 }

@@ -2,7 +2,7 @@
  * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
  *
  * File name: UserRole.java
- * Last modified: 17/05/2023, 17:03
+ * Last modified: 18/05/2023, 14:44
  * Project name: air-hub-master-server
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,12 +16,23 @@
  * governing permissions and limitations under the license.
  */
 
-package pl.miloszgilga.domain.user;
+package pl.miloszgilga.security;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import org.jmpsl.security.user.IEnumerableUserRole;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-public enum UserRole {
-    ADMIN,
-    PREMIUM,
-    STANDARD
+@Getter
+@RequiredArgsConstructor
+public enum GrantedUserRole implements IEnumerableUserRole {
+    STANDARD            ("STANDARD"),
+    PREMIUM             ("PREMIUM"),
+    ADMIN               ("ADMIN");
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private final String role;
 }

@@ -29,7 +29,11 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
 
+import org.jmpsl.security.user.IAuthUserModel;
+import org.jmpsl.security.user.IEnumerableUserRole;
 import org.jmpsl.core.db.AbstractAuditableEntity;
+
+import pl.miloszgilga.security.GrantedUserRole;
 
 import pl.miloszgilga.domain.ota_token.OtaTokenEntity;
 import pl.miloszgilga.domain.blacklist_jwt.BlacklistJwtEntity;
@@ -45,7 +49,7 @@ import static jakarta.persistence.CascadeType.ALL;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class UserEntity extends AbstractAuditableEntity implements Serializable {
+public class UserEntity extends AbstractAuditableEntity implements Serializable, IAuthUserModel {
     @Serial private static final long serialVersionUID = 1L;
 
     @Column(name = "first_name")                            private String firstName;
@@ -54,7 +58,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable 
     @Column(name = "email_address")                         private String emailAddress;
     @Column(name = "password")                              private String password;
     @Column(name = "is_activated", insertable = false)      private Boolean isActivated;
-    @Column(name = "role") @Enumerated(EnumType.STRING)     private UserRole role;
+    @Column(name = "role") @Enumerated(EnumType.STRING)     private GrantedUserRole role;
 
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
     private Set<OtaTokenEntity> otaTokens = new HashSet<>();
@@ -123,11 +127,11 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable 
         isActivated = activated;
     }
 
-    UserRole getRole() {
+    public GrantedUserRole getRole() {
         return role;
     }
 
-    void setRole(UserRole role) {
+    void setRole(GrantedUserRole role) {
         this.role = role;
     }
 
@@ -155,6 +159,13 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable 
         blacklistJwts.add(blacklistJwtEntity);
         blacklistJwtEntity.setUser(this);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override public String getAuthUsername()                   { return login; }
+    @Override public String getAuthPassword()                   { return password; }
+    @Override public Set<IEnumerableUserRole> getAuthRoles()    { return Set.of(role); }
+    @Override public boolean isAccountEnabled()                 { return isActivated; }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -20,21 +20,25 @@ package pl.miloszgilga.security;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import org.jmpsl.security.SecurityUtil;
 import org.jmpsl.security.filter.MiddlewareExceptionFilter;
-import org.jmpsl.security.resolver.AccessDeniedResolverForRest;
 import org.jmpsl.security.resolver.AuthResolverForRest;
+import org.jmpsl.security.resolver.AccessDeniedResolverForRest;
 
 import pl.miloszgilga.config.ApiProperties;
 
@@ -44,9 +48,16 @@ import pl.miloszgilga.config.ApiProperties;
 @RequiredArgsConstructor
 public class SpringSecurityConfigurer {
 
+    private final ApiProperties props;
     private final Environment environment;
-    private final AuthResolverForRest authResolverForRest;
+    private final MessageSource messageSource;
+
+    private final PasswordEncoder passwordEncoder;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final MiddlewareExceptionFilter middlewareExceptionFilter;
+
+    private final AuthResolverForRest authResolverForRest;
+    private final AuthUserDetailsService authUserDetailsService;
     private final AccessDeniedResolverForRest accessDeniedResolverForRest;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,14 +85,19 @@ public class SpringSecurityConfigurer {
                 .requestMatchers(props.getPrefix() + "/renew-password/request").permitAll()
                 .requestMatchers(props.getPrefix() + "/renew-password/change").permitAll()
                 .anyRequest().authenticated()
-            );
+            )
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager() {
+        final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setMessageSource(messageSource);
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(authUserDetailsService);
+        return new ProviderManager(provider);
     }
 }
