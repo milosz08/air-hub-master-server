@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String extractedLogin = extractedClaims.get(JwtClaim.LOGIN.getName(), String.class);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(extractedLogin);
 
-        final var authenticationToken = new UserPrincipalAuthenticationToken<GrantedUserRole>(req, userDetails);
+        final var authenticationToken = new UserPrincipalAuthenticationToken(req, userDetails);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         chain.doFilter(req, res);
