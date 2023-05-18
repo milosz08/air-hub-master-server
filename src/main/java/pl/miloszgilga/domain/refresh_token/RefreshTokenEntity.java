@@ -18,8 +18,11 @@
 
 package pl.miloszgilga.domain.refresh_token;
 
-import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -33,7 +36,9 @@ import static jakarta.persistence.CascadeType.ALL;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "refresh_tokens")
 public class RefreshTokenEntity extends AbstractAuditableEntity implements Serializable {
 
@@ -46,19 +51,19 @@ public class RefreshTokenEntity extends AbstractAuditableEntity implements Seria
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    String getToken() {
+    public String getToken() {
         return token;
     }
 
-    void setToken(String token) {
+    public void setToken(String token) {
         this.token = token;
     }
 
-    ZonedDateTime getExpiredAt() {
+    public ZonedDateTime getExpiredAt() {
         return expiredAt;
     }
 
-    void setExpiredAt(ZonedDateTime expiredAt) {
+    public void setExpiredAt(ZonedDateTime expiredAt) {
         this.expiredAt = expiredAt;
     }
 

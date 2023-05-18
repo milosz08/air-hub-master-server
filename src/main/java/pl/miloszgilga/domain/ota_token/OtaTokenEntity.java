@@ -18,8 +18,11 @@
 
 package pl.miloszgilga.domain.ota_token;
 
-import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -34,7 +37,9 @@ import static jakarta.persistence.CascadeType.ALL;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "ota_tokens")
 public class OtaTokenEntity extends AbstractAuditableEntity implements Serializable {
     @Serial private static final long serialVersionUID = 1L;

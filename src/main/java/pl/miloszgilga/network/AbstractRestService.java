@@ -18,17 +18,12 @@
 
 package pl.miloszgilga.network;
 
+import lombok.RequiredArgsConstructor;
 import org.jmpsl.core.i18n.LocaleMessageService;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+@RequiredArgsConstructor
 public abstract class AbstractRestService {
-
     protected LocaleMessageService localeMessageService;
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    protected AbstractRestService(LocaleMessageService localeMessageService) {
-        this.localeMessageService = localeMessageService;
-    }
 }

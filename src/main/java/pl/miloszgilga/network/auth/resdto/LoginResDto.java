@@ -18,8 +18,11 @@
 
 package pl.miloszgilga.network.auth.resdto;
 
+import lombok.Builder;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+@Builder
 public record LoginResDto(
     String jwtToken,
     String refreshToken

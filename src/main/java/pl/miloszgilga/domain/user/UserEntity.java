@@ -18,7 +18,9 @@
 
 package pl.miloszgilga.domain.user;
 
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
 
@@ -39,7 +41,9 @@ import static jakarta.persistence.CascadeType.ALL;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class UserEntity extends AbstractAuditableEntity implements Serializable {
     @Serial private static final long serialVersionUID = 1L;
@@ -79,7 +83,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable 
         this.lastName = lastName;
     }
 
-    String getLogin() {
+    public String getLogin() {
         return login;
     }
 
@@ -95,7 +99,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable 
         this.emailAddress = emailAddress;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
 
