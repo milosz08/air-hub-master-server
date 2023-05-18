@@ -60,12 +60,14 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     @Column(name = "is_activated", insertable = false)      private Boolean isActivated;
     @Column(name = "role") @Enumerated(EnumType.STRING)     private GrantedUserRole role;
 
+    @Builder.Default
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
     private Set<OtaTokenEntity> otaTokens = new HashSet<>();
 
     @OneToOne(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
     private RefreshTokenEntity refreshToken;
 
+    @Builder.Default
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
     private Set<BlacklistJwtEntity> blacklistJwts = new HashSet<>();
 
