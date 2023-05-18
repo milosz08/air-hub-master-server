@@ -40,7 +40,7 @@ public class OtaTokenEntity extends AbstractAuditableEntity implements Serializa
     @Serial private static final long serialVersionUID = 1L;
 
     @Column(name = "token")                                                 private String token;
-    @Column(name = "expired_at", updatable = false, insertable = false)     private ZonedDateTime expiredAt;
+    @Column(name = "expired_at", updatable = false)                         private ZonedDateTime expiredAt;
     @Column(name = "type") @Enumerated(EnumType.STRING)                     private OtaTokenType type;
     @Column(name = "is_used", insertable = false)                           private Boolean isUsed;
 

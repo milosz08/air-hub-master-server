@@ -35,9 +35,6 @@
     <property name="textType" value="text" dbms="mysql,postgresql"/>
     <property name="textType" value="varchar(1000000)" dbms="h2"/>
 
-    <property name="currentPlus10minutes" value="DATEADD(MINUTE, 10, ${now})" dbms="h2"/>
-    <property name="currentPlus10minutes" value="DATE_ADD(${now}, INTERVAL 10 MINUTE)" dbms="mysql"/>
-
     <changeSet id="2023-05-17_00001_create-ota-tokens-table" author="milosz08" context="lq_dev, lq_prod">
 
         <createTable tableName="ota_tokens">
@@ -48,7 +45,7 @@
             <column name="token" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="expired_at" type="datetime" defaultValueComputed="${currentPlus10minutes}">
+            <column name="expired_at" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="type" type="enum('RESET_PASSWORD', 'ACTIVATE_ACCOUNT')">
