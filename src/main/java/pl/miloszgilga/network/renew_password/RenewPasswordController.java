@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.miloszgilga.dto.SimpleMessageResDto;
-import pl.miloszgilga.config.ApiReferenceConstant;
 
 import pl.miloszgilga.network.renew_password.reqdto.RequestChangePasswordReqDto;
 import pl.miloszgilga.network.renew_password.reqdto.ChangePasswordValidatorReqDto;
@@ -36,7 +35,7 @@ import pl.miloszgilga.network.renew_password.reqdto.ChangePasswordValidatorReqDt
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @RestController
-@RequestMapping(ApiReferenceConstant.PREFIX + "/renew-password")
+@RequestMapping("${api.prefix}/renew-password")
 public class RenewPasswordController {
 
     private final IRenewPasswordService renewPasswordService;

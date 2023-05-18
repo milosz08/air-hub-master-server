@@ -36,7 +36,7 @@ import org.jmpsl.security.filter.MiddlewareExceptionFilter;
 import org.jmpsl.security.resolver.AccessDeniedResolverForRest;
 import org.jmpsl.security.resolver.AuthResolverForRest;
 
-import static pl.miloszgilga.config.ApiReferenceConstant.PREFIX;
+import pl.miloszgilga.config.ApiProperties;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -54,7 +54,6 @@ public class SpringSecurityConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         SecurityUtil.enableH2ConsoleForDev(httpSecurity, environment);
-
         httpSecurity
             .sessionManagement(options -> options.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(middlewareExceptionFilter, LogoutFilter.class)
@@ -65,13 +64,15 @@ public class SpringSecurityConfigurer {
                 .authenticationEntryPoint(authResolverForRest)
                 .accessDeniedHandler(accessDeniedResolverForRest)
             )
+            .securityMatcher(props.getPrefix() + "/**")
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/error", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                .requestMatchers(PREFIX + "/auth/login").permitAll()
-                .requestMatchers(PREFIX + "/auth/register").permitAll()
-                .requestMatchers(PREFIX + "/auth/activate-account").permitAll()
-                .requestMatchers(PREFIX + "/renew-password/request").permitAll()
-                .requestMatchers(PREFIX + "/renew-password/change").permitAll()
+                .requestMatchers("/", "/error").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                .requestMatchers(props.getPrefix() + "/auth/login").permitAll()
+                .requestMatchers(props.getPrefix() + "/auth/register").permitAll()
+                .requestMatchers(props.getPrefix() + "/auth/activate-account").permitAll()
+                .requestMatchers(props.getPrefix() + "/renew-password/request").permitAll()
+                .requestMatchers(props.getPrefix() + "/renew-password/change").permitAll()
                 .anyRequest().authenticated()
             );
         return httpSecurity.build();

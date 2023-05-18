@@ -24,8 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import pl.miloszgilga.config.ApiReferenceConstant;
-
 import pl.miloszgilga.dto.SimpleMessageResDto;
 import pl.miloszgilga.network.auth.resdto.LoginResDto;
 import pl.miloszgilga.network.auth.reqdto.LoginReqDto;
@@ -35,7 +33,7 @@ import pl.miloszgilga.network.auth.reqdto.ActivateAccountReqDto;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @RestController
-@RequestMapping(ApiReferenceConstant.PREFIX + "/auth")
+@RequestMapping("${api.prefix}/auth")
 public class AuthController {
 
     private final IAuthService authService;

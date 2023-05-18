@@ -57,3 +57,6 @@ jmpsl:
         cors:
             client: android:airhubmaster
             max-age: 3600
+
+api:
+    prefix: /api/v1

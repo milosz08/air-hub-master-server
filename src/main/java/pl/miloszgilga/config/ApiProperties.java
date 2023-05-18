@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
  *
- * File name: ApiReferenceConstant.java
- * Last modified: 17/05/2023, 16:29
+ * File name: ApiProperties.java
+ * Last modified: 19/05/2023, 00:13
  * Project name: air-hub-master-server
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -18,8 +18,16 @@
 
 package pl.miloszgilga.config;
 
+import lombok.Data;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-public class ApiReferenceConstant {
-    public static final String PREFIX = "/api/v1";
+@Data
+@Configuration
+@ConfigurationProperties(prefix = "api")
+public class ApiProperties {
+    private String prefix;
 }
