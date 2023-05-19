@@ -43,8 +43,9 @@ logging:
 jmpsl:
     core:
         locale:
-            available-locales: pl
+            available-locales: pl,en
             default-locale: pl
+            messages-paths: i18n-api/messages,i18n-mail/messages,i18n-jpa/messages
     security:
         oauth2-active: false
         ota:

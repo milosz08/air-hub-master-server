@@ -30,12 +30,24 @@ import org.jmpsl.core.i18n.ILocaleEnumSet;
 public enum AppLocaleSet implements ILocaleEnumSet {
 
     // respones
-    SUCCESSFULL_REGISTERED_RES                          ("airhubmaster.message.SuccessfullRegisteredRes"),
-    SUCCESSFULL_LOGOUT_RES                              ("airhubmaster.message.SuccessfullLogoutRes"),
-    SUCCESSFULL_ACTIVATED_ACCOUNT_RES                   ("airhubmaster.message.SuccessfullActivateAccountRes"),
+    REGISTERED_RES                                      ("airhubmaster.message.RegisteredRes"),
+    LOGOUT_RES                                          ("airhubmaster.message.LogoutRes"),
+    ACTIVATED_ACCOUNT_RES                               ("airhubmaster.message.ActivateAccountRes"),
+    RESET_PASSWORD_REQUEST_RES                          ("airhubmaster.message.ResetPasswordRequestRes"),
+    RESET_PASSWORD_CHANGE_RES                           ("airhubmaster.message.ResetPasswordChangeRes"),
+
+    // email
+    ACTIVATED_ACCOUNT_TITLE_MAIL                        ("airhubmaster.email.title.ActivatedAccount"),
+    REGISTER_TITLE_MAIL                                 ("airhubmaster.email.title.Register"),
+    REQUEST_CHANGE_PASSWORD_TITLE_MAIL                  ("airhubmaster.email.title.RequestChangePassword"),
 
     // exceptions
-    USER_NOT_FOUND_EXC                                  ("airhubmaster.exception.UserNotFoundExc");
+    USER_NOT_FOUND_EXC                                  ("airhubmaster.exception.UserNotFoundExc"),
+    INCORRECT_JWT_EXC                                   ("airhubmaster.exception.IncorrectJwtExc"),
+    REFRESH_TOKEN_NOT_FOUND_EXC                         ("airhubmaster.exception.RefreshTokenNotFoundExc"),
+    OTA_TOKEN_NOT_FOUND_EXC                             ("airhubmaster.exception.OtaTokenNotFoundExc"),
+    ACCOUNT_HAS_BEEN_ALREADY_ACTIVATED_EXC              ("airhubmaster.exception.AccountHasBeenAlreadyActivatedExc"),
+    JWT_IS_NOT_RELATED_WITH_REFRESH_TOKEN_EXC           ("airhubmaster.exception.JwtIsNotRelatedWithRefreshTokenExc");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
