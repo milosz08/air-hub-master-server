@@ -68,6 +68,8 @@ import static pl.miloszgilga.exception.AuthException.UserNotFoundException;
 public class AuthService extends AbstractRestService implements IAuthService {
 
     private final JwtIssuer jwtIssuer;
+    private final JwtService jwtService;
+    private final ApiProperties properties;
     private final OtaTokenService otaTokenService;
     private final PasswordEncoder passwordEncoder;
     private final LocaleMessageService messageService;
@@ -92,7 +94,7 @@ public class AuthService extends AbstractRestService implements IAuthService {
         final String token = jwtIssuer.generateTokenForUser(userEntity);
         final RefreshTokenEntity refreshToken = refreshTokenRepository.findRefreshTokenByUserLogin(userEntity.getLogin())
             .orElseGet(() -> {
-                final var generatedRefreshToken = jwtIssuer.generateRefreshTokenForUser(userEntity.getLogin());
+                final var generatedRefreshToken = jwtService.generateRefreshToken();
                 final RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
                     .token(generatedRefreshToken.token())
                     .expiredAt(generatedRefreshToken.expiredDate())
@@ -102,7 +104,7 @@ public class AuthService extends AbstractRestService implements IAuthService {
                 return refreshTokenEntity;
             });
         if (refreshToken.getExpiredAt().isBefore(ZonedDateTime.now())) {
-            final var generatedRefreshToken = jwtIssuer.generateRefreshTokenForUser(principal.getUsername());
+            final var generatedRefreshToken = jwtService.generateRefreshToken();
             refreshToken.setToken(generatedRefreshToken.token());
             refreshToken.setExpiredAt(generatedRefreshToken.expiredDate());
             refreshTokenRepository.save(refreshToken);
@@ -119,7 +121,7 @@ public class AuthService extends AbstractRestService implements IAuthService {
 
     @Override
     public SimpleMessageResDto register(RegisterReqDto reqDto) {
-        final var generatedRefreshToken = jwtIssuer.generateRefreshTokenForUser(reqDto.getLogin());
+        final var generatedRefreshToken = jwtService.generateRefreshToken();
         final RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
             .token(generatedRefreshToken.token())
             .expiredAt(generatedRefreshToken.expiredDate())

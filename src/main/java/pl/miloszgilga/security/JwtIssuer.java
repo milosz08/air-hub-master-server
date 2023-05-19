@@ -24,7 +24,6 @@ import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Service;
 
 import org.jmpsl.security.jwt.JwtService;
-import org.jmpsl.security.jwt.RefreshTokenPayloadDto;
 
 import pl.miloszgilga.domain.user.UserEntity;
 
@@ -49,11 +48,5 @@ public class JwtIssuer {
         customClaims.put(JwtClaim.LOGIN.getName(), user.getLogin());
         customClaims.put(JwtClaim.ROLE.getName(), user.getRole().getRole());
         return jwtService.generateToken(user.getLogin(), customClaims);
-    }
-
-    public RefreshTokenPayloadDto generateRefreshTokenForUser(String userLogin) {
-        final Claims customClaims = Jwts.claims();
-        customClaims.put(JwtClaim.LOGIN.getName(), userLogin);
-        return jwtService.generateRefreshToken(userLogin, customClaims);
     }
 }
