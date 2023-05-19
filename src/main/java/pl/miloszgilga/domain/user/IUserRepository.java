@@ -19,11 +19,13 @@
 package pl.miloszgilga.domain.user;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.time.ZonedDateTime;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,4 +37,8 @@ public interface IUserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = "select count(e.id) > 0 from UserEntity e where e.login = :loginOrEmail or e.emailAddress = :loginOrEmail")
     boolean checkIfUserAlreadyExist(@Param("loginOrEmail") String loginOrEmail);
+
+    @Modifying
+    @Query(value = "delete UserEntity e where e.isActivated = false and e.createdAt < :futureExpierd")
+    void deleteAllNotActivatedAccount(@Param("futureExpierd") ZonedDateTime futureExpired);
 }
