@@ -22,8 +22,11 @@ plugins {
     alias libs.plugins.spring.dept.plugin
 }
 
+def props = new Properties()
+file('src/main/resources/artifact.properties').withInputStream { props.load(it) }
+
 group = 'pl.miloszgilga'
-version = '0.0.1-SNAPSHOT'
+version = props.getProperty("project.version")
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 java.targetCompatibility = JavaVersion.VERSION_17
@@ -75,3 +78,23 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+bootJar {
+    archiveFileName = "${props.getProperty("project.artifact")}-${project.version}.jar"
+    version =  project.version
+
+    destinationDir(file("$rootDir/build/jar"))
+    launchScript()
+}
+
+tasks.register('moveConfigurationFiles', Copy) {
+    from layout.projectDirectory.files([
+        '.env',
+        'run-scripts/jar-run.sh',
+        'run-scripts/jar-kill.sh'
+    ])
+    into layout.buildDirectory.dir("$rootDir/build/jar")
+    println(rootDir)
+}
+
+bootJar.finalizedBy moveConfigurationFiles
