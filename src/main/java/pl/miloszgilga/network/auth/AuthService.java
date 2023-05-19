@@ -35,9 +35,12 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 
 import org.jmpsl.core.i18n.LocaleMessageService;
-import org.jmpsl.security.OtaTokenService;
-import org.jmpsl.security.user.AuthUser;
+import org.jmpsl.communication.mail.MailRequestDto;
+import org.jmpsl.communication.mail.JmpslMailService;
 
+import pl.miloszgilga.utils.Utilities;
+import pl.miloszgilga.utils.MailTemplate;
+import pl.miloszgilga.config.ApiProperties;
 import pl.miloszgilga.i18n.AppLocaleSet;
 import pl.miloszgilga.dto.SimpleMessageResDto;
 import pl.miloszgilga.security.JwtIssuer;
@@ -72,6 +75,7 @@ public class AuthService extends AbstractRestService implements IAuthService {
     private final ApiProperties properties;
     private final OtaTokenService otaTokenService;
     private final PasswordEncoder passwordEncoder;
+    private final JmpslMailService jmpslMailService;
     private final LocaleMessageService messageService;
     private final AuthenticationManager authenticationManager;
 
@@ -148,14 +152,31 @@ public class AuthService extends AbstractRestService implements IAuthService {
             .role(GrantedUserRole.STANDARD)
             .build();
 
-        // sending email messages
+        final MailRequestDto requestDto  = MailRequestDto.builder()
+            .sendTo(Set.of(user.getEmailAddress()))
+            .sendFrom(properties.getMailResponder())
+            .replyAddress(properties.getReplyResponder())
+            .messageSubject(messageService.getMessage(AppLocaleSet.REGISTER_TITLE_MAIL, Map.of(
+                "appName", properties.getAppName(),
+                "userLogin", user.getLogin()
+            )))
+            .appName(properties.getAppName())
+            .locale(LocaleContextHolder.getLocale())
+            .build();
 
-        userEntity.persistRefreshToken(refreshTokenEntity);
-        userEntity.persistOtaToken(otaTokenEntity);
-        userRepository.save(userEntity);
+        final Map<String, String> parameters = new HashMap<>();
+        parameters.put("fullName", Utilities.parseFullName(user));
+        parameters.put("token", token);
+        parameters.put("expirationHours", String.valueOf(properties.getOtaExpiredRegisterHours()));
 
-        log.info("Successfully registered new user. User data: {}", userEntity);
-        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.SUCCESSFULL_REGISTERED_RES,
+        jmpslMailService.sendEmail(requestDto, parameters, MailTemplate.REGISTER);
+
+        user.persistRefreshToken(refreshTokenEntity);
+        user.persistOtaToken(otaTokenEntity);
+        userRepository.save(user);
+
+        log.info("Successfully registered new user. User data: {}", user);
+        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.REGISTERED_RES,
             Map.of("email", reqDto.getEmailAddress())));
     }
 

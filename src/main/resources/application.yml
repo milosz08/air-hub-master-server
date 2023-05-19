@@ -57,6 +57,9 @@ jmpsl:
         cors:
             client: android:airhubmaster
             max-age: 3600
+    communication:
+        mail:
+            freemarker-templates-dir: classpath:/templates
 
 api:
     prefix: /api/v1

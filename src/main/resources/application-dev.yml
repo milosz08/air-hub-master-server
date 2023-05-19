@@ -40,6 +40,18 @@ spring:
         driver-class-name: org.h2.Driver
     jpa:
         show-sql: true
+    mail:
+        protocol: smtp
+        port: 465
+        host: ${DEV_SMTP_MAIL_SERVER}
+        username: ${DEV_SMTP_MAIL_USERNAME}
+        password: ${DEV_SMTP_MAIL_PASSWORD}
+        properties:
+            smtp.starttls.required: true
+            mail.smtp:
+                ssl.enable: true
+                auth: true
+                starttls.enable: true
 
 jmpsl:
     security:

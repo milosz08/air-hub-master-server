@@ -33,6 +33,18 @@ spring:
         username: ${PROD_DB_USERNAME}
         password: ${PROD_DB_PASSWORD}
         driver-class-name: com.mysql.cj.jdbc.Driver
+    mail:
+        protocol: smtp
+        port: 465
+        host: ${PROD_SMTP_MAIL_SERVER}
+        username: ${PROD_SMTP_MAIL_USERNAME}
+        password: ${PROD_SMTP_MAIL_PASSWORD}
+        properties:
+            smtp.starttls.required: true
+            mail.smtp:
+                ssl.enable: true
+                auth: true
+                starttls.enable: true
 
 springdoc:
     api-docs:
