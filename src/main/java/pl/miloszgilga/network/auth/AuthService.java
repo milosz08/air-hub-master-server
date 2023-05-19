@@ -199,9 +199,36 @@ public class AuthService implements IAuthService {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public SimpleMessageResDto activateAccount(ActivateAccountReqDto reqDto) {
-        // code here
-        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.SUCCESSFULL_ACTIVATED_ACCOUNT_RES));
+    public SimpleMessageResDto activate(ActivateAccountReqDto reqDto) {
+        final OtaTokenEntity token = otaTokenRepository.findTokenByType(reqDto.getToken(), OtaTokenType.ACTIVATE_ACCOUNT)
+            .orElseThrow(() -> new OtaTokenNotFoundException(reqDto.getToken()));
+
+        final UserEntity user = token.getUser();
+        if (user.getActivated()) throw new UserAccountHasBeenAlreadyActivatedException(user);
+
+        user.setActivated(true);
+        token.setUsed(true);
+
+        final MailRequestDto requestDto  = MailRequestDto.builder()
+            .sendTo(Set.of(user.getEmailAddress()))
+            .sendFrom(properties.getMailResponder())
+            .replyAddress(properties.getReplyResponder())
+            .messageSubject(messageService.getMessage(AppLocaleSet.ACTIVATED_ACCOUNT_TITLE_MAIL, Map.of(
+                "appName", properties.getAppName(),
+                "userLogin", user.getLogin()
+            )))
+            .appName(properties.getAppName())
+            .locale(LocaleContextHolder.getLocale())
+            .build();
+
+        final Map<String, String> parameters = new HashMap<>();
+        parameters.put("fullName", Utilities.parseFullName(user));
+
+        jmpslMailService.sendEmail(requestDto, parameters, MailTemplate.ACTIVATED_ACCOUNT);
+        otaTokenRepository.save(token);
+
+        log.info("Account was successfully activated for user. User data: {}", token);
+        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.ACTIVATED_ACCOUNT_RES));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
