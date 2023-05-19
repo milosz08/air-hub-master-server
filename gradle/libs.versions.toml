@@ -31,6 +31,7 @@ jUnit               = '5.8.1'
 openApi             = '2.1.0'
 jmpsl               = '1.0.2_04'
 commonsText         = '1.10.0'
+freemarker          = '2.3.32'
 
 springBootDep       = '1.0.15.RELEASE'
 
@@ -41,6 +42,7 @@ spring-boot-starter-security        = { module = 'org.springframework.boot:sprin
 spring-boot-starter-data-jpa        = { module = 'org.springframework.boot:spring-boot-starter-data-jpa',           version.ref = 'springBoot' }
 spring-boot-starter-validation      = { module = 'org.springframework.boot:spring-boot-starter-validation',         version.ref = 'springBoot' }
 spring-boot-starter-test            = { module = 'org.springframework.boot:spring-boot-starter-test',               version.ref = 'springBoot' }
+spring-boot-starter-mail            = { module = 'org.springframework.boot:spring-boot-starter-mail',               version.ref = 'springBoot' }
 spring-boot-devtools                = { module = 'org.springframework.boot:spring-boot-devtools',                   version.ref = 'springBoot' }
 spring-boot-config-processor        = { module = 'org.springframework.boot:spring-boot-configuration-processor',    version.ref = 'springBoot' }
 liquibase                           = { module = 'org.liquibase:liquibase-core',                                    version.ref = 'liquibase' }
@@ -58,7 +60,9 @@ junit-engine                        = { module = 'org.junit.jupiter:junit-jupite
 openapi-webmvc-starter              = { module = 'org.springdoc:springdoc-openapi-starter-webmvc-ui',               version.ref = 'openApi' }
 jmpsl-core                          = { module = 'pl.miloszgilga:jmpsl-core',                                       version.ref = 'jmpsl' }
 jmpsl-security                      = { module = 'pl.miloszgilga:jmpsl-security',                                   version.ref = 'jmpsl' }
+jmpsl-communication                 = { module = 'pl.miloszgilga:jmpsl-communication',                              version.ref = 'jmpsl' }
 commons-text                        = { module = 'org.apache.commons:commons-text',                                 version.ref = 'commonsText' }
+freemarker                          = { module = 'org.freemarker:freemarker',                                       version.ref = 'freemarker' }
 
 [plugins]
 spring-boot-plugin                  = { id     = 'org.springframework.boot',                                        version.ref = 'springBoot' }
