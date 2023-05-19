@@ -29,5 +29,6 @@
     <include file="migrations/2023-05-17_00001_create-ota-tokens-table.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-05-17_00002_create-refresh-tokens-table.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-05-17_00003_create-blacklist-jwts-table.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-05-19_00000_fixed-blaclist-token-length.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
