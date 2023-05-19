@@ -21,12 +21,17 @@ package pl.miloszgilga.network.auth;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import org.springframework.stereotype.Service;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
@@ -34,6 +39,11 @@ import java.util.*;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
+import org.jmpsl.security.user.AuthUser;
+import org.jmpsl.security.OtaTokenService;
+import org.jmpsl.security.jwt.JwtService;
+import org.jmpsl.security.jwt.JwtValidPayload;
+import org.jmpsl.security.jwt.JwtValidationType;
 import org.jmpsl.core.i18n.LocaleMessageService;
 import org.jmpsl.communication.mail.MailRequestDto;
 import org.jmpsl.communication.mail.JmpslMailService;
@@ -43,12 +53,12 @@ import pl.miloszgilga.utils.MailTemplate;
 import pl.miloszgilga.config.ApiProperties;
 import pl.miloszgilga.i18n.AppLocaleSet;
 import pl.miloszgilga.dto.SimpleMessageResDto;
+import pl.miloszgilga.security.JwtClaim;
 import pl.miloszgilga.security.JwtIssuer;
 import pl.miloszgilga.security.GrantedUserRole;
 
-import pl.miloszgilga.network.AbstractRestService;
-import pl.miloszgilga.network.auth.resdto.LoginResDto;
 import pl.miloszgilga.network.auth.reqdto.LoginReqDto;
+import pl.miloszgilga.network.auth.reqdto.RefreshReqDto;
 import pl.miloszgilga.network.auth.reqdto.RegisterReqDto;
 import pl.miloszgilga.network.auth.reqdto.ActivateAccountReqDto;
 import pl.miloszgilga.network.auth.resdto.JwtAuthenticationResDto;
@@ -58,17 +68,23 @@ import pl.miloszgilga.domain.user.IUserRepository;
 import pl.miloszgilga.domain.ota_token.OtaTokenType;
 import pl.miloszgilga.domain.ota_token.OtaTokenEntity;
 import pl.miloszgilga.domain.ota_token.IOtaTokenRepository;
+import pl.miloszgilga.domain.blacklist_jwt.BlacklistJwtEntity;
 import pl.miloszgilga.domain.refresh_token.RefreshTokenEntity;
 import pl.miloszgilga.domain.refresh_token.IRefreshTokenRepository;
 
 import static pl.miloszgilga.exception.AuthException.UserNotFoundException;
+import static pl.miloszgilga.exception.AuthException.IncorrectJwtException;
+import static pl.miloszgilga.exception.AuthException.OtaTokenNotFoundException;
+import static pl.miloszgilga.exception.AuthException.RefreshTokenNotFoundException;
+import static pl.miloszgilga.exception.AuthException.JwtIsNotRelatedWithRefrehTokenException;
+import static pl.miloszgilga.exception.AuthException.UserAccountHasBeenAlreadyActivatedException;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthService extends AbstractRestService implements IAuthService {
+public class AuthService implements IAuthService {
 
     private final JwtIssuer jwtIssuer;
     private final JwtService jwtService;
@@ -191,8 +207,49 @@ public class AuthService extends AbstractRestService implements IAuthService {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public SimpleMessageResDto logout() {
-        // code here
-        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.SUCCESSFULL_LOGOUT_RES));
+    public JwtAuthenticationResDto refresh(RefreshReqDto reqDto) {
+        final JwtValidPayload validationResult = jwtService.isValid(reqDto.getExpiredJwt());
+        if (!validationResult.isValid() && !validationResult.checkType(JwtValidationType.EXPIRED)) {
+            throw new IncorrectJwtException(reqDto.getExpiredJwt());
+        }
+        final RefreshTokenEntity refreshToken = refreshTokenRepository.findRefreshTokenByToken(reqDto.getRefreshToken())
+            .orElseThrow(() -> new RefreshTokenNotFoundException(reqDto.getRefreshToken()));
+
+        final Claims claims = jwtService.extractClaims(reqDto.getExpiredJwt())
+            .orElseThrow(() -> new IncorrectJwtException(reqDto.getExpiredJwt()));
+
+        final String login = claims.get(JwtClaim.LOGIN.getName(), String.class);
+        final UserEntity user = refreshToken.getUser();
+        if (!login.equals(user.getLogin())) throw new JwtIsNotRelatedWithRefrehTokenException(reqDto);
+
+        log.info("JWT was successfully refreshed for user. User data: {}", user);
+        return JwtAuthenticationResDto.builder()
+            .jwtToken(jwtIssuer.generateTokenForUser(user))
+            .refreshToken(refreshToken.getToken())
+            .build();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public SimpleMessageResDto logout(HttpServletRequest req, AuthUser authUser) {
+        final String extractedToken = jwtService.extractToken(req);
+        final UserEntity user = userRepository.findUserByLoginOrEmail(authUser.getUsername())
+            .orElseThrow(UserNotFoundException::new);
+
+        final Claims claims = jwtService.extractClaims(extractedToken)
+            .orElseThrow(() -> new IncorrectJwtException(extractedToken));
+
+        final BlacklistJwtEntity blacklistJwt = BlacklistJwtEntity.builder()
+            .jwtToken(extractedToken)
+            .expiredAt(ZonedDateTime.ofInstant(claims.getExpiration().toInstant(), ZonedDateTime.now().getZone()))
+            .build();
+
+        user.persistBlacklistJwt(blacklistJwt);
+        userRepository.save(user);
+        SecurityContextHolder.clearContext();
+
+        log.info("Successfully logout from '{}' account", user.getLogin());
+        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.LOGOUT_RES));
     }
 }

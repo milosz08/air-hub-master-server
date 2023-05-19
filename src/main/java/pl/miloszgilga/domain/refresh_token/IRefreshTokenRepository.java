@@ -32,4 +32,7 @@ public interface IRefreshTokenRepository extends JpaRepository<RefreshTokenEntit
 
     @Query(value = "from RefreshTokenEntity e join fetch e.user u where u.login = :login")
     Optional<RefreshTokenEntity> findRefreshTokenByUserLogin(@Param("login") String login);
+
+    @Query(value = "from RefreshTokenEntity e join fetch e.user where e.token = :token and e.expiredAt > current_timestamp()")
+    Optional<RefreshTokenEntity> findRefreshTokenByToken(@Param("token") String token);
 }

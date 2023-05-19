@@ -42,6 +42,8 @@ import org.jmpsl.security.jwt.JwtService;
 import org.jmpsl.security.jwt.JwtValidPayload;
 import org.jmpsl.security.user.UserPrincipalAuthenticationToken;
 
+import pl.miloszgilga.domain.blacklist_jwt.IBlacklistJwtRepository;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Slf4j
@@ -51,6 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+
+    private final IBlacklistJwtRepository blacklistJwtRepository;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -71,7 +75,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final Claims extractedClaims = claims.get();
         final String extractedLogin = extractedClaims.get(JwtClaim.LOGIN.getName(), String.class);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(extractedLogin);
-
+        if (blacklistJwtRepository.checkIfJwtIsOnBlacklist(token)) {
+            chain.doFilter(req, res);
+            return;
+        }
         final var authenticationToken = new UserPrincipalAuthenticationToken(req, userDetails);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
