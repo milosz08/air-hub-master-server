@@ -18,6 +18,8 @@
 
 package pl.miloszgilga.network.renew_password;
 
+import lombok.RequiredArgsConstructor;
+
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,7 @@ import pl.miloszgilga.network.renew_password.reqdto.ChangePasswordValidatorReqDt
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("${api.prefix}/renew-password")
 public class RenewPasswordController {
 
@@ -42,19 +45,13 @@ public class RenewPasswordController {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    RenewPasswordController(IRenewPasswordService renewPasswordService) {
-        this.renewPasswordService = renewPasswordService;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @PostMapping("/request")
-    ResponseEntity<SimpleMessageResDto> requestChangePassword(@RequestBody @Valid RequestChangePasswordReqDto reqDto) {
-        return new ResponseEntity<>(renewPasswordService.requestChangePassword(reqDto), HttpStatus.OK);
+    ResponseEntity<SimpleMessageResDto> request(@RequestBody @Valid RequestChangePasswordReqDto reqDto) {
+        return new ResponseEntity<>(renewPasswordService.request(reqDto), HttpStatus.OK);
     }
 
     @PostMapping("/change")
-    ResponseEntity<SimpleMessageResDto> changePassword(@RequestBody @Valid ChangePasswordValidatorReqDto reqDto) {
-        return new ResponseEntity<>(renewPasswordService.changePassword(reqDto), HttpStatus.OK);
+    ResponseEntity<SimpleMessageResDto> change(@RequestBody @Valid ChangePasswordValidatorReqDto reqDto) {
+        return new ResponseEntity<>(renewPasswordService.change(reqDto), HttpStatus.OK);
     }
 }

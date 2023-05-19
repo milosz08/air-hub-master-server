@@ -67,7 +67,7 @@ public class RefreshTokenEntity extends AbstractAuditableEntity implements Seria
         this.expiredAt = expiredAt;
     }
 
-    UserEntity getUser() {
+    public UserEntity getUser() {
         return user;
     }
 

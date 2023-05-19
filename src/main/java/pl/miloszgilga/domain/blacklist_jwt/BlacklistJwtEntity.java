@@ -18,8 +18,11 @@
 
 package pl.miloszgilga.domain.blacklist_jwt;
 
-import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -33,7 +36,9 @@ import static jakarta.persistence.FetchType.LAZY;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "blacklist_jwts")
 public class BlacklistJwtEntity extends AbstractAuditableEntity implements Serializable {
 

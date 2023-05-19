@@ -33,6 +33,7 @@ import pl.miloszgilga.network.auth.reqdto.ActivateAccountReqDto;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("${api.prefix}/auth")
 public class AuthController {
 
@@ -40,14 +41,8 @@ public class AuthController {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    AuthController(IAuthService authService) {
-        this.authService = authService;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @PostMapping("/login")
-    ResponseEntity<LoginResDto> login(@RequestBody @Valid LoginReqDto reqDto) {
+    ResponseEntity<JwtAuthenticationResDto> login(@RequestBody @Valid LoginReqDto reqDto) {
         return new ResponseEntity<>(authService.login(reqDto), HttpStatus.OK);
     }
 

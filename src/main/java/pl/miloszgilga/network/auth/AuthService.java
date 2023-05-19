@@ -29,10 +29,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Map;
-import java.util.Date;
+import java.util.*;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
@@ -50,6 +48,7 @@ import pl.miloszgilga.network.auth.resdto.LoginResDto;
 import pl.miloszgilga.network.auth.reqdto.LoginReqDto;
 import pl.miloszgilga.network.auth.reqdto.RegisterReqDto;
 import pl.miloszgilga.network.auth.reqdto.ActivateAccountReqDto;
+import pl.miloszgilga.network.auth.resdto.JwtAuthenticationResDto;
 
 import pl.miloszgilga.domain.user.UserEntity;
 import pl.miloszgilga.domain.user.IUserRepository;
@@ -81,7 +80,7 @@ public class AuthService extends AbstractRestService implements IAuthService {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public LoginResDto login(LoginReqDto reqDto) {
+    public JwtAuthenticationResDto login(LoginReqDto reqDto) {
         final var authenticationToken = new UsernamePasswordAuthenticationToken(reqDto.getLoginOrEmail(), reqDto.getPassword());
         final Authentication authentication = authenticationManager.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -110,7 +109,7 @@ public class AuthService extends AbstractRestService implements IAuthService {
             log.info("Successfully re-validated expired refresh token for '{}' account", principal.getUsername());
         }
         log.info("Successfully login on '{}' account", principal.getUsername());
-        return LoginResDto.builder()
+        return JwtAuthenticationResDto.builder()
             .jwtToken(token)
             .refreshToken(refreshToken.getToken())
             .build();
@@ -127,7 +126,7 @@ public class AuthService extends AbstractRestService implements IAuthService {
             .build();
 
         String token;
-        final Date expiredAt = DateUtils.addMinutes(Date.from(Instant.now()), 10);
+        final Date expiredAt = DateUtils.addHours(Date.from(Instant.now()), properties.getOtaExpiredRegisterHours());
         do {
             token = otaTokenService.generateToken();
         } while (otaTokenRepository.checkIfTokenAlreadyExist(token));
@@ -138,7 +137,7 @@ public class AuthService extends AbstractRestService implements IAuthService {
             .expiredAt(ZonedDateTime.ofInstant(expiredAt.toInstant(), ZonedDateTime.now().getZone()))
             .build();
 
-        final UserEntity userEntity = UserEntity.builder()
+        final UserEntity user = UserEntity.builder()
             .firstName(StringUtils.capitalize(reqDto.getFirstName()))
             .lastName(StringUtils.capitalize(reqDto.getLastName()))
             .login(reqDto.getLogin())

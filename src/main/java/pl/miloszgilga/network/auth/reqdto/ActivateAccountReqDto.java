@@ -36,17 +36,12 @@ public class ActivateAccountReqDto {
     @Pattern(regexp = Regex.OTA_TOKEN, message = "jpa.validator.token.regex")
     private String token;
 
-    @NotBlank(message = "jpa.validator.loginOrEmail.notBlank")
-    @Pattern(regexp = Regex.LOGIN_EMAIL, message = "jpa.validator.loginOrEmail.regex")
-    private String loginOrEmail;
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public String toString() {
         return "{" +
             "token=" + token +
-            ", loginOrEmail=" + loginOrEmail +
             '}';
     }
 }

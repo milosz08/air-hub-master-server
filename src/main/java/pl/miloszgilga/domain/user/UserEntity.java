@@ -24,10 +24,10 @@ import lombok.AllArgsConstructor;
 
 import jakarta.persistence.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
+import java.io.Serial;
+import java.io.Serializable;
 
 import org.jmpsl.security.user.IAuthUserModel;
 import org.jmpsl.security.user.IEnumerableUserRole;
@@ -73,7 +73,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -81,7 +81,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         this.firstName = firstName;
     }
 
-    String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -97,7 +97,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         this.login = login;
     }
 
-    String getEmailAddress() {
+    public String getEmailAddress() {
         return emailAddress;
     }
 
@@ -109,7 +109,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         return password;
     }
 
-    void setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -121,11 +121,11 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         this.otaTokens = otaTokens;
     }
 
-    Boolean getActivated() {
+    public Boolean getActivated() {
         return isActivated;
     }
 
-    void setActivated(Boolean activated) {
+    public void setActivated(Boolean activated) {
         isActivated = activated;
     }
 
@@ -143,6 +143,14 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
 
     void setRefreshToken(RefreshTokenEntity refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    Set<BlacklistJwtEntity> getBlacklistJwts() {
+        return blacklistJwts;
+    }
+
+    void setBlacklistJwts(Set<BlacklistJwtEntity> blacklistJwts) {
+        this.blacklistJwts = blacklistJwts;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,11 +182,11 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     @Override
     public String toString() {
         return "{" +
-            "firstName='" + firstName +
-            ", lastName='" + lastName +
-            ", login='" + login +
-            ", emailAddress='" + emailAddress +
-            ", password='" + password +
+            "firstName=" + firstName +
+            ", lastName=" + lastName +
+            ", login=" + login +
+            ", emailAddress=" + emailAddress +
+            ", password=" + password +
             ", isActivated=" + isActivated +
             ", role=" + role +
             '}';

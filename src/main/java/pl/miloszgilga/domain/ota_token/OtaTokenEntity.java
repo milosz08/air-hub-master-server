@@ -83,11 +83,11 @@ public class OtaTokenEntity extends AbstractAuditableEntity implements Serializa
         return isUsed;
     }
 
-    void setUsed(Boolean used) {
+    public void setUsed(Boolean used) {
         isUsed = used;
     }
 
-    UserEntity getUser() {
+    public UserEntity getUser() {
         return user;
     }
 

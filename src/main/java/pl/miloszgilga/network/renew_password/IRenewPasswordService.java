@@ -26,6 +26,6 @@ import pl.miloszgilga.network.renew_password.reqdto.RequestChangePasswordReqDto;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 public interface IRenewPasswordService {
-    SimpleMessageResDto requestChangePassword(RequestChangePasswordReqDto reqDto);
-    SimpleMessageResDto changePassword(ChangePasswordValidatorReqDto reqDto);
+    SimpleMessageResDto request(RequestChangePasswordReqDto reqDto);
+    SimpleMessageResDto change(ChangePasswordValidatorReqDto reqDto);
 }
