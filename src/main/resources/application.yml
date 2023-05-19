@@ -60,3 +60,7 @@ jmpsl:
 
 api:
     prefix: /api/v1
+    app-name: AirHubMaster
+    ota-expired-register-hours: 48
+    ota-expired-password-minutes: 10
+    reply-responder: info@airhubmaster.miloszgilga.pl

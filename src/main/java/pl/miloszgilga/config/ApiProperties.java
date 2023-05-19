@@ -30,4 +30,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "api")
 public class ApiProperties {
     private String prefix;
+    private String appName;
+    private String mailResponder;
+    private Integer otaExpiredRegisterHours;
+    private Integer otaExpiredPasswordMinutes;
+    private String replyResponder;
 }

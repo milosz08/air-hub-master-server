@@ -45,3 +45,6 @@ jmpsl:
     security:
         jwt:
             secret: h64h3hbntohbjk50rp9hgkj03gormgobrwnmgoriwjmhgoithjkgo
+
+api:
+    mail-responder: ${DEV_SMTP_MAIL_USERNAME}

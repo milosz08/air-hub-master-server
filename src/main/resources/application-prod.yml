@@ -18,6 +18,9 @@
 
 # application-prod.yml
 
+server:
+    port: 8085
+
 spring:
     h2.console.enabled: false
     liquibase:
@@ -41,3 +44,6 @@ jmpsl:
     security:
         jwt:
             secret: ${PROD_JWT_SECRET}
+
+api:
+    mail-responder: ${PROD_SMTP_MAIL_USERNAME}
