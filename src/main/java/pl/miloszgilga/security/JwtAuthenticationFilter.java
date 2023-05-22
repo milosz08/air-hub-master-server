@@ -31,6 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.util.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -74,7 +75,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         final Claims extractedClaims = claims.get();
         final String extractedLogin = extractedClaims.get(JwtClaim.LOGIN.getName(), String.class);
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(extractedLogin);
+        UserDetails userDetails;
+        try {
+            userDetails = userDetailsService.loadUserByUsername(extractedLogin);
+        } catch (AuthenticationException ex) {
+            chain.doFilter(req, res);
+            return;
+        }
         if (blacklistJwtRepository.checkIfJwtIsOnBlacklist(token)) {
             chain.doFilter(req, res);
             return;

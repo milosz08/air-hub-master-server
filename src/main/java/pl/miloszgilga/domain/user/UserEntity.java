@@ -77,7 +77,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         return firstName;
     }
 
-    void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -85,7 +85,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         return lastName;
     }
 
-    void setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -93,7 +93,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         return login;
     }
 
-    void setLogin(String login) {
+    public void setLogin(String login) {
         this.login = login;
     }
 
@@ -101,7 +101,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         return emailAddress;
     }
 
-    void setEmailAddress(String emailAddress) {
+    public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 

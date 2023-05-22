@@ -34,10 +34,11 @@ if [ ! -f ".env" ]; then
     exit 6
 fi
 
-EXEC_SCRIPT="nohup java
--Dspring.profiles.active=prod
--Xmx$MAX_JAVA_HEAP_SIZE
+EXEC_SCRIPT="nohup java -X
 -Xms$START_JAVA_HEAP_SIZE
+-Xmx$MAX_JAVA_HEAP_SIZE
+-Dspring.profiles.active=prod
+-XX:NativeMemoryTracking=summary
 -jar air-hub-master-server-1.0.0.jar
 "
 

@@ -29,7 +29,7 @@ ehCache             = '3.10.8'
 jaxb                = '2.3.1'
 jUnit               = '5.8.1'
 openApi             = '2.1.0'
-jmpsl               = '1.0.2_04'
+jmpsl               = '1.0.2_05'
 commonsText         = '1.10.0'
 freemarker          = '2.3.32'
 
