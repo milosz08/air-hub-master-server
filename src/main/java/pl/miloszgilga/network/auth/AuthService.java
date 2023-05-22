@@ -28,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import org.springframework.stereotype.Service;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,6 +47,7 @@ import org.jmpsl.core.i18n.LocaleMessageService;
 import org.jmpsl.communication.mail.MailRequestDto;
 import org.jmpsl.communication.mail.JmpslMailService;
 
+import pl.miloszgilga.utils.SmtpUtils;
 import pl.miloszgilga.utils.Utilities;
 import pl.miloszgilga.utils.MailTemplate;
 import pl.miloszgilga.config.ApiProperties;
@@ -55,6 +55,7 @@ import pl.miloszgilga.i18n.AppLocaleSet;
 import pl.miloszgilga.dto.SimpleMessageResDto;
 import pl.miloszgilga.security.JwtClaim;
 import pl.miloszgilga.security.JwtIssuer;
+import pl.miloszgilga.security.SecurityUtils;
 import pl.miloszgilga.security.GrantedUserRole;
 
 import pl.miloszgilga.network.auth.reqdto.LoginReqDto;
@@ -87,8 +88,10 @@ import static pl.miloszgilga.exception.AuthException.UserAccountHasBeenAlreadyAc
 public class AuthService implements IAuthService {
 
     private final JwtIssuer jwtIssuer;
+    private final SmtpUtils smtpUtils;
     private final JwtService jwtService;
     private final ApiProperties properties;
+    private final SecurityUtils securityUtils;
     private final OtaTokenService otaTokenService;
     private final PasswordEncoder passwordEncoder;
     private final JmpslMailService jmpslMailService;
@@ -168,18 +171,7 @@ public class AuthService implements IAuthService {
             .role(GrantedUserRole.STANDARD)
             .build();
 
-        final MailRequestDto requestDto  = MailRequestDto.builder()
-            .sendTo(Set.of(user.getEmailAddress()))
-            .sendFrom(properties.getMailResponder())
-            .replyAddress(properties.getReplyResponder())
-            .messageSubject(messageService.getMessage(AppLocaleSet.REGISTER_TITLE_MAIL, Map.of(
-                "appName", properties.getAppName(),
-                "userLogin", user.getLogin()
-            )))
-            .appName(properties.getAppName())
-            .locale(LocaleContextHolder.getLocale())
-            .build();
-
+        final MailRequestDto requestDto = smtpUtils.createBaseMailRequest(user, AppLocaleSet.REGISTER_TITLE_MAIL);
         final Map<String, String> parameters = new HashMap<>();
         parameters.put("fullName", Utilities.parseFullName(user));
         parameters.put("token", token);
@@ -209,18 +201,7 @@ public class AuthService implements IAuthService {
         user.setActivated(true);
         token.setUsed(true);
 
-        final MailRequestDto requestDto  = MailRequestDto.builder()
-            .sendTo(Set.of(user.getEmailAddress()))
-            .sendFrom(properties.getMailResponder())
-            .replyAddress(properties.getReplyResponder())
-            .messageSubject(messageService.getMessage(AppLocaleSet.ACTIVATED_ACCOUNT_TITLE_MAIL, Map.of(
-                "appName", properties.getAppName(),
-                "userLogin", user.getLogin()
-            )))
-            .appName(properties.getAppName())
-            .locale(LocaleContextHolder.getLocale())
-            .build();
-
+        final MailRequestDto requestDto = smtpUtils.createBaseMailRequest(user, AppLocaleSet.ACTIVATED_ACCOUNT_TITLE_MAIL);
         final Map<String, String> parameters = new HashMap<>();
         parameters.put("fullName", Utilities.parseFullName(user));
 
@@ -261,8 +242,7 @@ public class AuthService implements IAuthService {
     @Override
     public SimpleMessageResDto logout(HttpServletRequest req, AuthUser authUser) {
         final String extractedToken = jwtService.extractToken(req);
-        final UserEntity user = userRepository.findUserByLoginOrEmail(authUser.getUsername())
-            .orElseThrow(UserNotFoundException::new);
+        final UserEntity user = securityUtils.getLoggedUser(authUser);
 
         final Claims claims = jwtService.extractClaims(extractedToken)
             .orElseThrow(() -> new IncorrectJwtException(extractedToken));
