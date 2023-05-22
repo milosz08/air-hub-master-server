@@ -38,6 +38,12 @@ public interface IUserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "select count(e.id) > 0 from UserEntity e where e.login = :loginOrEmail or e.emailAddress = :loginOrEmail")
     boolean checkIfUserAlreadyExist(@Param("loginOrEmail") String loginOrEmail);
 
+    @Query(value = "select count(e.id) > 0 from UserEntity e where e.login = :login and e.id <> :id")
+    boolean checkIfUserWithSameLoginExist(@Param("login") String login, @Param("id") Long id);
+
+    @Query(value = "select count(e.id) > 0 from UserEntity e where e.emailAddress = :emailAddress and e.id <> :id")
+    boolean checkIfUserWithSameEmailExist(@Param("emailAddress") String emailAddress, @Param("id") Long id);
+
     @Modifying
     @Query(value = "delete UserEntity e where e.isActivated = false and e.createdAt < :futureExpierd")
     void deleteAllNotActivatedAccount(@Param("futureExpierd") ZonedDateTime futureExpired);

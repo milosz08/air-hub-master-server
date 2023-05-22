@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
  *
- * File name: MailTemplate.java
- * Last modified: 19/05/2023, 14:29
+ * File name: UpdateEmailReqDto.java
+ * Last modified: 21/05/2023, 22:22
  * Project name: air-hub-master-server
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,25 +16,30 @@
  * governing permissions and limitations under the license.
  */
 
-package pl.miloszgilga.utils;
+package pl.miloszgilga.network.account.reqdto;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import org.jmpsl.communication.mail.IMailEnumeratedTemplate;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@Getter
-@RequiredArgsConstructor
-public enum MailTemplate implements IMailEnumeratedTemplate {
-    ACTIVATED_ACCOUNT               ("/activated-account.template.ftl"),
-    REGISTER                        ("/register.template.ftl"),
-    REQUEST_CHANGE_PASSWORD         ("/request-change-password.template.ftl"),
-    CHANGE_PASSOWRD                 ("/change-password.template.ftl"),
-    DELETE_ACCOUNT                  ("/delete-account.template.ftl");
+@Data
+@NoArgsConstructor
+public class UpdateEmailReqDto {
+
+    @NotBlank(message = "jpa.validator.email.notBlank")
+    @Email(message = "jpa.validator.email.regex")
+    private String newEmail;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private final String templateName;
+    @Override
+    public String toString() {
+        return "{" +
+            "newEmail=" + newEmail +
+            '}';
+    }
 }

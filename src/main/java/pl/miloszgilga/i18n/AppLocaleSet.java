@@ -35,11 +35,18 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     ACTIVATED_ACCOUNT_RES                               ("airhubmaster.message.ActivateAccountRes"),
     RESET_PASSWORD_REQUEST_RES                          ("airhubmaster.message.ResetPasswordRequestRes"),
     RESET_PASSWORD_CHANGE_RES                           ("airhubmaster.message.ResetPasswordChangeRes"),
+    NEW_NAME_SET_RES                                    ("airhubmaster.message.NewNameSetRes"),
+    NEW_LOGIN_SET_RES                                   ("airhubmaster.message.NewLoginSetRes"),
+    NEW_EMAIL_ADDRESS_SET_RES                           ("airhubmaster.message.NewEmailAddressSetRes"),
+    NEW_PASSWORD_SET_RES                                ("airhubmaster.message.NewPasswordSetRes"),
+    REMOVE_ACCOUNT_RES                                  ("airhubmaster.message.RemoveAccountRes"),
 
     // email
     ACTIVATED_ACCOUNT_TITLE_MAIL                        ("airhubmaster.email.title.ActivatedAccount"),
     REGISTER_TITLE_MAIL                                 ("airhubmaster.email.title.Register"),
     REQUEST_CHANGE_PASSWORD_TITLE_MAIL                  ("airhubmaster.email.title.RequestChangePassword"),
+    CHANGE_PASSWORD_TITLE_MAIL                          ("airhubmaster.email.title.ChangePassword"),
+    DELETE_ACCOUNT_TITLE_MAIL                           ("airhubmaster.email.title.DeletedAccount"),
 
     // exceptions
     USER_NOT_FOUND_EXC                                  ("airhubmaster.exception.UserNotFoundExc"),
@@ -47,7 +54,9 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     REFRESH_TOKEN_NOT_FOUND_EXC                         ("airhubmaster.exception.RefreshTokenNotFoundExc"),
     OTA_TOKEN_NOT_FOUND_EXC                             ("airhubmaster.exception.OtaTokenNotFoundExc"),
     ACCOUNT_HAS_BEEN_ALREADY_ACTIVATED_EXC              ("airhubmaster.exception.AccountHasBeenAlreadyActivatedExc"),
-    JWT_IS_NOT_RELATED_WITH_REFRESH_TOKEN_EXC           ("airhubmaster.exception.JwtIsNotRelatedWithRefreshTokenExc");
+    JWT_IS_NOT_RELATED_WITH_REFRESH_TOKEN_EXC           ("airhubmaster.exception.JwtIsNotRelatedWithRefreshTokenExc"),
+    LOGIN_ALREADY_EXIST_EXC                             ("airhubmaster.exception.LoginAlreadyExistExc"),
+    EMAIL_ADDRESS_ALREADY_EXIST_EXC                     ("airhubmaster.exception.EmailAddressAlreadyExistExc");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
