@@ -19,6 +19,7 @@
 package pl.miloszgilga.domain.user;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.apache.commons.lang3.RandomUtils;
 
@@ -32,7 +33,6 @@ import java.util.ArrayList;
 import java.time.ZonedDateTime;
 
 import pl.miloszgilga.AbstractBaseTest;
-import pl.miloszgilga.config.ApiProperties;
 import pl.miloszgilga.security.GrantedUserRole;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserRepositoryTest extends AbstractBaseTest {
 
     @Autowired private IUserRepository userRepository;
-    @Autowired private ApiProperties properties;
 
     @Autowired
     UserRepositoryTest(PasswordEncoder passwordEncoder) {
@@ -51,6 +50,11 @@ class UserRepositoryTest extends AbstractBaseTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @BeforeEach
+    void cleanupBeforeEveryTest() {
+        userRepository.deleteAll();
+    }
 
     @Test
     void findIfUserByLoginOrEmailExist() {

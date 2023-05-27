@@ -19,6 +19,7 @@
 package pl.miloszgilga.domain.refresh_token;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,11 @@ class RefreshTokenRepositoryTest extends AbstractBaseTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @BeforeEach
+    void cleanupBeforeEveryTest() {
+        userRepository.deleteAll();
+    }
 
     @Test
     void findIfRefreshTokenByUserLoginExist() {

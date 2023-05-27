@@ -19,6 +19,7 @@
 package pl.miloszgilga.domain.blacklist_jwt;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -57,6 +58,11 @@ class BlacklistJwtRepositoryTest extends AbstractBaseTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @BeforeEach
+    void cleanupBeforeEveryTest() {
+        userRepository.deleteAll();
+    }
 
     @Test
     void checkIfJwtIsOnBlacklist() {

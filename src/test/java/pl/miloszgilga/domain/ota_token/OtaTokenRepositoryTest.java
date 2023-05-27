@@ -19,6 +19,7 @@
 package pl.miloszgilga.domain.ota_token;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -58,6 +59,11 @@ class OtaTokenRepositoryTest extends AbstractBaseTest {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @BeforeEach
+    void cleanupBeforeEveryTest() {
+        userRepository.deleteAll();
+    }
 
     @Test
     void checkIfTokenAlreadyExistTest() {
