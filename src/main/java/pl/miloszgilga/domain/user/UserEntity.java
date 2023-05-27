@@ -57,7 +57,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     @Column(name = "login")                                 private String login;
     @Column(name = "email_address")                         private String emailAddress;
     @Column(name = "password")                              private String password;
-    @Column(name = "is_activated", insertable = false)      private Boolean isActivated;
+    @Column(name = "is_activated")                          private Boolean isActivated;
     @Column(name = "role") @Enumerated(EnumType.STRING)     private GrantedUserRole role;
 
     @Builder.Default

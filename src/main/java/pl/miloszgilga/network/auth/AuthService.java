@@ -160,6 +160,7 @@ public class AuthService implements IAuthService {
             .token(token)
             .type(OtaTokenType.ACTIVATE_ACCOUNT)
             .expiredAt(ZonedDateTime.ofInstant(expiredAt.toInstant(), ZonedDateTime.now().getZone()))
+            .isUsed(false)
             .build();
 
         final UserEntity user = UserEntity.builder()
@@ -169,6 +170,7 @@ public class AuthService implements IAuthService {
             .emailAddress(reqDto.getEmailAddress())
             .password(passwordEncoder.encode(reqDto.getPassword()))
             .role(GrantedUserRole.STANDARD)
+            .isActivated(false)
             .build();
 
         final MailRequestDto requestDto = smtpUtils.createBaseMailRequest(user, AppLocaleSet.REGISTER_TITLE_MAIL);

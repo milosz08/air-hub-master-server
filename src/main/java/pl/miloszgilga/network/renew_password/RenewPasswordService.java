@@ -90,6 +90,7 @@ public class RenewPasswordService implements IRenewPasswordService {
             .token(token)
             .expiredAt(ZonedDateTime.ofInstant(expiredAt.toInstant(), ZonedDateTime.now().getZone()))
             .type(OtaTokenType.RESET_PASSWORD)
+            .isUsed(false)
             .build();
 
         final MailRequestDto requestDto  = MailRequestDto.builder()

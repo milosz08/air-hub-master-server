@@ -47,7 +47,7 @@ public class OtaTokenEntity extends AbstractAuditableEntity implements Serializa
     @Column(name = "token")                                                 private String token;
     @Column(name = "expired_at", updatable = false)                         private ZonedDateTime expiredAt;
     @Column(name = "type") @Enumerated(EnumType.STRING)                     private OtaTokenType type;
-    @Column(name = "is_used", insertable = false)                           private Boolean isUsed;
+    @Column(name = "is_used")                                               private Boolean isUsed;
 
     @ManyToOne(cascade = ALL, fetch = LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
