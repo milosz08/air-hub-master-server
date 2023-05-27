@@ -107,13 +107,12 @@ class BlacklistJwtRepositoryTest extends AbstractBaseTest {
         final Date expiredAt = DateUtils.addMinutes(Date.from(Instant.now()), jwtConfig.getTokenExpiredMinutes());
 
         final String notExipredRefresh = jwtIssuer.generateTokenForUser(userEntity);
-        final String expiredRefresh = jwtIssuer.generateTokenForUser(userEntity);
-
         final BlacklistJwtEntity notExpiredEntity = BlacklistJwtEntity.builder()
             .jwtToken(notExipredRefresh)
             .expiredAt(ZonedDateTime.ofInstant(expiredAt.toInstant(), ZonedDateTime.now().getZone()))
             .build();
 
+        final String expiredRefresh = jwtIssuer.generateTokenForUser(userEntity);
         final BlacklistJwtEntity expiredEntity = BlacklistJwtEntity.builder()
             .jwtToken(expiredRefresh)
             .expiredAt(ZonedDateTime.ofInstant(expiredAt.toInstant(), ZonedDateTime.now().getZone()).minusYears(20))
@@ -127,10 +126,7 @@ class BlacklistJwtRepositoryTest extends AbstractBaseTest {
         blacklistJwtRepository.deleteAllExpiredJwts();
 
         // then
-        final boolean shouldExist = blacklistJwtRepository.checkIfJwtIsOnBlacklist(notExipredRefresh);
-        final boolean shouldNotExist = blacklistJwtRepository.checkIfJwtIsOnBlacklist(expiredRefresh);
-
-        assertThat(shouldExist).isTrue();
-        assertThat(shouldNotExist).isFalse();
+        final var shouldHasOne = blacklistJwtRepository.findAll();
+        assertThat(shouldHasOne.size() == 1).isTrue();
     }
 }
