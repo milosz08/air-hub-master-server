@@ -72,9 +72,6 @@ dependencies {
     implementation          libs.spring.boot.starter.validation
 
     annotationProcessor     libs.lombok
-
-    testImplementation      libs.junit.api
-    testRuntimeOnly         libs.junit.engine
     testImplementation      libs.spring.boot.starter.test
 }
 

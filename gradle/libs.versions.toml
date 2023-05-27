@@ -27,7 +27,6 @@ mysqlDriver         = '8.0.31'
 jjwt                = '0.11.5'
 ehCache             = '3.10.8'
 jaxb                = '2.3.1'
-jUnit               = '5.8.1'
 openApi             = '2.1.0'
 jmpsl               = '1.0.2_05'
 commonsText         = '1.10.0'
@@ -55,8 +54,6 @@ jjwt-jackson                        = { module = 'io.jsonwebtoken:jjwt-jackson',
 ehcache                             = { module = 'org.ehcache:ehcache',                                             version.ref = 'ehCache' }
 jaxb-api                            = { module = 'javax.xml.bind:jaxb-api',                                         version.ref = 'jaxb' }
 jaxb-impl                           = { module = 'com.sun.xml.bind:jaxb-impl',                                      version.ref = 'jaxb' }
-junit-api                           = { module = 'org.junit.jupiter:junit-jupiter-api',                             version.ref = 'jUnit' }
-junit-engine                        = { module = 'org.junit.jupiter:junit-jupiter-engine',                          version.ref = 'jUnit' }
 openapi-webmvc-starter              = { module = 'org.springdoc:springdoc-openapi-starter-webmvc-ui',               version.ref = 'openApi' }
 jmpsl-core                          = { module = 'pl.miloszgilga:jmpsl-core',                                       version.ref = 'jmpsl' }
 jmpsl-security                      = { module = 'pl.miloszgilga:jmpsl-security',                                   version.ref = 'jmpsl' }
