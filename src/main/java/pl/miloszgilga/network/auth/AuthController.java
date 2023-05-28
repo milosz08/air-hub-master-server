@@ -25,10 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.jmpsl.security.user.AuthUser;
 import org.jmpsl.security.user.CurrentUser;
@@ -71,7 +68,7 @@ public class AuthController {
         return new ResponseEntity<>(authService.refresh(reqDto), HttpStatus.OK);
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     ResponseEntity<SimpleMessageResDto> logout(HttpServletRequest req, @CurrentUser AuthUser authUser) {
         return new ResponseEntity<>(authService.logout(req, authUser), HttpStatus.OK);
     }
