@@ -124,10 +124,10 @@ MAX_JAVA_HEAP_SIZE="512m"       # -Xmx parameter
 * To add a new language, create a new resource file in the `classpath:` directory via command:
 ```
 $ cd run-scripts
-$ ./add-lang.sh
+$ ./add-lang.sh --lang=[i18n tag]
 ```
-This script will create language files in `classpath:i18n-api`, `classpath:i18n-jpa` and `classpath:i18n-mail` based
-based on a template from a file `messages_en.properties`.
+where [i18n tag] could be ex. `fr` or `en-us` etc. This script will create language files in `classpath:i18n-api`,
+`classpath:i18n-jpa` and `classpath:i18n-mail` based based on a template from a file `messages_en.properties`.
 * After generated files, fill with propriet communicates and declare new lang tag in `application.yml` file:
 ```yml
 jmpsl:
