@@ -97,4 +97,22 @@ tasks.register('moveConfigurationFiles', Copy) {
     println(rootDir)
 }
 
+tasks.register("bootRunDev") {
+    doFirst {
+        tasks.bootRun.configure {
+            systemProperty("spring.profiles.active", 'dev')
+        }
+    }
+    finalizedBy("bootRun")
+}
+
+tasks.register("bootRunProd") {
+    doFirst {
+        tasks.bootRun.configure {
+            systemProperty("spring.profiles.active", 'prod')
+        }
+    }
+    finalizedBy("bootRun")
+}
+
 bootJar.finalizedBy moveConfigurationFiles
