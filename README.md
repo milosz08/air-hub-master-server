@@ -14,7 +14,7 @@ the Rest API specifications. Provide basic functionalities: signin, signup, pass
 specific application requirements. All application data are stored in MySQL relational database. More info about this 
 project you will find [here](https://github.com/Lettulouz/AirHubMaster).
 
-This application requrires newest stable [JMPS library](https://github.com/Milosz08/jmpsl) (required modules: communication,
+This application required newest stable [JMPS library](https://github.com/Milosz08/jmpsl) (required modules: communication,
 core, security). It may happen that the version of JMPSL you are currently using is not yet available in the remote repository.
 In this case, you will have to build the library yourself in your local maven repository (see below).
 
