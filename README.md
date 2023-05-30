@@ -23,6 +23,7 @@ In this case, you will have to build the library yourself in your local maven re
 * [Prepare project](#prepare-project)
 * [Run from IDE](#run-from-ide)
 * [Run from JAR](#run-from-jar)
+* [Create WAR](#create-war)
 * [Available endpoints](#available-endpoints)
 * [Change Xmx and Xms parameters (JVM Heap Size)](#change-xmx-and-xms-parameters)
 * [Internationalization (i18n)](#internationalization-i18n)
@@ -104,6 +105,15 @@ to show all process.
 ```
 $ ./jar-kill.sh
 ```
+
+<a name="create-war"></a>
+## Create WAR
+To create `.war` file, type:
+```
+$ ./gradlew war
+```
+Generated `.war` file should be located in `/build/war` directory. You can directly place this file type in your Tomcat 
+or Jetty web container runtime environment.
 
 <a name="available-endpoints"></a>
 ## Available endpoints

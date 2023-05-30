@@ -18,6 +18,7 @@
 
 plugins {
     id 'java'
+    id 'war'
     alias libs.plugins.spring.boot.plugin
     alias libs.plugins.spring.dept.plugin
 }
@@ -85,6 +86,13 @@ bootJar {
 
     destinationDir(file("$rootDir/build/jar"))
     launchScript()
+}
+
+war {
+    archiveFileName = "${props.getProperty("project.artifact")}-${project.version}.war"
+    version =  project.version
+
+    destinationDir(file("$rootDir/build/war"))
 }
 
 tasks.register('moveConfigurationFiles', Copy) {
