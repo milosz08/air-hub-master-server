@@ -48,7 +48,6 @@ fi
 
 for (( i = 0; i < ${#LANG_PREFIXES[@]}; i++ )); do
     BASE_PREFIX=$LANG_DIR/${LANG_PREFIXES[$i]}
-    OUTPUT_PATH="$LANG_DIR/${LANG_PREFIXES[$i]}/$OUTPUT_FILE_NAME"
 
     if [ ! -d "$BASE_PREFIX" ]; then
         echo "[bash gen script err] <> Directory '$BASE_PREFIX' not exist in /resources project context"
@@ -58,10 +57,14 @@ for (( i = 0; i < ${#LANG_PREFIXES[@]}; i++ )); do
         echo "[bash gen script err] <> Sample file '$SAMPLE_LANG_FILE_NAME' not exist in '$BASE_PREFIX' directory"
         exit 3
     fi
-    if [ -f "$OUTPUT_PATH" ]; then
+    if [ -f "$LANG_DIR/${LANG_PREFIXES[$i]}/$OUTPUT_FILE_NAME" ]; then
         echo "[bash gen script err] <> Lang file '$OUTPUT_FILE_NAME' already exist in '$BASE_PREFIX' directory"
         exit 4
     fi
+done
+
+for (( i = 0; i < ${#LANG_PREFIXES[@]}; i++ )); do
+    OUTPUT_PATH="$LANG_DIR/${LANG_PREFIXES[$i]}/$OUTPUT_FILE_NAME"
 
     touch "$OUTPUT_PATH"
     {
