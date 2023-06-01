@@ -146,6 +146,12 @@ jmpsl:
             available-locales: pl,en,[i18n tag]
             default-locale: pl
 ```
+* To force language in HTTP requests, be sure that `Accept-Language` header was added in every requests, ex.:
+```
+Accept-Language: fr
+```
+Without this header, server will return responses in the language you have set as default in the `jmpsl.core.locale.default-locale`
+parameter. Language value in `Accept-Language` header also affects the generated language of the email content.
 
 <a name="tech-stack"></a>
 ## Tech stack
