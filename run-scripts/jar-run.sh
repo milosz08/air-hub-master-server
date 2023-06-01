@@ -18,8 +18,8 @@
 # governing permissions and limitations under the license.
 #
 
-START_JAVA_HEAP_SIZE="64m"     # -Xms parameter
-MAX_JAVA_HEAP_SIZE="128m"      # -Xmx parameter
+START_JAVA_HEAP_SIZE="256m"     # -Xms parameter
+MAX_JAVA_HEAP_SIZE="512m"      # -Xmx parameter
 
 EXEC_JAR_FILE_NAME="air-hub-master-server-[0-9]\.[0-9]\.[0-9]\.jar"
 EXEC_JAR_FILE_NAME=$(find . -name "$EXEC_JAR_FILE_NAME" -exec  echo {} \;)
@@ -34,12 +34,15 @@ if [ ! -f ".env" ]; then
     exit 6
 fi
 
-EXEC_SCRIPT="nohup java -X
+EXEC_SCRIPT="nohup java
+-XX:+UseSerialGC
+-Xss512k
+-XX:MaxRAM=$MAX_JAVA_HEAP_SIZE
 -Xms$START_JAVA_HEAP_SIZE
 -Xmx$MAX_JAVA_HEAP_SIZE
 -Dspring.profiles.active=prod
 -XX:NativeMemoryTracking=summary
--jar air-hub-master-server-1.0.0.jar
+-jar $EXEC_JAR_FILE_NAME
 "
 
 EXEC_SCRIPT=$(echo "$EXEC_SCRIPT" | tr '\n' ' ')
