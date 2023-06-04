@@ -7,7 +7,9 @@
 ![](https://img.shields.io/badge/Build%20with-Gradle%207.6.1-brown.svg)
 &nbsp;&nbsp;
 <br>
-> More info about this project you will find [on my personal website](https://miloszgilga.pl/project/air-hub-master-api).
+> More info about this project you will find [on my personal website](https://miloszgilga.pl/project/air-hub-master-api)
+> <br>
+> See live demo at [ahmapi.dominikpiskor.pl](https://ahmapi.dominikpiskor.pl)
 
 Spring Boot Java server created for the [AirHub Master](https://github.com/Lettulouz/AirHubMaster) mobile application with 
 the Rest API specifications. Provide basic functionalities: signin, signup, password reset via email token and other 
@@ -67,7 +69,7 @@ jmpsl-communication = { module = 'pl.miloszgilga:jmpsl-communication',  version.
 ```
 * Create `.env` file and put necessary values (from `.env.sample` file) (you must be in ROOT of project context):
 ```
-$ grep -v '^#' .env.sample | cp .env
+$ grep -vE '^\s*$|^#' .env.sample > .env
 $ nano .env
 ```
 * Congrats, now you can build the project via:
