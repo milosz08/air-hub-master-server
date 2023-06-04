@@ -89,10 +89,16 @@ bootJar {
 }
 
 war {
-    archiveFileName = "${props.getProperty("project.artifact")}-${project.version}.war"
+    enabled = true
+}
+
+bootWar {
+    mainClass = 'pl.miloszgilga.AirHubMasterServerApplication'
+    archiveFileName = "${props.getProperty("project.artifact")}.war"
     version =  project.version
 
     destinationDir(file("$rootDir/build/war"))
+    launchScript()
 }
 
 tasks.register('moveConfigurationFiles', Copy) {

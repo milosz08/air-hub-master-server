@@ -55,7 +55,7 @@ paths are typed correctly (in `/gradle/libs.versions.toml` file):
 ```toml
 [versions]
 # ...
-jmpsl = '[version from branch, ex. 1.0.2_05]'
+jmpsl = '[version from branch WITHOUT "v" character, ex. 1.0.2_05]'
 # ...
 
 [libraries]
@@ -78,7 +78,7 @@ If it fails, make sure the paths specified are correct and that the `.jar` JMPSL
 
 <a name="run-from-ide"></a>
 ## Run from IDE
-* To run application via gradle wrapper in IDE, type:
+To run application via gradle wrapper in IDE, type:
 ```
 $ ./gradlew bootRunDev    # for development version
 $ ./gradlew bootRunProd   # for production version

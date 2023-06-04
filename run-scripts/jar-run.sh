@@ -18,8 +18,8 @@
 # governing permissions and limitations under the license.
 #
 
-START_JAVA_HEAP_SIZE="256m"     # -Xms parameter
-MAX_JAVA_HEAP_SIZE="512m"      # -Xmx parameter
+START_JAVA_HEAP_SIZE="64m"     # -Xms parameter
+MAX_JAVA_HEAP_SIZE="128m"      # -Xmx parameter
 
 EXEC_JAR_FILE_NAME="air-hub-master-server-[0-9]\.[0-9]\.[0-9]\.jar"
 EXEC_JAR_FILE_NAME=$(find . -name "$EXEC_JAR_FILE_NAME" -exec  echo {} \;)
