@@ -27,10 +27,10 @@ MAX_JAVA_HEAP_SIZE="256m"
 for arg in "$@"; do
     if [[ $arg == -D* ]]; then
         VALUE="${arg#*=}"
-        if [[ $arg == "$XMS_ARG_KEY*" ]]; then
+        if [[ $arg == "$XMS_ARG_KEY"* ]]; then
             START_JAVA_HEAP_SIZE="$VALUE"
         fi
-        if [[ $arg == "$XMX_ARG_KEY*" ]]; then
+        if [[ $arg == "$XMX_ARG_KEY"* ]]; then
             MAX_JAVA_HEAP_SIZE="$VALUE"
         fi
     fi
