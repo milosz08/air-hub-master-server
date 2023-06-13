@@ -81,7 +81,7 @@ If it fails, make sure the paths specified are correct and that the `.jar` JMPSL
 
 <a name="run-with-docker-containers"></a>
 ## Run with Docker containers
-* Build and dockerized application in `development` mode via:
+* Build and dockerize application in `development` mode via:
 ```
 $ ./docker-assembly.sh
 ```
