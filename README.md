@@ -173,6 +173,7 @@ parameter. Language value in `Accept-Language` header also affects the generated
 * MySQL database (for production), H2 database (for development)
 * Freemarker for mail templates
 * Swagger OpenAPI documentation
+* Docker technology (only in development mode)
 
 <a name="author"></a>
 ## Author
