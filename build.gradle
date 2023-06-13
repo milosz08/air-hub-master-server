@@ -105,7 +105,8 @@ tasks.register('moveConfigurationFiles', Copy) {
     from layout.projectDirectory.files([
         '.env',
         'run-scripts/jar-run.sh',
-        'run-scripts/jar-kill.sh'
+        'run-scripts/jar-kill.sh',
+        'entrypoint.sh',
     ])
     into layout.buildDirectory.dir("$rootDir/build/jar")
     println(rootDir)

@@ -23,6 +23,7 @@ In this case, you will have to build the library yourself in your local maven re
 ## Table of content
 * [Clone script](#clone-script)
 * [Prepare project](#prepare-project)
+* [Run with Docker containers](#run-with-docker-containers)
 * [Run from IDE](#run-from-ide)
 * [Run from JAR](#run-from-jar)
 * [Create WAR](#create-war)
@@ -77,6 +78,15 @@ $ nano .env
 ./gradlew build
 ```
 If it fails, make sure the paths specified are correct and that the `.jar` JMPSL files exist in the local maven repository.
+
+<a name="run-with-docker-containers"></a>
+## Run with Docker containers
+* Build and dockerized application in `development` mode via:
+```
+$ ./docker-assembly.sh
+```
+By default, application should be available on `http://127.0.0.1:8086`.<br>
+Phpmyadmin should be available on `http://127.0.0.1:6061`.
 
 <a name="run-from-ide"></a>
 ## Run from IDE
