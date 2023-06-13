@@ -58,6 +58,9 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     @Column(name = "email_address")                         private String emailAddress;
     @Column(name = "password")                              private String password;
     @Column(name = "is_activated")                          private Boolean isActivated;
+    @Column(name = "level", insertable = false)             private Byte level;
+    @Column(name = "exp", insertable = false)               private Integer exp;
+    @Column(name = "money", insertable = false)             private Long money;
     @Column(name = "role") @Enumerated(EnumType.STRING)     private GrantedUserRole role;
 
     @Builder.Default
@@ -127,6 +130,30 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
 
     public void setActivated(Boolean activated) {
         isActivated = activated;
+    }
+
+    public Byte getLevel() {
+        return level;
+    }
+
+    public void setLevel(Byte level) {
+        this.level = level;
+    }
+
+    public Integer getExp() {
+        return exp;
+    }
+
+    public void setExp(Integer exp) {
+        this.exp = exp;
+    }
+
+    public Long getMoney() {
+        return money;
+    }
+
+    public void setMoney(Long money) {
+        this.money = money;
     }
 
     public GrantedUserRole getRole() {

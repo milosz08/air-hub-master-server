@@ -91,6 +91,9 @@ public class AccountService implements IAccountService {
             .login(user.getLogin())
             .emailAddress(user.getEmailAddress())
             .role(user.getRole().getRole())
+            .level(user.getLevel())
+            .money(user.getMoney())
+            .exp(user.getExp())
             .accountCreated(user.getCreatedAt())
             .build();
     }

@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
  *
- * File name: UserDetailsResDto.java
- * Last modified: 21/05/2023, 20:35
+ * File name: IUserStatsService.java
+ * Last modified: 6/13/23, 10:22 PM
  * Project name: air-hub-master-server
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,24 +16,21 @@
  * governing permissions and limitations under the license.
  */
 
-package pl.miloszgilga.network.account.resdto;
+package pl.miloszgilga.network.user_stats;
 
-import lombok.Builder;
+import org.jmpsl.security.user.AuthUser;
 
-import java.time.ZonedDateTime;
+import pl.miloszgilga.network.user_stats.reqdto.UpdateLevelReqDto;
+import pl.miloszgilga.network.user_stats.resdto.UpdateLevelResDto;
+import pl.miloszgilga.network.user_stats.reqdto.UpdateExpReqDto;
+import pl.miloszgilga.network.user_stats.resdto.UpdateExpResDto;
+import pl.miloszgilga.network.user_stats.reqdto.UpdateMoneyReqDto;
+import pl.miloszgilga.network.user_stats.resdto.UpdateMoneyResDto;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@Builder
-public record AccountDetailsResDto(
-    String firstName,
-    String lastName,
-    String login,
-    String emailAddress,
-    String role,
-    Byte level,
-    Integer exp,
-    Long money,
-    ZonedDateTime accountCreated
-) {
+interface IUserStatsService {
+    UpdateLevelResDto level(UpdateLevelReqDto reqDto, AuthUser user);
+    UpdateExpResDto exp(UpdateExpReqDto reqDto, AuthUser user);
+    UpdateMoneyResDto money(UpdateMoneyReqDto reqDto, AuthUser user);
 }

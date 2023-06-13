@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
  *
- * File name: UserDetailsResDto.java
- * Last modified: 21/05/2023, 20:35
+ * File name: UpdateExpReqDto.java
+ * Last modified: 6/13/23, 10:28 PM
  * Project name: air-hub-master-server
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,24 +16,30 @@
  * governing permissions and limitations under the license.
  */
 
-package pl.miloszgilga.network.account.resdto;
+package pl.miloszgilga.network.user_stats.reqdto;
 
-import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.ZonedDateTime;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@Builder
-public record AccountDetailsResDto(
-    String firstName,
-    String lastName,
-    String login,
-    String emailAddress,
-    String role,
-    Byte level,
-    Integer exp,
-    Long money,
-    ZonedDateTime accountCreated
-) {
+@Data
+@NoArgsConstructor
+public class UpdateMoneyReqDto {
+
+    @NotNull(message = "jpa.validator.money.notBlank")
+    @Min(value = 0, message = "jpa.validator.money.min")
+    private Long money;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public String toString() {
+        return "{" +
+            "money=" + money +
+            '}';
+    }
 }

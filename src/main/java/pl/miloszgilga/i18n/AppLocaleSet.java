@@ -40,6 +40,9 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     NEW_EMAIL_ADDRESS_SET_RES                           ("airhubmaster.message.NewEmailAddressSetRes"),
     NEW_PASSWORD_SET_RES                                ("airhubmaster.message.NewPasswordSetRes"),
     REMOVE_ACCOUNT_RES                                  ("airhubmaster.message.RemoveAccountRes"),
+    UPDATE_USER_LEVEL_RES                               ("airhubmaster.message.UpdateUserLevelRes"),
+    UPDATE_USER_EXP_RES                                 ("airhubmaster.message.UpdateUserExpRes"),
+    UPDATE_USER_MONEY_RES                               ("airhubmaster.message.UpdateUserMoneyRes"),
 
     // email
     ACTIVATED_ACCOUNT_TITLE_MAIL                        ("airhubmaster.email.title.ActivatedAccount"),
