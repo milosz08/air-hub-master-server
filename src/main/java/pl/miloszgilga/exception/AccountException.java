@@ -44,4 +44,11 @@ public class AccountException {
                 newEmail);
         }
     }
+
+    @Slf4j public static class PassedCredentialsNotValidException extends RestServiceServerException {
+        public PassedCredentialsNotValidException(String login) {
+            super(HttpStatus.BAD_REQUEST, AppLocaleSet.USER_CREDENTIALS_INVALID_EXC);
+            log.error("Attempt to pass invalid credentials (password) for re-define secure data for {}.", login);
+        }
+    }
 }

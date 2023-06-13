@@ -27,8 +27,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -62,6 +60,7 @@ import pl.miloszgilga.network.account.resdto.AccountDetailsResDto;
 import static pl.miloszgilga.exception.AuthException.UserNotFoundException;
 import static pl.miloszgilga.exception.AccountException.LoginAlreadyExistException;
 import static pl.miloszgilga.exception.AccountException.EmailAddressAlreadyExistException;
+import static pl.miloszgilga.exception.AccountException.PassedCredentialsNotValidException;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,7 +76,6 @@ public class AccountService implements IAccountService {
     private final PasswordEncoder passwordEncoder;
     private final JmpslMailService jmpslMailService;
     private final LocaleMessageService messageService;
-    private final AuthenticationManager authenticationManager;
 
     private final IUserRepository userRepository;
 
@@ -177,9 +175,9 @@ public class AccountService implements IAccountService {
         final UserEntity user = userRepository.findUserByLoginOrEmail(authUser.getUsername())
             .orElseThrow(UserNotFoundException::new);
 
-        final var authenticationToken = new UsernamePasswordAuthenticationToken(user.getLogin(), reqDto.getOldPassword());
-        authenticationManager.authenticate(authenticationToken);
-
+        if (!passwordEncoder.matches(reqDto.getOldPassword(), user.getPassword())) {
+            throw new PassedCredentialsNotValidException(user.getLogin());
+        }
         user.setPassword(passwordEncoder.encode(reqDto.getNewPassword()));
         userRepository.save(user);
 
@@ -200,8 +198,9 @@ public class AccountService implements IAccountService {
         final UserEntity user = userRepository.findUserByLoginOrEmail(authUser.getUsername())
             .orElseThrow(UserNotFoundException::new);
 
-        final var authenticationToken = new UsernamePasswordAuthenticationToken(user.getLogin(), reqDto.getPassword());
-        authenticationManager.authenticate(authenticationToken);
+        if (!passwordEncoder.matches(reqDto.getPassword(), user.getPassword())) {
+            throw new PassedCredentialsNotValidException(user.getLogin());
+        }
         userRepository.delete(user);
 
         final MailRequestDto requestDto = smtpUtils.createBaseMailRequest(user, AppLocaleSet.DELETE_ACCOUNT_TITLE_MAIL);

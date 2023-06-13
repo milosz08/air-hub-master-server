@@ -56,7 +56,10 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     ACCOUNT_HAS_BEEN_ALREADY_ACTIVATED_EXC              ("airhubmaster.exception.AccountHasBeenAlreadyActivatedExc"),
     JWT_IS_NOT_RELATED_WITH_REFRESH_TOKEN_EXC           ("airhubmaster.exception.JwtIsNotRelatedWithRefreshTokenExc"),
     LOGIN_ALREADY_EXIST_EXC                             ("airhubmaster.exception.LoginAlreadyExistExc"),
-    EMAIL_ADDRESS_ALREADY_EXIST_EXC                     ("airhubmaster.exception.EmailAddressAlreadyExistExc");
+    EMAIL_ADDRESS_ALREADY_EXIST_EXC                     ("airhubmaster.exception.EmailAddressAlreadyExistExc"),
+
+    // spring security
+    USER_CREDENTIALS_INVALID_EXC                        ("AbstractUserDetailsAuthenticationProvider.badCredentials");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
