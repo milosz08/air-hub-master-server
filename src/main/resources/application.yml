@@ -36,6 +36,9 @@ spring:
     cache:
         jcache:
             config: classpath:cache/ehcache.cfg.xml
+    jpa:
+        hibernate:
+            ddl-auto: none
 
 logging:
     config: classpath:logback/logback-spring.cfg.xml
