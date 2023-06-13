@@ -75,7 +75,7 @@ $ nano .env
 ```
 * Congrats, now you can build the project via:
 ```
-./gradlew build
+$ ./gradlew build
 ```
 If it fails, make sure the paths specified are correct and that the `.jar` JMPSL files exist in the local maven repository.
 
