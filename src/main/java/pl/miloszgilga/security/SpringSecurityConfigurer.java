@@ -85,6 +85,7 @@ public class SpringSecurityConfigurer {
                 .requestMatchers(props.getPrefix() + "/auth/activate").permitAll()
                 .requestMatchers(props.getPrefix() + "/renew-password/request").permitAll()
                 .requestMatchers(props.getPrefix() + "/renew-password/change").permitAll()
+                .requestMatchers(props.getPrefix() + "/category/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

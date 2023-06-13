@@ -32,5 +32,7 @@
     </cache-template>
 
     <!-- Cache implementations from base template -->
+    <cache alias="CategoryEntity.getAll.Cache" uses-template="cache-template"/>
+    <cache alias="CategoryEntity.getAllByType.Cache" uses-template="cache-template"/>
 
 </config>
