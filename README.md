@@ -75,7 +75,7 @@ $ nano .env
 ```
 * Congrats, now you can build the project via:
 ```
-./gradlew build
+$ ./gradlew build
 ```
 If it fails, make sure the paths specified are correct and that the `.jar` JMPSL files exist in the local maven repository.
 
@@ -173,6 +173,7 @@ parameter. Language value in `Accept-Language` header also affects the generated
 * MySQL database (for production), H2 database (for development)
 * Freemarker for mail templates
 * Swagger OpenAPI documentation
+* Docker technology (only in development mode)
 
 <a name="author"></a>
 ## Author
