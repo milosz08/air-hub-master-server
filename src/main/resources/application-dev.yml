@@ -42,16 +42,16 @@ spring:
         show-sql: true
     mail:
         protocol: smtp
-        port: 465
-        host: ${DEV_SMTP_MAIL_SERVER}
-        username: ${DEV_SMTP_MAIL_USERNAME}
-        password: ${DEV_SMTP_MAIL_PASSWORD}
+        port: 1025
+        host: 127.0.0.1
+        username: ''
+        password: ''
         properties:
-            smtp.starttls.required: true
+            smtp.starttls.required: false
             mail.smtp:
-                ssl.enable: true
-                auth: true
-                starttls.enable: true
+                ssl.enable: false
+                auth: false
+                starttls.enable: false
 
 jmpsl:
     security:
@@ -59,4 +59,4 @@ jmpsl:
             secret: h64h3hbntohbjk50rp9hgkj03gormgobrwnmgoriwjmhgoithjkgo
 
 api:
-    mail-responder: ${DEV_SMTP_MAIL_USERNAME}
+    mail-responder: DEVELOPMENT@airhubmaster.com
