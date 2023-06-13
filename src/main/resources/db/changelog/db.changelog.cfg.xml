@@ -31,5 +31,8 @@
     <include file="migrations/2023-05-17_00003_create-blacklist-jwts-table.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-05-19_00000_fixed-blaclist-token-length.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-06-13_00000_add-stats-user-columns.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-06-14_00000_add-categories-table.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-06-14_00001_add-planes-and-workers-tables.xml" relativeToChangelogFile="true"/>
+    <include file="assertions/2023-06-14_00000_load-data-categories-planes-workers.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
