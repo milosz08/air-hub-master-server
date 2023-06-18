@@ -86,7 +86,8 @@ If it fails, make sure the paths specified are correct and that the `.jar` JMPSL
 $ ./docker-assembly.sh
 ```
 By default, application should be available on `http://127.0.0.1:8086`.<br>
-Phpmyadmin should be available on `http://127.0.0.1:6061`.
+Phpmyadmin should be available on `http://127.0.0.1:6061`.<br>
+Fakemail web client should be available on `http://127.0.0.1;8085`
 
 <a name="run-from-ide"></a>
 ## Run from IDE
