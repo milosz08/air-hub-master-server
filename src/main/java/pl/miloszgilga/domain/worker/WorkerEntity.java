@@ -50,7 +50,7 @@ public class WorkerEntity extends AbstractAuditableEntity implements Serializabl
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -58,7 +58,7 @@ public class WorkerEntity extends AbstractAuditableEntity implements Serializabl
         this.firstName = firstName;
     }
 
-    String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -66,7 +66,7 @@ public class WorkerEntity extends AbstractAuditableEntity implements Serializabl
         this.lastName = lastName;
     }
 
-    CategoryEntity getCategory() {
+    public CategoryEntity getCategory() {
         return category;
     }
 

@@ -49,7 +49,7 @@ public class PlaneEntity extends AbstractAuditableEntity implements Serializable
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
@@ -57,7 +57,7 @@ public class PlaneEntity extends AbstractAuditableEntity implements Serializable
         this.name = name;
     }
 
-    CategoryEntity getCategory() {
+    public CategoryEntity getCategory() {
         return category;
     }
 

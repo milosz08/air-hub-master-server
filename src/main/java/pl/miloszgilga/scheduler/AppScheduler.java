@@ -53,7 +53,7 @@ public class AppScheduler {
 
     @Async
     @Transactional
-    @Scheduled(cron = "0 0 */48 * * *")
+    @Scheduled(cron = "0 0 */48 * * *") // 48h
     public void removeUnactivatedUserAccounts() {
         userRepository.deleteAllNotActivatedAccount(ZonedDateTime.now().plusHours(properties.getOtaExpiredRegisterHours()));
         log.info("Invoke deleting unactivated account scheduler.");
@@ -63,7 +63,7 @@ public class AppScheduler {
 
     @Async
     @Transactional
-    @Scheduled(cron = "0 0 */1 * * *")
+    @Scheduled(cron = "0 0 */1 * * *") // 1h
     public void removeExpiredBlacklistJwts() {
         blacklistJwtRepository.deleteAllExpiredJwts();
         log.info("Invoke deleting expierd JWTs on blacklist scheduler.");
@@ -73,7 +73,7 @@ public class AppScheduler {
 
     @Async
     @Transactional
-    @Scheduled(cron = "0 0 */24 * * *")
+    @Scheduled(cron = "0 0 */24 * * *") // 24h
     public void removeNonUserOtaTokens() {
         otaTokenRepository.deleteNonUsedOtaTokens();
         log.info("Invoke deleting non used ota tokens scheduler.");

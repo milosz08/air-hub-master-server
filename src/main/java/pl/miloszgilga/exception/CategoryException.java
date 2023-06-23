@@ -32,8 +32,7 @@ import pl.miloszgilga.i18n.AppLocaleSet;
 
 public class CategoryException {
 
-    @Slf4j
-    public static class CategoryTypeNotExistException extends RestServiceServerException {
+    @Slf4j public static class CategoryTypeNotExistException extends RestServiceServerException {
         public CategoryTypeNotExistException(String nonExistingType) {
             super(HttpStatus.NOT_FOUND, AppLocaleSet.CATEGORY_TYPE_NOT_EXIST_EXC, Map.of(
                 "type", nonExistingType
