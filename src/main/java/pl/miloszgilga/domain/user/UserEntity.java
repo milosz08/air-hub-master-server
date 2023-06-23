@@ -36,8 +36,11 @@ import org.jmpsl.core.db.AbstractAuditableEntity;
 import pl.miloszgilga.security.GrantedUserRole;
 
 import pl.miloszgilga.domain.ota_token.OtaTokenEntity;
+import pl.miloszgilga.domain.workers_shop.WorkerShopEntity;
 import pl.miloszgilga.domain.blacklist_jwt.BlacklistJwtEntity;
 import pl.miloszgilga.domain.refresh_token.RefreshTokenEntity;
+import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
+import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.CascadeType.ALL;
@@ -52,16 +55,17 @@ import static jakarta.persistence.CascadeType.ALL;
 public class UserEntity extends AbstractAuditableEntity implements Serializable, IAuthUserModel {
     @Serial private static final long serialVersionUID = 1L;
 
-    @Column(name = "first_name")                            private String firstName;
-    @Column(name = "last_name")                             private String lastName;
-    @Column(name = "login")                                 private String login;
-    @Column(name = "email_address")                         private String emailAddress;
-    @Column(name = "password")                              private String password;
-    @Column(name = "is_activated")                          private Boolean isActivated;
-    @Column(name = "level", insertable = false)             private Byte level;
-    @Column(name = "exp", insertable = false)               private Integer exp;
-    @Column(name = "money", insertable = false)             private Long money;
-    @Column(name = "role") @Enumerated(EnumType.STRING)     private GrantedUserRole role;
+    @Column(name = "first_name")                                private String firstName;
+    @Column(name = "last_name")                                 private String lastName;
+    @Column(name = "login")                                     private String login;
+    @Column(name = "email_address")                             private String emailAddress;
+    @Column(name = "password")                                  private String password;
+    @Column(name = "is_activated")                              private Boolean isActivated;
+    @Column(name = "level", insertable = false)                 private Byte level;
+    @Column(name = "exp", insertable = false)                   private Integer exp;
+    @Column(name = "money", insertable = false)                 private Long money;
+    @Column(name = "role") @Enumerated(EnumType.STRING)         private GrantedUserRole role;
+    @Column(name = "is_workers_blocked", insertable = false)    private Boolean isWorkersBlocked;
 
     @Builder.Default
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
@@ -73,6 +77,15 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     @Builder.Default
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
     private Set<BlacklistJwtEntity> blacklistJwts = new HashSet<>();
+
+    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
+    private Set<InGameWorkerParamEntity> inGameWorkerParamEntities = new HashSet<>();
+
+    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
+    private Set<InGamePlaneParamEntity> inGamePlainParamEntities = new HashSet<>();
+
+    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
+    private Set<WorkerShopEntity> workerShopEntities = new HashSet<>();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -164,6 +177,14 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         this.role = role;
     }
 
+    public Boolean getWorkersBlocked() {
+        return isWorkersBlocked;
+    }
+
+    public void setWorkersBlocked(Boolean workersBlocked) {
+        isWorkersBlocked = workersBlocked;
+    }
+
     RefreshTokenEntity getRefreshToken() {
         return refreshToken;
     }
@@ -178,6 +199,29 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
 
     void setBlacklistJwts(Set<BlacklistJwtEntity> blacklistJwts) {
         this.blacklistJwts = blacklistJwts;
+    }
+
+    Set<InGameWorkerParamEntity> getInGameWorkerParamEntities() {
+        return inGameWorkerParamEntities;
+    }
+
+    void setInGameWorkerParamEntities(Set<InGameWorkerParamEntity> inGameWorkerParamEntities) {
+        this.inGameWorkerParamEntities = inGameWorkerParamEntities;
+    }
+    Set<InGamePlaneParamEntity> getInGamePlainParamEntities() {
+        return inGamePlainParamEntities;
+    }
+
+    void setInGamePlainParamEntities(Set<InGamePlaneParamEntity> inGamePlainParamEntities) {
+        this.inGamePlainParamEntities = inGamePlainParamEntities;
+    }
+
+    Set<WorkerShopEntity> getWorkerShopEntities() {
+        return workerShopEntities;
+    }
+
+    void setWorkerShopEntities(Set<WorkerShopEntity> workerShopEntities) {
+        this.workerShopEntities = workerShopEntities;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,6 +239,21 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     public void persistBlacklistJwt(BlacklistJwtEntity blacklistJwtEntity) {
         blacklistJwts.add(blacklistJwtEntity);
         blacklistJwtEntity.setUser(this);
+    }
+
+    public void persistInGameWorkerParamEntity(InGameWorkerParamEntity inGameWorkerParamEntity) {
+        inGameWorkerParamEntities.add(inGameWorkerParamEntity);
+        inGameWorkerParamEntity.setUser(this);
+    }
+
+    public void persistInGamePlainParamEntity(InGamePlaneParamEntity inGamePlaneParamEntity) {
+        inGamePlainParamEntities.add(inGamePlaneParamEntity);
+        inGamePlaneParamEntity.setUser(this);
+    }
+
+    public void persistWorkerShopEntity(WorkerShopEntity workerShopEntity) {
+        workerShopEntities.add(workerShopEntity);
+        workerShopEntity.setUser(this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
