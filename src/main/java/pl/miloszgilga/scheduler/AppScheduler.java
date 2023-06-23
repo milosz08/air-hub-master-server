@@ -62,6 +62,15 @@ public class AppScheduler {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Async
+    @Scheduled(cron = "0 0 */24 * * *") // 24h
+    public void revalidateIsBlockedGeneratePlainsParam() {
+        userRepository.revalidateAllBlockedWorkers();
+        log.info("Revalidate isBlocked param for all users.");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Async
     @Transactional
     @Scheduled(cron = "0 0 */1 * * *") // 1h
     public void removeExpiredBlacklistJwts() {
