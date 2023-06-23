@@ -1,9 +1,9 @@
-id,name,type
-1,pilot,WORKERS
-2,stewardessa,WORKERS
-3,personel naziemny,WORKERS
-4,mikro,PLANES
-5,małe,PLANES
-6,standardowe,PLANES
-7,duże,PLANES
-8,jumbo,PLANES
+id,name,type,level
+1,pilot,WORKERS,0
+2,stewardessa,WORKERS,0
+3,personel naziemny,WORKERS,0
+4,mikro,PLANES,0
+5,małe,PLANES,0
+6,standardowe,PLANES,1
+7,duże,PLANES,3
+8,jumbo,PLANES,5

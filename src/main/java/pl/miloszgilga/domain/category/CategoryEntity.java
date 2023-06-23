@@ -48,6 +48,7 @@ public class CategoryEntity extends AbstractAuditableEntity implements Serializa
 
     @Column(name = "name")                                  private String name;
     @Column(name = "type") @Enumerated(EnumType.STRING)     private CategoryType type;
+    @Column(name = "level")                                 private Integer level;
 
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "category", orphanRemoval = true)
     private Set<PlaneEntity> planes;
@@ -71,6 +72,14 @@ public class CategoryEntity extends AbstractAuditableEntity implements Serializa
 
     void setType(CategoryType type) {
         this.type = type;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    void setLevel(Integer level) {
+        this.level = level;
     }
 
     Set<PlaneEntity> getPlanes() {
@@ -108,6 +117,7 @@ public class CategoryEntity extends AbstractAuditableEntity implements Serializa
         return "{" +
             "name=" + name +
             ", type=" + type +
+            ", level=" + level +
             '}';
     }
 }

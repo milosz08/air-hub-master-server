@@ -34,5 +34,4 @@
     <include file="migrations/2023-06-14_00000_add-categories-table.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-06-14_00001_add-planes-and-workers-tables.xml" relativeToChangelogFile="true"/>
     <include file="assertions/2023-06-14_00000_load-data-categories-planes-workers.xml" relativeToChangelogFile="true"/>
-
 </databaseChangeLog>
