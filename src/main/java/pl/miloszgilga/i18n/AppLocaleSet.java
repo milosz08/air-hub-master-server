@@ -43,6 +43,8 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     UPDATE_USER_LEVEL_RES                               ("airhubmaster.message.UpdateUserLevelRes"),
     UPDATE_USER_EXP_RES                                 ("airhubmaster.message.UpdateUserExpRes"),
     UPDATE_USER_MONEY_RES                               ("airhubmaster.message.UpdateUserMoneyRes"),
+    BOUGHT_PLANE_RES                                    ("airhubmaster.message.BougthPlaneRes"),
+    BOUGHT_WORKER_RES                                   ("airhubmaster.message.BougthWorkerRes"),
 
     // email
     ACTIVATED_ACCOUNT_TITLE_MAIL                        ("airhubmaster.email.title.ActivatedAccount"),
@@ -61,6 +63,9 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     LOGIN_ALREADY_EXIST_EXC                             ("airhubmaster.exception.LoginAlreadyExistExc"),
     EMAIL_ADDRESS_ALREADY_EXIST_EXC                     ("airhubmaster.exception.EmailAddressAlreadyExistExc"),
     CATEGORY_TYPE_NOT_EXIST_EXC                         ("airhubmaster.exception.CategoryTypeNotExistExc"),
+    PLANE_NOT_EXIST_EXC                                 ("airhubmaster.exception.PlaneNotExistExc"),
+    WORKER_NOT_EXIST_EXC                                ("airhubmaster.exception.WorkerNotExistExc"),
+    WORKER_IN_SHOP_NOT_EXIST_EXC                        ("airhubmaster.exception.WorkerInShopNotExistExc"),
 
     // spring security
     USER_CREDENTIALS_INVALID_EXC                        ("AbstractUserDetailsAuthenticationProvider.badCredentials");

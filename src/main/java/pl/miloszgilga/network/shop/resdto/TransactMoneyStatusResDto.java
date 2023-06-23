@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
  *
- * File name: IWorkerRepository.java
- * Last modified: 6/14/23, 12:43 AM
+ * File name: MoneyStatusResDto.java
+ * Last modified: 6/23/23, 7:31 AM
  * Project name: air-hub-master-server
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,21 +16,12 @@
  * governing permissions and limitations under the license.
  */
 
-package pl.miloszgilga.domain.worker;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
-import java.util.Optional;
+package pl.miloszgilga.network.shop.resdto;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-@Repository
-public interface IWorkerRepository extends JpaRepository<WorkerEntity, Long> {
-    Optional<WorkerEntity> findById(Long workerId);
-
-    @Query(value = "from WorkerEntity e join fetch e.category")
-    List<WorkerEntity> findAllLazillyLoadedWorkers();
+public record TransactMoneyStatusResDto(
+    Long moneyAfterTransact,
+    String message
+) {
 }
