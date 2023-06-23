@@ -19,6 +19,7 @@
 package pl.miloszgilga.utils;
 
 import pl.miloszgilga.domain.user.UserEntity;
+import pl.miloszgilga.domain.worker.WorkerEntity;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,5 +30,9 @@ public class Utilities {
 
     public static String parseFullName(UserEntity user) {
         return user.getFirstName() + " " + user.getLastName();
+    }
+
+    public static String parseWorkerFullName(WorkerEntity worker) {
+        return worker.getFirstName() + " " + worker.getLastName();
     }
 }
