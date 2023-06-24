@@ -21,7 +21,6 @@ package pl.miloszgilga.network.shop;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 
-import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -35,6 +34,8 @@ import org.jmpsl.core.i18n.LocaleMessageService;
 import pl.miloszgilga.utils.Utilities;
 import pl.miloszgilga.i18n.AppLocaleSet;
 import pl.miloszgilga.security.SecurityUtils;
+import pl.miloszgilga.algorithms.GameAlgorithms;
+import pl.miloszgilga.algorithms.ComputedWorkerValues;
 import pl.miloszgilga.network.shop.resdto.ShopPlanesResDto;
 import pl.miloszgilga.network.shop.resdto.ShopWorkersResDto;
 import pl.miloszgilga.network.shop.resdto.TransactMoneyStatusResDto;
@@ -63,6 +64,7 @@ import pl.miloszgilga.exception.ShopException.AccountHasNotEnoughtMoneyException
 public class ShopService implements IShopService {
 
     private final SecurityUtils securityUtils;
+    private final GameAlgorithms gameAlgorithms;
     private final LocaleMessageService messageService;
 
     private final IUserRepository userRepository;
@@ -93,19 +95,21 @@ public class ShopService implements IShopService {
         final List<ShopWorkersResDto> shopWorkersResDtos = new ArrayList<>();
 
         for (final WorkerEntity worker : workerEntities) {
-
-            // TODO: Dodanie algorytmów
-
-            final AtomicInteger exp = new AtomicInteger(RandomUtils.nextInt(0, 101));
-            final AtomicInteger coop = new AtomicInteger(RandomUtils.nextInt(0, 101));
-            final AtomicInteger reb = new AtomicInteger(RandomUtils.nextInt(0, 101));
-            final AtomicInteger skills = new AtomicInteger(RandomUtils.nextInt(0, 101));
+            final AtomicInteger exp = new AtomicInteger();
+            final AtomicInteger coop = new AtomicInteger();
+            final AtomicInteger reb = new AtomicInteger();
+            final AtomicInteger skills = new AtomicInteger();
 
             alreadyExisting.stream()
                 .filter(s -> s.getWorker().getId().equals(worker.getId()))
                 .findFirst()
                 .ifPresentOrElse(workerShopEntity -> {
                     if (!userEntity.getWorkersBlocked()) {
+                        final ComputedWorkerValues computed = gameAlgorithms.computeWorkerValues(userEntity.getLevel());
+                        exp.set(computed.exp());
+                        coop.set(computed.coop());
+                        reb.set(computed.reb());
+                        skills.set(computed.skills());
                         workerShopEntity.setAbilities(exp.get(), coop.get(), reb.get(), skills.get());
                     } else {
                         exp.set(workerShopEntity.getExperience());
