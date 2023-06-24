@@ -26,6 +26,8 @@ public record ShopWorkersResDto(
     String categoryName,
     int experience,
     int cooperation,
-    int rebelliousness
+    int rebelliousness,
+    int skills,
+    int price
 ) {
 }

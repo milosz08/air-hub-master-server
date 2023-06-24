@@ -41,6 +41,7 @@ public class WorkerShopEntity extends AbstractAuditableEntity implements Seriali
     @Column(name = "experience")            private Integer experience;
     @Column(name = "cooperation")           private Integer cooperation;
     @Column(name = "rebelliousness")        private Integer rebelliousness;
+    @Column(name = "skills")                private Integer skills;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -52,8 +53,8 @@ public class WorkerShopEntity extends AbstractAuditableEntity implements Seriali
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public WorkerShopEntity(int experience, int cooperation, int rebelliousness) {
-        setAbilities(experience, cooperation, rebelliousness);
+    public WorkerShopEntity(int experience, int cooperation, int rebelliousness, int skills) {
+        setAbilities(experience, cooperation, rebelliousness, skills);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,6 +83,14 @@ public class WorkerShopEntity extends AbstractAuditableEntity implements Seriali
         this.rebelliousness = rebelliousness;
     }
 
+    public Integer getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Integer skills) {
+        this.skills = skills;
+    }
+
     public WorkerEntity getWorker() {
         return worker;
     }
@@ -100,10 +109,11 @@ public class WorkerShopEntity extends AbstractAuditableEntity implements Seriali
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void setAbilities(int experience, int cooperation, int rebelliousness) {
+    public void setAbilities(int experience, int cooperation, int rebelliousness, int skills) {
         this.experience = experience;
         this.cooperation = cooperation;
         this.rebelliousness = rebelliousness;
+        this.skills = skills;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,6 +124,7 @@ public class WorkerShopEntity extends AbstractAuditableEntity implements Seriali
             "experience=" + experience +
             ", cooperation=" + cooperation +
             ", rebelliousness=" + rebelliousness +
+            ", skills=" + skills +
             '}';
     }
 }

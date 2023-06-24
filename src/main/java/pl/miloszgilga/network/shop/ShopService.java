@@ -99,27 +99,30 @@ public class ShopService implements IShopService {
             final AtomicInteger exp = new AtomicInteger(RandomUtils.nextInt(0, 101));
             final AtomicInteger coop = new AtomicInteger(RandomUtils.nextInt(0, 101));
             final AtomicInteger reb = new AtomicInteger(RandomUtils.nextInt(0, 101));
+            final AtomicInteger skills = new AtomicInteger(RandomUtils.nextInt(0, 101));
 
             alreadyExisting.stream()
                 .filter(s -> s.getWorker().getId().equals(worker.getId()))
                 .findFirst()
                 .ifPresentOrElse(workerShopEntity -> {
                     if (!userEntity.getWorkersBlocked()) {
-                        workerShopEntity.setAbilities(exp.get(), coop.get(), reb.get());
+                        workerShopEntity.setAbilities(exp.get(), coop.get(), reb.get(), skills.get());
                     } else {
                         exp.set(workerShopEntity.getExperience());
                         coop.set(workerShopEntity.getCooperation());
                         reb.set(workerShopEntity.getRebelliousness());
+                        skills.set(workerShopEntity.getSkills());
                     }
                 }, () -> {
-                    final WorkerShopEntity workerShopEntity = new WorkerShopEntity(exp.get(), coop.get(), reb.get());
+                    final WorkerShopEntity workerShopEntity = new WorkerShopEntity(exp.get(), coop.get(), reb.get(),
+                        skills.get());
 
                     workerShopEntity.setWorker(worker);
                     userEntity.setWorkersBlocked(true);
                     userEntity.persistWorkerShopEntity(workerShopEntity);
                 });
             shopWorkersResDtos.add(new ShopWorkersResDto(worker.getId(), Utilities.parseWorkerFullName(worker),
-                worker.getCategory().getName(), exp.get(), coop.get(), reb.get()));
+                worker.getCategory().getName(), exp.get(), coop.get(), reb.get(), skills.get(), worker.getPrice()));
         }
         userRepository.save(userEntity);
         return shopWorkersResDtos;
