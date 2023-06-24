@@ -57,6 +57,7 @@ dependencies {
     implementation          libs.jaxb.impl
     implementation          libs.openapi.webmvc.starter
     implementation          libs.commons.text
+    implementation          libs.commons.io
     implementation          libs.freemarker
 
     implementation          libs.jmpsl.core

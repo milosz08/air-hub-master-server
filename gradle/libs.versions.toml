@@ -30,6 +30,7 @@ jaxb                = '2.3.1'
 openApi             = '2.1.0'
 jmpsl               = '1.0.2_05'
 commonsText         = '1.10.0'
+commonsIO           = '2.13.0'
 freemarker          = '2.3.32'
 
 springBootDep       = '1.0.15.RELEASE'
@@ -59,6 +60,7 @@ jmpsl-core                          = { module = 'pl.miloszgilga:jmpsl-core',   
 jmpsl-security                      = { module = 'pl.miloszgilga:jmpsl-security',                                   version.ref = 'jmpsl' }
 jmpsl-communication                 = { module = 'pl.miloszgilga:jmpsl-communication',                              version.ref = 'jmpsl' }
 commons-text                        = { module = 'org.apache.commons:commons-text',                                 version.ref = 'commonsText' }
+commons-io                          = { module = 'commons-io:commons-io',                                           version.ref = 'commonsIO' }
 freemarker                          = { module = 'org.freemarker:freemarker',                                       version.ref = 'freemarker' }
 
 [plugins]
