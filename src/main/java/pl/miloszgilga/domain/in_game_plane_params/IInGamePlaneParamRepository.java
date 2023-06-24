@@ -21,8 +21,11 @@ package pl.miloszgilga.domain.in_game_plane_params;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Repository
 public interface IInGamePlaneParamRepository extends JpaRepository<InGamePlaneParamEntity, Long> {
+    List<InGamePlaneParamEntity> findAllByUser_Id(Long userId);
 }

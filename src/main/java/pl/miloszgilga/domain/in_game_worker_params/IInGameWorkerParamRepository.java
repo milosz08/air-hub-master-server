@@ -21,8 +21,11 @@ package pl.miloszgilga.domain.in_game_worker_params;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Repository
 public interface IInGameWorkerParamRepository extends JpaRepository<InGameWorkerParamEntity, Long> {
+    List<InGameWorkerParamEntity> findAllByUser_Id(Long userId);
 }
