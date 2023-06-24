@@ -42,7 +42,8 @@ public class WorkerEntity extends AbstractAuditableEntity implements Serializabl
     @Serial private static final long serialVersionUID = 1L;
 
     @Column(name = "first_name")      private String firstName;
-    @Column(name = "last_name")      private String lastName;
+    @Column(name = "last_name")       private String lastName;
+    @Column(name = "price")           private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -66,6 +67,14 @@ public class WorkerEntity extends AbstractAuditableEntity implements Serializabl
         this.lastName = lastName;
     }
 
+    public Integer getPrice() {
+        return price;
+    }
+
+    void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public CategoryEntity getCategory() {
         return category;
     }
@@ -81,7 +90,7 @@ public class WorkerEntity extends AbstractAuditableEntity implements Serializabl
         return "{" +
             "firstName='" + firstName +
             ", lastName='" + lastName +
-            ", category=" + category +
+            ", price=" + price +
             '}';
     }
 }

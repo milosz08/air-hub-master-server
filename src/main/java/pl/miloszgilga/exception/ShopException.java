@@ -48,4 +48,11 @@ public class ShopException {
             log.error("Attemt to get worker by id which does not exist in shop. Followed id: {}, user id: {}", wId, uId);
         }
     }
+
+    @Slf4j public static class AccountHasNotEnoughtMoneyException extends RestServiceServerException {
+        public AccountHasNotEnoughtMoneyException(long onAccount, int price) {
+            super(HttpStatus.BAD_REQUEST, AppLocaleSet.ACCOUNT_HAS_NOT_ENOUGHT_MONEY_EXC);
+            log.error("Attempt to buy item without enought money on account. On account: {}, item cost: {}", onAccount, price);
+        }
+    }
 }

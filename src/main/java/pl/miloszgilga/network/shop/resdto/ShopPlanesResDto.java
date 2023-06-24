@@ -27,9 +27,10 @@ public record ShopPlanesResDto(
     int landingGeer,
     int wings,
     int engine,
-    byte update
+    byte upgrade,
+    int price
 ) {
-    public ShopPlanesResDto(Long id, String planeName, String categoryName) {
-        this(id, planeName, categoryName, 100, 100, 100, (byte) 0);
+    public ShopPlanesResDto(Long id, String planeName, String categoryName, int price) {
+        this(id, planeName, categoryName, 100, 100, 100, (byte) 0, price);
     }
 }

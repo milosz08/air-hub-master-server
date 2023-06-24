@@ -53,6 +53,7 @@ import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
 import pl.miloszgilga.exception.ShopException.PlaneNotExistException;
 import pl.miloszgilga.exception.ShopException.WorkerNotExistException;
 import pl.miloszgilga.exception.ShopException.WorkerInShopNotExistException;
+import pl.miloszgilga.exception.ShopException.AccountHasNotEnoughtMoneyException;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,7 +78,7 @@ public class ShopService implements IShopService {
         final List<PlaneEntity> planeEntities = planeRepository.findAllLazillyLoadedPlanes();
         return planeEntities.stream()
             .filter(p -> userEntity.getLevel() >= p.getCategory().getLevel())
-            .map(p -> new ShopPlanesResDto(p.getId(), p.getName(), p.getCategory().getName()))
+            .map(p -> new ShopPlanesResDto(p.getId(), p.getName(), p.getCategory().getName(), p.getPrice()))
             .toList();
     }
 
@@ -133,17 +134,22 @@ public class ShopService implements IShopService {
         final PlaneEntity boughtPlane = planeRepository.findById(planeId)
             .orElseThrow(() -> new PlaneNotExistException(planeId));
 
+        if (userEntity.getMoney() - boughtPlane.getPrice() < 0) {
+            throw new AccountHasNotEnoughtMoneyException(userEntity.getMoney(), boughtPlane.getPrice());
+        }
         final InGamePlaneParamEntity inGamePlaneParamEntity = new InGamePlaneParamEntity();
 
         inGamePlaneParamEntity.setPlane(boughtPlane);
         userEntity.persistInGamePlainParamEntity(inGamePlaneParamEntity);
+        userEntity.setMoney(userEntity.getMoney() - boughtPlane.getPrice());
 
         userRepository.save(userEntity);
 
         log.info("Successfully persisted bought plane '{}' for user '{}'", boughtPlane.getName(), userEntity.getLogin());
-        return new TransactMoneyStatusResDto(0L, messageService.getMessage(AppLocaleSet.BOUGHT_PLANE_RES, Map.of(
-            "planeName", boughtPlane.getName()
-        )));
+        return new TransactMoneyStatusResDto(userEntity.getMoney(),
+            messageService.getMessage(AppLocaleSet.BOUGHT_PLANE_RES, Map.of(
+                "planeName", boughtPlane.getName()
+            )));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -155,6 +161,9 @@ public class ShopService implements IShopService {
         final WorkerEntity boughtWorker = workerRepository.findById(workerId)
             .orElseThrow(() -> new WorkerNotExistException(workerId));
 
+        if (userEntity.getMoney() - boughtWorker.getPrice() < 0) {
+            throw new AccountHasNotEnoughtMoneyException(userEntity.getMoney(), boughtWorker.getPrice());
+        }
         final Long uId = userEntity.getId();
         final String fullName = Utilities.parseWorkerFullName(boughtWorker);
 
@@ -165,12 +174,14 @@ public class ShopService implements IShopService {
 
         inGameWorkerParamEntity.setWorker(boughtWorker);
         userEntity.persistInGameWorkerParamEntity(inGameWorkerParamEntity);
+        userEntity.setMoney(userEntity.getMoney() - boughtWorker.getPrice());
 
         userRepository.save(userEntity);
 
         log.info("Successfully persisted bought worker '{}' for user '{}'", fullName, userEntity.getLogin());
-        return new TransactMoneyStatusResDto(0L, messageService.getMessage(AppLocaleSet.BOUGHT_WORKER_RES, Map.of(
-            "workerName", fullName
-        )));
+        return new TransactMoneyStatusResDto(userEntity.getMoney(),
+            messageService.getMessage(AppLocaleSet.BOUGHT_WORKER_RES, Map.of(
+                "workerName", fullName
+            )));
     }
 }

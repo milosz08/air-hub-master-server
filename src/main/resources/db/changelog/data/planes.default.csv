@@ -1,8 +1,8 @@
-id,name,category_id
-1,Boeing 747,7
-2,Airbus A380,7
-3,Cessna 152,4
-4,Cessna 182,4
-5,Airbus A350,6
-6,ATR 72,5
-7,Boeing 737,5
+id,name,price,category_id
+1,Boeing 747,4,7
+2,Airbus A380,4,7
+3,Cessna 152,4,4
+4,Cessna 182,4,4
+5,Airbus A350,4,6
+6,ATR 72,4,5
+7,Boeing 737,4,5

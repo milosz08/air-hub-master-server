@@ -42,6 +42,7 @@ public class PlaneEntity extends AbstractAuditableEntity implements Serializable
     @Serial private static final long serialVersionUID = 1L;
 
     @Column(name = "name")      private String name;
+    @Column(name = "price")     private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -57,6 +58,14 @@ public class PlaneEntity extends AbstractAuditableEntity implements Serializable
         this.name = name;
     }
 
+    public Integer getPrice() {
+        return price;
+    }
+
+    void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public CategoryEntity getCategory() {
         return category;
     }
@@ -70,8 +79,8 @@ public class PlaneEntity extends AbstractAuditableEntity implements Serializable
     @Override
     public String toString() {
         return "{" +
-            "name='" + name +
-            ", category=" + category +
+            "name=" + name +
+            ", price=" + price +
             '}';
     }
 }

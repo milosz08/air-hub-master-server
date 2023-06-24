@@ -66,6 +66,7 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     PLANE_NOT_EXIST_EXC                                 ("airhubmaster.exception.PlaneNotExistExc"),
     WORKER_NOT_EXIST_EXC                                ("airhubmaster.exception.WorkerNotExistExc"),
     WORKER_IN_SHOP_NOT_EXIST_EXC                        ("airhubmaster.exception.WorkerInShopNotExistExc"),
+    ACCOUNT_HAS_NOT_ENOUGHT_MONEY_EXC                   ("airhubmaster.exception.AccountHasNotEnoughtMoneyExc"),
 
     // spring security
     USER_CREDENTIALS_INVALID_EXC                        ("AbstractUserDetailsAuthenticationProvider.badCredentials");
