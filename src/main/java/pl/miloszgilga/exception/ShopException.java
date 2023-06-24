@@ -26,6 +26,8 @@ import pl.miloszgilga.i18n.AppLocaleSet;
 
 import org.jmpsl.core.exception.RestServiceServerException;
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 public class ShopException {
 
     @Slf4j public static class PlaneNotExistException extends RestServiceServerException {

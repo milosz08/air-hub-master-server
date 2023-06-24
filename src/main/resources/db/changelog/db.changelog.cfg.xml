@@ -37,6 +37,8 @@
     <include file="migrations/2023-06-23_00001_add-in-game-plane-params-table.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-06-23_00002_move-is-blocked-to-user-table.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-06-23_00003_add-level-column.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-06-24_00000_add-price-for-plane-and-worker.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-06-24_00001_add-skills-for-shop-workers-table.xml" relativeToChangelogFile="true"/>
 
     <include file="assertions/2023-06-14_00000_load-data-categories-planes-workers.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

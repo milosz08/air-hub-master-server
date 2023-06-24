@@ -61,7 +61,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Integer getLandingGeer() {
+    public Integer getLandingGeer() {
         return landingGeer;
     }
 
@@ -69,7 +69,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         this.landingGeer = landingGeer;
     }
 
-    Integer getWings() {
+    public Integer getWings() {
         return wings;
     }
 
@@ -77,7 +77,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         this.wings = wings;
     }
 
-    Integer getEngine() {
+    public Integer getEngine() {
         return engine;
     }
 
@@ -85,7 +85,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         this.engine = engine;
     }
 
-    Integer getUpgrade() {
+    public Integer getUpgrade() {
         return upgrade;
     }
 
@@ -93,7 +93,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         this.upgrade = upgrade;
     }
 
-    ZonedDateTime getAvailable() {
+    public ZonedDateTime getAvailable() {
         return available;
     }
 
@@ -109,7 +109,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         this.user = user;
     }
 
-    PlaneEntity getPlane() {
+    public PlaneEntity getPlane() {
         return plane;
     }
 

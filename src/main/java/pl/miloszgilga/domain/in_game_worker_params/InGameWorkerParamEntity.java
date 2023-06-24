@@ -65,7 +65,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Integer getSkills() {
+    public Integer getSkills() {
         return skills;
     }
 
@@ -73,7 +73,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
         this.skills = skills;
     }
 
-    ZonedDateTime getAvailable() {
+    public ZonedDateTime getAvailable() {
         return available;
     }
 
@@ -81,7 +81,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
         this.available = available;
     }
 
-    Integer getExperience() {
+    public Integer getExperience() {
         return experience;
     }
 
@@ -89,7 +89,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
         this.experience = experience;
     }
 
-    Integer getCooperation() {
+    public Integer getCooperation() {
         return cooperation;
     }
 
@@ -97,7 +97,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
         this.cooperation = cooperation;
     }
 
-    Integer getRebelliousness() {
+    public Integer getRebelliousness() {
         return rebelliousness;
     }
 
@@ -113,7 +113,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
         this.user = user;
     }
 
-    WorkerEntity getWorker() {
+    public WorkerEntity getWorker() {
         return worker;
     }
 
