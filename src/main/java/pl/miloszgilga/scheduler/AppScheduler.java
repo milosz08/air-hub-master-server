@@ -64,7 +64,7 @@ public class AppScheduler {
     @Async
     @Scheduled(cron = "0 0 */24 * * *") // 24h
     public void revalidateIsBlockedGeneratePlainsParam() {
-        userRepository.revalidateAllBlockedWorkers();
+        userRepository.revalidateAllBlockedWorkersAndRoutes();
         log.info("Revalidate isBlocked param for all users.");
     }
 

@@ -66,6 +66,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     @Column(name = "money", insertable = false)                 private Long money;
     @Column(name = "role") @Enumerated(EnumType.STRING)         private GrantedUserRole role;
     @Column(name = "is_workers_blocked", insertable = false)    private Boolean isWorkersBlocked;
+    @Column(name = "is_routes_blocked", insertable = false)     private Boolean isRoutesBlocked;
 
     @Builder.Default
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
@@ -185,6 +186,14 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         isWorkersBlocked = workersBlocked;
     }
 
+    public Boolean getRoutesBlocked() {
+        return isRoutesBlocked;
+    }
+
+    public void setRoutesBlocked(Boolean routesBlocked) {
+        isRoutesBlocked = routesBlocked;
+    }
+
     RefreshTokenEntity getRefreshToken() {
         return refreshToken;
     }
@@ -274,7 +283,12 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
             ", emailAddress=" + emailAddress +
             ", password=" + password +
             ", isActivated=" + isActivated +
+            ", level=" + level +
+            ", exp=" + exp +
+            ", money=" + money +
             ", role=" + role +
+            ", isWorkersBlocked=" + isWorkersBlocked +
+            ", isRoutesBlocked=" + isRoutesBlocked +
             '}';
     }
 }

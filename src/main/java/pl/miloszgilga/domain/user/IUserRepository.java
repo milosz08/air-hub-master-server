@@ -49,6 +49,6 @@ public interface IUserRepository extends JpaRepository<UserEntity, Long> {
     void deleteAllNotActivatedAccount(@Param("futureExpierd") ZonedDateTime futureExpired);
 
     @Modifying
-    @Query(value = "update UserEntity e set e.isWorkersBlocked = false")
-    void revalidateAllBlockedWorkers();
+    @Query(value = "update UserEntity e set e.isWorkersBlocked = false, e.isRoutesBlocked = false")
+    void revalidateAllBlockedWorkersAndRoutes();
 }
