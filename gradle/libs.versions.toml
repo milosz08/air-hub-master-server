@@ -19,7 +19,7 @@
 # libs.versions.toml
 
 [versions]
-springBoot          = '3.0.6'
+springBoot          = '3.1.1'
 liquibase           = '4.19.0'
 lombok              = '1.18.26'
 h2Driver            = '2.1.214'
