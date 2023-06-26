@@ -51,8 +51,8 @@ import pl.miloszgilga.domain.workers_shop.IWorkerShopRepository;
 import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
 import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
 
-import pl.miloszgilga.exception.ShopException.PlaneNotExistException;
-import pl.miloszgilga.exception.ShopException.WorkerNotExistException;
+import pl.miloszgilga.exception.GameException.PlaneNotExistException;
+import pl.miloszgilga.exception.GameException.WorkerNotExistException;
 import pl.miloszgilga.exception.ShopException.WorkerInShopNotExistException;
 import pl.miloszgilga.exception.ShopException.AccountHasNotEnoughtMoneyException;
 
