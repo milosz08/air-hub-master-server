@@ -21,7 +21,6 @@ package pl.miloszgilga.algorithms;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.io.Resource;
@@ -31,6 +30,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -85,7 +87,10 @@ class CoefficientsLoader {
     private void getFileAndExtractData(String filename, BiConsumer<Integer, String[]> extractData) {
         final Resource resource = resourceLoader.getResource(filename);
         try {
-            for (final String line : FileUtils.readLines(resource.getFile(), "UTF-8")) {
+            final InputStream inputStream = resource.getInputStream();
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
                 final String[] values = StringUtils.split(line, ",");
                 final int key = Integer.parseInt(Objects.requireNonNull(values[0]));
                 extractData.accept(key, values);
