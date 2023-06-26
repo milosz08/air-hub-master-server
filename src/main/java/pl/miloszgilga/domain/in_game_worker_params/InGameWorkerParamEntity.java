@@ -57,7 +57,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public InGameWorkerParamEntity(WorkerShopEntity workerShopEntity) {
-        skills = 100;
+        skills = workerShopEntity.getSkills();
         experience = workerShopEntity.getExperience();
         cooperation = workerShopEntity.getCooperation();
         rebelliousness = workerShopEntity.getRebelliousness();
