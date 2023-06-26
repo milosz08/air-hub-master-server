@@ -21,8 +21,19 @@
 START_JAVA_HEAP_SIZE="64m"     # -Xms parameter
 MAX_JAVA_HEAP_SIZE="128m"      # -Xmx parameter
 
+if [ -n "$1" ]; then
+    cd "$1" || exit 0
+fi
+
 EXEC_JAR_FILE_NAME="air-hub-master-server-[0-9]\.[0-9]\.[0-9]\.jar"
 EXEC_JAR_FILE_NAME=$(find . -name "$EXEC_JAR_FILE_NAME" -exec  echo {} \;)
+
+EXEC_PID_JAR_FILE_NAME=${EXEC_JAR_FILE_NAME#./}
+PID=$(pgrep -f "$EXEC_PID_JAR_FILE_NAME")
+if [ "$PID" != "" ]; then
+    kill "$PID"
+    echo "[bash run script info] <> Process on proxy domain with PID '$PID' was terminated"
+fi
 
 if [ "$EXEC_JAR_FILE_NAME" == "" ]; then
     echo "[bash run script err] <> Executable JAR file not found in current directory"

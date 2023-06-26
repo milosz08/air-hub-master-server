@@ -34,6 +34,8 @@ commonsIO           = '2.13.0'
 freemarker          = '2.3.32'
 
 springBootDep       = '1.0.15.RELEASE'
+dotenvGradle        = '2.0.0'
+sshGradle           = '2.11.2'
 
 [libraries]
 spring-boot-starter-web             = { module = 'org.springframework.boot:spring-boot-starter-web',                version.ref = 'springBoot' }
@@ -66,3 +68,5 @@ freemarker                          = { module = 'org.freemarker:freemarker',   
 [plugins]
 spring-boot-plugin                  = { id     = 'org.springframework.boot',                                        version.ref = 'springBoot' }
 spring-dept-plugin                  = { id     = 'io.spring.dependency-management',                                 version.ref = 'springBootDep' }
+dotenv-gradle                       = { id     = 'co.uzzu.dotenv.gradle',                                           version.ref = 'dotenvGradle' }
+ssh-gradle                          = { id     = 'org.hidetake.ssh',                                                version.ref = 'sshGradle' }

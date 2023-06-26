@@ -19,6 +19,8 @@
 plugins {
     id 'java'
     id 'war'
+    alias libs.plugins.ssh.gradle
+    alias libs.plugins.dotenv.gradle
     alias libs.plugins.spring.boot.plugin
     alias libs.plugins.spring.dept.plugin
 }
@@ -28,6 +30,8 @@ file('src/main/resources/artifact.properties').withInputStream { props.load(it) 
 
 group = 'pl.miloszgilga'
 version = props.getProperty("project.version")
+
+def artifactName = "${props.getProperty("project.artifact")}-${project.version}.jar"
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 java.targetCompatibility = JavaVersion.VERSION_17
@@ -81,8 +85,21 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+ssh.settings {
+    dryRun = project.hasProperty('dryRun')
+}
+
+remotes {
+    webServer {
+        host = env.CICD_HOST.value
+        user = env.CICD_USER.value
+        identity = file('id_rsa')
+        knownHosts = file('known_hosts.dat')
+    }
+}
+
 bootJar {
-    archiveFileName = "${props.getProperty("project.artifact")}-${project.version}.jar"
+    archiveFileName = artifactName
     version =  project.version
 
     destinationDir(file("$rootDir/build/jar"))
@@ -129,6 +146,23 @@ tasks.register("bootRunProd") {
         }
     }
     finalizedBy("bootRun")
+}
+
+task deployToRemoteServer(dependsOn: bootJar) {
+    group "deployment"
+    def projectContainer = "java-runnable/airhubmaster"
+    doLast {
+        ssh.run {
+            session(remotes.webServer) {
+                execute "${projectContainer}/jar-kill.sh ${projectContainer}"
+                put from: "${rootDir}/build/jar/${artifactName}", into: "${projectContainer}/"
+                put from: "${rootDir}/build/jar/.env", into: "${projectContainer}/"
+                put from: "${rootDir}/build/jar/jar-run.sh", into: "${projectContainer}/"
+                put from: "${rootDir}/build/jar/jar-kill.sh", into: "${projectContainer}/"
+                execute "${projectContainer}/jar-run.sh ${projectContainer}"
+            }
+        }
+    }
 }
 
 bootJar.finalizedBy moveConfigurationFiles

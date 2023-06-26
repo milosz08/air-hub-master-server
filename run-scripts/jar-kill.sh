@@ -18,6 +18,10 @@
 # governing permissions and limitations under the license.
 #
 
+if [ -n "$1" ]; then
+    cd "$1" || exit 0
+fi
+
 EXEC_JAR_FILE_NAME="air-hub-master-server-[0-9]\.[0-9]\.[0-9]\.jar"
 EXEC_JAR_FILE_NAME=$(find . -name "$EXEC_JAR_FILE_NAME" -exec  echo {} \;)
 
@@ -29,8 +33,8 @@ fi
 EXEC_JAR_FILE_NAME=${EXEC_JAR_FILE_NAME#./}
 PID=$(pgrep -f "$EXEC_JAR_FILE_NAME")
 if [ "$PID" == "" ]; then
-    echo "[bash kill script err] <> Process on proxy domain is not running"
-    exit 2
+    echo "[bash kill script info] <> Process on proxy domain is not running"
+    exit 0
 fi
 
 kill "$PID"
