@@ -97,7 +97,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         return available;
     }
 
-    void setAvailable(ZonedDateTime avaialable) {
+    public void setAvailable(ZonedDateTime avaialable) {
         this.available = avaialable;
     }
 

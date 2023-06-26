@@ -77,7 +77,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
         return available;
     }
 
-    void setAvailable(ZonedDateTime available) {
+    public void setAvailable(ZonedDateTime available) {
         this.available = available;
     }
 
