@@ -30,20 +30,6 @@ import org.jmpsl.core.exception.RestServiceServerException;
 
 public class ShopException {
 
-    @Slf4j public static class PlaneNotExistException extends RestServiceServerException {
-        public PlaneNotExistException(Long nonExistingPlaneId) {
-            super(HttpStatus.NOT_FOUND, AppLocaleSet.PLANE_NOT_EXIST_EXC);
-            log.error("Attemt to get plane by id which does not exist. Followed id: {}", nonExistingPlaneId);
-        }
-    }
-
-    @Slf4j public static class WorkerNotExistException extends RestServiceServerException {
-        public WorkerNotExistException(Long nonExistingWorkerId) {
-            super(HttpStatus.NOT_FOUND, AppLocaleSet.WORKER_NOT_EXIST_EXC);
-            log.error("Attemt to get worker by id which does not exist. Followed id: {}", nonExistingWorkerId);
-        }
-    }
-
     @Slf4j public static class WorkerInShopNotExistException extends RestServiceServerException {
         public WorkerInShopNotExistException(Long wId, Long uId) {
             super(HttpStatus.NOT_FOUND, AppLocaleSet.WORKER_IN_SHOP_NOT_EXIST_EXC);
