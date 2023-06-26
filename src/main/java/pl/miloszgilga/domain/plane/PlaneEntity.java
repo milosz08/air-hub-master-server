@@ -41,8 +41,10 @@ import pl.miloszgilga.domain.category.CategoryEntity;
 public class PlaneEntity extends AbstractAuditableEntity implements Serializable {
     @Serial private static final long serialVersionUID = 1L;
 
-    @Column(name = "name")      private String name;
-    @Column(name = "price")     private Integer price;
+    @Column(name = "name")                  private String name;
+    @Column(name = "price")                 private Integer price;
+    @Column(name = "max_hours")             private Integer maxHours;
+    @Column(name = "base_multiplier")       private Double baseMultiplier;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -64,6 +66,22 @@ public class PlaneEntity extends AbstractAuditableEntity implements Serializable
 
     void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Integer getMaxHours() {
+        return maxHours;
+    }
+
+    void setMaxHours(Integer maxHours) {
+        this.maxHours = maxHours;
+    }
+
+    public Double getBaseMultiplier() {
+        return baseMultiplier;
+    }
+
+    void setBaseMultiplier(Double baseMultiplier) {
+        this.baseMultiplier = baseMultiplier;
     }
 
     public CategoryEntity getCategory() {
