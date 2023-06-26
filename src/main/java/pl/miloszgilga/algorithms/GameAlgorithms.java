@@ -43,6 +43,13 @@ public class GameAlgorithms {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public LevelBoostRangeDto getLevelBoostRange(int userLevel) {
+        if (userLevel == requiredExpMap.size()) {
+            return new LevelBoostRangeDto(requiredExpMap.get(userLevel - 1), userLevel);
+        }
+        return new LevelBoostRangeDto(requiredExpMap.get(userLevel), requiredExpMap.get(userLevel + 1));
+    }
+
     public ComputedWorkerValues computeWorkerValues(int userLevel) {
         return new ComputedWorkerValues(
             drawOneStat(userLevel),

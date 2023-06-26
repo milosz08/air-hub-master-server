@@ -34,6 +34,8 @@ public record AccountDetailsResDto(
     Byte level,
     Integer exp,
     Long money,
+    long fromLevel,
+    long toLevel,
     ZonedDateTime accountCreated
 ) {
 }

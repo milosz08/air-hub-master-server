@@ -46,6 +46,8 @@ import pl.miloszgilga.security.SecurityUtils;
 import pl.miloszgilga.i18n.AppLocaleSet;
 import pl.miloszgilga.dto.SimpleMessageResDto;
 import pl.miloszgilga.exception.AuthException;
+import pl.miloszgilga.algorithms.GameAlgorithms;
+import pl.miloszgilga.algorithms.LevelBoostRangeDto;
 
 import pl.miloszgilga.domain.user.UserEntity;
 import pl.miloszgilga.domain.user.IUserRepository;
@@ -73,6 +75,7 @@ public class AccountService implements IAccountService {
     private final JwtIssuer jwtIssuer;
     private final JwtService jwtService;
     private final SecurityUtils securityUtils;
+    private final GameAlgorithms gameAlgorithms;
     private final PasswordEncoder passwordEncoder;
     private final JmpslMailService jmpslMailService;
     private final LocaleMessageService messageService;
@@ -85,6 +88,7 @@ public class AccountService implements IAccountService {
     public AccountDetailsResDto details(AuthUser authUser) {
         final UserEntity user = userRepository.findUserByLoginOrEmail(authUser.getUsername())
             .orElseThrow(UserNotFoundException::new);
+        final LevelBoostRangeDto levelBoostRange = gameAlgorithms.getLevelBoostRange(user.getLevel());
         return AccountDetailsResDto.builder()
             .firstName(user.getFirstName())
             .lastName(user.getLastName())
@@ -92,6 +96,8 @@ public class AccountService implements IAccountService {
             .emailAddress(user.getEmailAddress())
             .role(user.getRole().getRole())
             .level(user.getLevel())
+            .fromLevel(levelBoostRange.fromLevel())
+            .toLevel(levelBoostRange.toLevel())
             .money(user.getMoney())
             .exp(user.getExp())
             .accountCreated(user.getCreatedAt())
