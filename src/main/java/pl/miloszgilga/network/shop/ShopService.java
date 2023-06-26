@@ -46,6 +46,7 @@ import pl.miloszgilga.domain.worker.WorkerEntity;
 import pl.miloszgilga.domain.worker.IWorkerRepository;
 import pl.miloszgilga.domain.plane.PlaneEntity;
 import pl.miloszgilga.domain.plane.IPlaneRepository;
+import pl.miloszgilga.domain.plane_route.PlaneRouteEntity;
 import pl.miloszgilga.domain.workers_shop.WorkerShopEntity;
 import pl.miloszgilga.domain.workers_shop.IWorkerShopRepository;
 import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
@@ -145,7 +146,10 @@ public class ShopService implements IShopService {
             throw new AccountHasNotEnoughtMoneyException(userEntity.getMoney(), boughtPlane.getPrice());
         }
         final InGamePlaneParamEntity inGamePlaneParamEntity = new InGamePlaneParamEntity();
-
+        for (int i = 0; i < 3; i++) {
+            final PlaneRouteEntity planeRouteEntity = new PlaneRouteEntity();
+            inGamePlaneParamEntity.persistPlaneRouteEntity(planeRouteEntity);
+        }
         inGamePlaneParamEntity.setPlane(boughtPlane);
         userEntity.persistInGamePlainParamEntity(inGamePlaneParamEntity);
         userEntity.setMoney(userEntity.getMoney() - boughtPlane.getPrice());
