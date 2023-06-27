@@ -34,6 +34,8 @@ import pl.miloszgilga.config.ApiProperties;
 import pl.miloszgilga.domain.user.IUserRepository;
 import pl.miloszgilga.domain.ota_token.IOtaTokenRepository;
 import pl.miloszgilga.domain.blacklist_jwt.IBlacklistJwtRepository;
+import pl.miloszgilga.domain.in_game_plane_params.IInGamePlaneParamRepository;
+import pl.miloszgilga.domain.in_game_worker_params.IInGameWorkerParamRepository;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -48,6 +50,18 @@ public class AppScheduler {
     private final IUserRepository userRepository;
     private final IOtaTokenRepository otaTokenRepository;
     private final IBlacklistJwtRepository blacklistJwtRepository;
+    private final IInGamePlaneParamRepository inGamePlaneParamRepository;
+    private final IInGameWorkerParamRepository inGameWorkerParamRepository;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Async
+    @Transactional
+    @Scheduled(cron = "0 */5 * * * *") // 5min
+    public void revertAvailablePlanesAndWorkersState() {
+        inGamePlaneParamRepository.revertAvailablePlanesState(ZonedDateTime.now());
+        inGameWorkerParamRepository.revertAvailableWorkersState(ZonedDateTime.now());
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,6 +76,7 @@ public class AppScheduler {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Async
+    @Transactional
     @Scheduled(cron = "0 0 */24 * * *") // 24h
     public void revalidateIsBlockedGeneratePlainsParam() {
         userRepository.revalidateAllBlockedWorkersAndRoutes();
