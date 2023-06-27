@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -30,7 +32,11 @@ import org.jmpsl.core.db.AbstractAuditableEntity;
 
 import pl.miloszgilga.domain.user.UserEntity;
 import pl.miloszgilga.domain.worker.WorkerEntity;
+import pl.miloszgilga.domain.in_game_crew.InGameCrewEntity;
 import pl.miloszgilga.domain.workers_shop.WorkerShopEntity;
+
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.FetchType.LAZY;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,6 +59,9 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worker_id", referencedColumnName = "id")
     private WorkerEntity worker;
+
+    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "worker", orphanRemoval = true)
+    private Set<InGameCrewEntity> crew = new HashSet<>();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -119,6 +128,14 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
 
     public void setWorker(WorkerEntity worker) {
         this.worker = worker;
+    }
+
+    Set<InGameCrewEntity> getCrew() {
+        return crew;
+    }
+
+    void setCrew(Set<InGameCrewEntity> crew) {
+        this.crew = crew;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

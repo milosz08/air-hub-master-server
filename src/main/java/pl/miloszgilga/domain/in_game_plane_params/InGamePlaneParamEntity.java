@@ -20,14 +20,21 @@ package pl.miloszgilga.domain.in_game_plane_params;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+import java.util.HashSet;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 import pl.miloszgilga.domain.user.UserEntity;
 import pl.miloszgilga.domain.plane.PlaneEntity;
+import pl.miloszgilga.domain.plane_route.PlaneRouteEntity;
+import pl.miloszgilga.domain.in_game_crew.InGameCrewEntity;
 
 import org.jmpsl.core.db.AbstractAuditableEntity;
+
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.FetchType.LAZY;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -50,6 +57,12 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
     @JoinColumn(name = "plane_id", referencedColumnName = "id")
     private PlaneEntity plane;
 
+    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "plane", orphanRemoval = true)
+    private Set<PlaneRouteEntity> planeRouteEntities = new HashSet<>();
+
+    @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "plane", orphanRemoval = true)
+    private Set<InGameCrewEntity> crew = new HashSet<>();
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public InGamePlaneParamEntity() {
@@ -65,7 +78,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         return landingGeer;
     }
 
-    void setLandingGeer(Integer landingGeer) {
+    public void setLandingGeer(Integer landingGeer) {
         this.landingGeer = landingGeer;
     }
 
@@ -73,7 +86,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         return wings;
     }
 
-    void setWings(Integer wings) {
+    public void setWings(Integer wings) {
         this.wings = wings;
     }
 
@@ -81,7 +94,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         return engine;
     }
 
-    void setEngine(Integer engine) {
+    public void setEngine(Integer engine) {
         this.engine = engine;
     }
 
@@ -115,6 +128,34 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
 
     public void setPlane(PlaneEntity plane) {
         this.plane = plane;
+    }
+
+    public Set<PlaneRouteEntity> getPlaneRouteEntities() {
+        return planeRouteEntities;
+    }
+
+    void setPlaneRouteEntities(Set<PlaneRouteEntity> planeRouteEntities) {
+        this.planeRouteEntities = planeRouteEntities;
+    }
+
+    public Set<InGameCrewEntity> getCrew() {
+        return crew;
+    }
+
+    void setCrew(Set<InGameCrewEntity> crew) {
+        this.crew = crew;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void persistPlaneRouteEntity(PlaneRouteEntity planeRouteEntity) {
+        planeRouteEntities.add(planeRouteEntity);
+        planeRouteEntity.setPlane(this);
+    }
+
+    public void persistInGameCrewEntity(InGameCrewEntity inGameCrewEntity) {
+        crew.add(inGameCrewEntity);
+        inGameCrewEntity.setPlane(this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
