@@ -45,6 +45,9 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     UPDATE_USER_MONEY_RES                               ("airhubmaster.message.UpdateUserMoneyRes"),
     BOUGHT_PLANE_RES                                    ("airhubmaster.message.BougthPlaneRes"),
     BOUGHT_WORKER_RES                                   ("airhubmaster.message.BougthWorkerRes"),
+    ADD_NEW_CREW_RES                                    ("airhubmaster.message.AddNewCrewRes"),
+    SEND_PLANE_ON_ROUTE_RES                             ("airhubmaster.message.SendPlaneOnRouteRes"),
+    REVERT_PLANE_ON_ROUTE_RES                           ("airhubmaster.message.RevertPlaneOnRouteRes"),
 
     // email
     ACTIVATED_ACCOUNT_TITLE_MAIL                        ("airhubmaster.email.title.ActivatedAccount"),
@@ -65,6 +68,12 @@ public enum AppLocaleSet implements ILocaleEnumSet {
     CATEGORY_TYPE_NOT_EXIST_EXC                         ("airhubmaster.exception.CategoryTypeNotExistExc"),
     PLANE_NOT_EXIST_EXC                                 ("airhubmaster.exception.PlaneNotExistExc"),
     WORKER_NOT_EXIST_EXC                                ("airhubmaster.exception.WorkerNotExistExc"),
+    PLANE_NOT_EXIST_OR_NOT_BOUGHT_EXC                   ("airhubmaster.exception.PlaneNotExistOrNotBoughtExc"),
+    WORKER_NOT_EXIST_OR_NOT_BOUGHT_EXC                  ("airhubmaster.exception.WorkerNotExistOrNotBoughtExc"),
+    NOT_ENOUGHT_ROUTES_EXC                              ("airhubmaster.exception.NotEnoughtRoutesExc"),
+    LOCKED_PLANE_EXC                                    ("airhubmaster.exception.LockedPlaneExc"),
+    NON_EXISTING_TEMP_STATS_EXC                         ("airhubmaster.exception.NonExistingTempStatsExc"),
+    ROUTE_NOT_FOUND_EXC                                 ("airhubmaster.exception.RouteNotFoundExc"),
     WORKER_IN_SHOP_NOT_EXIST_EXC                        ("airhubmaster.exception.WorkerInShopNotExistExc"),
     ACCOUNT_HAS_NOT_ENOUGHT_MONEY_EXC                   ("airhubmaster.exception.AccountHasNotEnoughtMoneyExc"),
 
