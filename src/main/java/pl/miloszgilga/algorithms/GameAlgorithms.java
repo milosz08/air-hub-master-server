@@ -62,35 +62,32 @@ public class GameAlgorithms {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private int drawOneStat(int userLevel) {
-        final int[] range = { 1, 20, 40, 60, 80, 100 };
+        int[] range = {1, 20, 40, 60, 80, 100};
         final List<Integer> scales = staffBoostMap.get(userLevel);
 
         int sumOfScales = 0;
-        for (final int scale : scales) {
+        for (int scale : scales) {
             sumOfScales += scale;
         }
-        int randomScale = RandomUtils.nextInt(1, sumOfScales);
+        final Random rand = new Random();
+        int randomScale = rand.nextInt(sumOfScales);
 
         int i = 0;
         while (i < range.length - 1 && randomScale >= scales.get(i)) {
-            randomScale -= scales.get(i);
+            randomScale-= scales.get(i);
             i++;
         }
         int lowerLimit = range[i];
-        int upperLimit;
-        if (i < 5) {
-            upperLimit = range[i + 1];
-        } else {
-            upperLimit = range[i];
+        int upperLimit = range[i < 5 ? i + 1 : i];
+
+        double randomNumber = rand.nextDouble();
+        int drawNumber = (int) (lowerLimit + randomNumber * (upperLimit - lowerLimit));
+
+        if (drawNumber == 100) {
+            if (rand.nextInt(15) != 1) {
+                return drawOneStat(userLevel);
+            }
         }
-
-        final double randomNumber = RandomUtils.nextDouble();
-        final int drawNumber = (int) (lowerLimit + randomNumber * (upperLimit - lowerLimit));
-        if(drawNumber != 100) return drawNumber;
-
-        final int randNumHun = RandomUtils.nextInt(1, 15);
-        if(randNumHun != 1) return drawOneStat(userLevel);
-
         return drawNumber;
     }
 }

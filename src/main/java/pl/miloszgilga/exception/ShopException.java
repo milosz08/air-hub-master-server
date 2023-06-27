@@ -43,4 +43,11 @@ public class ShopException {
             log.error("Attempt to buy item without enought money on account. On account: {}, item cost: {}", onAccount, price);
         }
     }
+
+    @Slf4j public static class WorkerNotExistException extends RestServiceServerException {
+        public WorkerNotExistException(Long nonExistingWorkerId) {
+            super(HttpStatus.NOT_FOUND, AppLocaleSet.WORKER_NOT_EXIST_EXC);
+            log.error("Attemt to get worker by id which does not exist. Followed id: {}", nonExistingWorkerId);
+        }
+    }
 }

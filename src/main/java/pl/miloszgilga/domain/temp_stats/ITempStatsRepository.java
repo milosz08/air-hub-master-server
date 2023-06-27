@@ -19,9 +19,7 @@
 package pl.miloszgilga.domain.temp_stats;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,7 +28,5 @@ import java.util.Optional;
 @Repository
 public interface ITempStatsRepository extends JpaRepository<TempStatsEntity, Long> {
     Optional<TempStatsEntity> findByPlane_IdAndPlane_User_Id(Long planeId, Long userId);
-    @Modifying
-    @Transactional
     void deleteByPlane_IdAndPlane_User_Id(Long planeId, Long userId);
 }
