@@ -236,6 +236,7 @@ public class GameService implements IGameService {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
+    @Transactional
     public SimpleMessageResDto revertPlane(Long planeId, AuthUser user) {
         final UserEntity userEntity = securityUtils.getLoggedUser(user);
         tempStatsRepository.deleteByPlane_IdAndPlane_User_Id(planeId, userEntity.getId());

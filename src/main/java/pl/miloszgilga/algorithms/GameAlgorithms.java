@@ -123,8 +123,9 @@ public class GameAlgorithms {
     public BoostLevelDto checkIfBoostLevel(int exp, UserEntity user) {
         int i = 0;
         long expAfter = user.getExp() + exp;
-        while(checkForLevelUp(i, expAfter, user.getLevel()))
+        while (checkForLevelUp(i, expAfter, user.getLevel())) {
             i++;
+        }
         boolean levelUp = i != 0;
 
         final int upgrLevel = user.getLevel() + i;
