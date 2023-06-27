@@ -194,6 +194,7 @@ public class GameService implements IGameService {
             .fromLevel(boostLevelDto.fromLevel())
             .toLevel(boostLevelDto.toLevel())
             .nextLevel(boostLevelDto.nextLevel())
+            .currentExp(userEntity.getExp())
             .maxLevels(gameAlgorithms.getMaxLevel())
             .isUpgraded(boostLevelDto.isBoosted())
             .addedExp(exp)

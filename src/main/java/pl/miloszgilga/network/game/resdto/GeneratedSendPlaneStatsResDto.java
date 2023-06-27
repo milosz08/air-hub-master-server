@@ -30,6 +30,7 @@ public record GeneratedSendPlaneStatsResDto(
     long fromLevel,
     long toLevel,
     int nextLevel,
+    long currentExp,
     int maxLevels,
     boolean isUpgraded,
     int addedExp,
