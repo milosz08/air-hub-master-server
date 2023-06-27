@@ -42,6 +42,7 @@
     <include file="migrations/2023-06-26_00000_add-routes-table.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-06-26_00001_add-plane-base-multiplier.xml" relativeToChangelogFile="true"/>
     <include file="migrations/2023-06-26_00002_add-temp-stats-table.xml" relativeToChangelogFile="true"/>
+    <include file="migrations/2023-06-27_00000_change-default-money.xml" relativeToChangelogFile="true"/>
 
     <include file="assertions/2023-06-14_00000_load-data-categories-planes-workers.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
