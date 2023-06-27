@@ -23,10 +23,10 @@ import lombok.RequiredArgsConstructor;
 import org.jmpsl.security.user.AuthUser;
 import org.springframework.stereotype.Component;
 
-import pl.miloszgilga.exception.AuthException;
-
 import pl.miloszgilga.domain.user.UserEntity;
 import pl.miloszgilga.domain.user.IUserRepository;
+
+import pl.miloszgilga.exception.AuthException.UserNotFoundException;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -41,6 +41,6 @@ public class SecurityUtils {
     public UserEntity getLoggedUser(AuthUser authUser) {
         return userRepository
             .findUserByLoginOrEmail(authUser.getUsername())
-            .orElseThrow(AuthException.UserNotFoundException::new);
+            .orElseThrow(UserNotFoundException::new);
     }
 }
