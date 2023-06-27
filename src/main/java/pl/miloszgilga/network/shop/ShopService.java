@@ -53,7 +53,7 @@ import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
 import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
 
 import pl.miloszgilga.exception.GameException.PlaneNotExistException;
-import pl.miloszgilga.exception.GameException.WorkerNotExistException;
+import pl.miloszgilga.exception.ShopException.WorkerNotExistException;
 import pl.miloszgilga.exception.ShopException.WorkerInShopNotExistException;
 import pl.miloszgilga.exception.ShopException.AccountHasNotEnoughtMoneyException;
 
@@ -119,9 +119,14 @@ public class ShopService implements IShopService {
                         skills.set(workerShopEntity.getSkills());
                     }
                 }, () -> {
-                    final WorkerShopEntity workerShopEntity = new WorkerShopEntity(exp.get(), coop.get(), reb.get(),
-                        skills.get());
+                    final ComputedWorkerValues computed = gameAlgorithms.computeWorkerValues(userEntity.getLevel());
+                    exp.set(computed.exp());
+                    coop.set(computed.coop());
+                    reb.set(computed.reb());
+                    skills.set(computed.skills());
 
+                    final WorkerShopEntity workerShopEntity = new WorkerShopEntity(exp.get(), coop.get(),
+                        reb.get(), skills.get());
                     workerShopEntity.setWorker(worker);
                     userEntity.setWorkersBlocked(true);
                     userEntity.persistWorkerShopEntity(workerShopEntity);
