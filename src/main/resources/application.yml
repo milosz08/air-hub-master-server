@@ -30,6 +30,8 @@ spring:
         import: optional:file:.env[.properties]
     main:
         banner-mode: off
+    jackson:
+        time-zone: Europe/Warsaw
     liquibase:
         enabled: true
         change-log: classpath:db/changelog/db.changelog.cfg.xml

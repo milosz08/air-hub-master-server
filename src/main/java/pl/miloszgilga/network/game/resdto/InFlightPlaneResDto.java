@@ -19,7 +19,7 @@
 package pl.miloszgilga.network.game.resdto;
 
 import java.util.List;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import pl.miloszgilga.network.game.dto.CrewInFlightDto;
 import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
@@ -29,7 +29,7 @@ import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
 public record InFlightPlaneResDto(
     String name,
     String categoryName,
-    ZonedDateTime arrival,
+    LocalDateTime arrival,
     List<CrewInFlightDto> workers
 ) {
     public InFlightPlaneResDto(InGamePlaneParamEntity plane, List<CrewInFlightDto> workers) {

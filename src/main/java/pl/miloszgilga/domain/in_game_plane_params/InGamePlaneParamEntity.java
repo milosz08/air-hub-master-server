@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import pl.miloszgilga.domain.user.UserEntity;
 import pl.miloszgilga.domain.plane.PlaneEntity;
@@ -47,7 +47,7 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
     @Column(name = "wings")                 private Integer wings;
     @Column(name = "engine")                private Integer engine;
     @Column(name = "upgrade")               private Integer upgrade;
-    @Column(name = "available")             private ZonedDateTime available;
+    @Column(name = "available")             private LocalDateTime available;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -106,11 +106,11 @@ public class InGamePlaneParamEntity extends AbstractAuditableEntity implements S
         this.upgrade = upgrade;
     }
 
-    public ZonedDateTime getAvailable() {
+    public LocalDateTime getAvailable() {
         return available;
     }
 
-    public void setAvailable(ZonedDateTime avaialable) {
+    public void setAvailable(LocalDateTime avaialable) {
         this.available = avaialable;
     }
 

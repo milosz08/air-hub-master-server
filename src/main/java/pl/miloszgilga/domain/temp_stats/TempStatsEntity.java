@@ -26,6 +26,7 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import org.jmpsl.core.db.AbstractAuditableEntity;
@@ -43,7 +44,7 @@ public class TempStatsEntity extends AbstractAuditableEntity implements Serializ
     @Serial private static final long serialVersionUID = 1L;
 
     @Column(name = "selected_route")    private Long selectedRoute;
-    @Column(name = "arrival_time")      private ZonedDateTime arrivalTime;
+    @Column(name = "arrival_time")      private LocalDateTime arrivalTime;
     @Column(name = "upgraded_level")    private Byte upgradedLevel;
     @Column(name = "added_exp")         private Integer addedExp;
     @Column(name = "flight_costs")      private Integer flightCosts;
@@ -62,11 +63,11 @@ public class TempStatsEntity extends AbstractAuditableEntity implements Serializ
         this.selectedRoute = selectedRoute;
     }
 
-    public ZonedDateTime getArrivalTime() {
+    public LocalDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    void setArrivalTime(ZonedDateTime arrivalTime) {
+    void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 

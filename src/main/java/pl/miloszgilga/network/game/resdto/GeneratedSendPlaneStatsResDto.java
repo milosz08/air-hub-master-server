@@ -20,7 +20,7 @@ package pl.miloszgilga.network.game.resdto;
 
 import lombok.Builder;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -37,6 +37,6 @@ public record GeneratedSendPlaneStatsResDto(
     int prize,
     int totalCost,
     long accountDeposit,
-    ZonedDateTime arrival
+    LocalDateTime arrival
 ) {
 }

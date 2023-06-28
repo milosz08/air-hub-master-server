@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import org.jmpsl.security.user.AuthUser;
 import org.jmpsl.core.i18n.LocaleMessageService;
@@ -163,7 +163,7 @@ public class GameService implements IGameService {
         if (Objects.isNull(details.route().getRouteHours())) {
             throw new RouteNotFoundException(details.route().getId());
         }
-        final ZonedDateTime arrival = ZonedDateTime.now().plusHours(details.route().getRouteHours());
+        final LocalDateTime arrival = LocalDateTime.now().plusHours(details.route().getRouteHours());
         final int exp = gameAlgorithms.generateExp(details, userEntity.getLevel());
         final BoostLevelDto boostLevelDto = gameAlgorithms.checkIfBoostLevel(exp, userEntity);
         final int prize = gameAlgorithms.generatePrize(details, userEntity.getLevel());

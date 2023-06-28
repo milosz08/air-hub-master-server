@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import org.jmpsl.core.db.AbstractAuditableEntity;
 
@@ -47,7 +47,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
     @Serial private static final long serialVersionUID = 1L;
 
     @Column(name = "skills")                private Integer skills;
-    @Column(name = "available")             private ZonedDateTime available;
+    @Column(name = "available")             private LocalDateTime available;
     @Column(name = "experience")            private Integer experience;
     @Column(name = "cooperation")           private Integer cooperation;
     @Column(name = "rebelliousness")        private Integer rebelliousness;
@@ -82,11 +82,11 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
         this.skills = skills;
     }
 
-    public ZonedDateTime getAvailable() {
+    public LocalDateTime getAvailable() {
         return available;
     }
 
-    public void setAvailable(ZonedDateTime available) {
+    public void setAvailable(LocalDateTime available) {
         this.available = available;
     }
 
