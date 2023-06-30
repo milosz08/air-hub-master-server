@@ -25,7 +25,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -46,5 +46,5 @@ public interface IInGameWorkerParamRepository extends JpaRepository<InGameWorker
         update InGameWorkerParamEntity e set e.available = null
         where e.available is not null and e.available < :futureExpierd
     """)
-    void revertAvailableWorkersState(@Param("futureExpierd") ZonedDateTime futureExpired);
+    void revertAvailableWorkersState(@Param("futureExpierd") LocalDateTime futureExpired);
 }

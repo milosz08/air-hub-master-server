@@ -26,7 +26,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,5 +60,5 @@ public interface IInGamePlaneParamRepository extends JpaRepository<InGamePlanePa
         update InGamePlaneParamEntity e set e.available = null
         where e.available is not null and e.available < :futureExpired
     """)
-    void revertAvailablePlanesState(@Param("futureExpired") ZonedDateTime futureExpired);
+    void revertAvailablePlanesState(@Param("futureExpired") LocalDateTime futureExpired);
 }

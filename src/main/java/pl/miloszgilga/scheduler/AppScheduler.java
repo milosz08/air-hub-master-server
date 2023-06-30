@@ -27,6 +27,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import pl.miloszgilga.config.ApiProperties;
@@ -59,8 +60,8 @@ public class AppScheduler {
     @Transactional
     @Scheduled(cron = "0 */5 * * * *") // 5min
     public void revertAvailablePlanesAndWorkersState() {
-        inGamePlaneParamRepository.revertAvailablePlanesState(ZonedDateTime.now());
-        inGameWorkerParamRepository.revertAvailableWorkersState(ZonedDateTime.now());
+        inGamePlaneParamRepository.revertAvailablePlanesState(LocalDateTime.now());
+        inGameWorkerParamRepository.revertAvailableWorkersState(LocalDateTime.now());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
