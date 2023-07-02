@@ -138,25 +138,25 @@ tasks.register('bootRunDev') {
     group 'boot'
     doFirst {
         tasks.bootRun.configure {
-            systemProperty("spring.profiles.active", 'dev')
+            systemProperty('spring.profiles.active', 'dev')
         }
     }
-    finalizedBy("bootRun")
+    finalizedBy('bootRun')
 }
 
 tasks.register('bootRunProd') {
     group 'boot'
     doFirst {
         tasks.bootRun.configure {
-            systemProperty("spring.profiles.active", 'prod')
+            systemProperty('spring.profiles.active', 'prod')
         }
     }
-    finalizedBy("bootRun")
+    finalizedBy('bootRun')
 }
 
 task deployToRemoteServer(dependsOn: bootJar) {
-    group "deployment"
-    def projectContainer = "java-runnable/airhubmaster"
+    group 'deployment'
+    def projectContainer = 'java-runnable/airhubmaster'
     doLast {
         ssh.run {
             session(remotes.webServer) {
