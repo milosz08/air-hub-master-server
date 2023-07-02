@@ -99,6 +99,8 @@ remotes {
 }
 
 bootJar {
+    group 'custom build'
+
     archiveFileName = artifactName
     version =  project.version
 
@@ -111,6 +113,8 @@ war {
 }
 
 bootWar {
+    group 'custom build'
+
     mainClass = 'pl.miloszgilga.AirHubMasterServerApplication'
     archiveFileName = "${props.getProperty("project.artifact")}.war"
     version =  project.version
@@ -130,7 +134,8 @@ tasks.register('moveConfigurationFiles', Copy) {
     println(rootDir)
 }
 
-tasks.register("bootRunDev") {
+tasks.register('bootRunDev') {
+    group 'boot'
     doFirst {
         tasks.bootRun.configure {
             systemProperty("spring.profiles.active", 'dev')
@@ -139,7 +144,8 @@ tasks.register("bootRunDev") {
     finalizedBy("bootRun")
 }
 
-tasks.register("bootRunProd") {
+tasks.register('bootRunProd') {
+    group 'boot'
     doFirst {
         tasks.bootRun.configure {
             systemProperty("spring.profiles.active", 'prod')
