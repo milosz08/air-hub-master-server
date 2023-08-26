@@ -182,7 +182,7 @@ Created by Miłosz Gilga. If you have any questions about this application, send
 
 <a name="project-status"></a>
 ## Project status
-Project is still in development.
+Project is finished.
 
 <a name="license"></a>
 ## License
