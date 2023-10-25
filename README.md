@@ -26,7 +26,6 @@ In this case, you will have to build the library yourself in your local maven re
 * [Run with Docker containers](#run-with-docker-containers)
 * [Run from IDE](#run-from-ide)
 * [Run from JAR](#run-from-jar)
-* [Create WAR](#create-war)
 * [Available endpoints](#available-endpoints)
 * [Change Xmx and Xms parameters (JVM Heap Size)](#change-xmx-and-xms-parameters)
 * [Internationalization (i18n)](#internationalization-i18n)
@@ -119,15 +118,6 @@ to show all process.
 $ ./jar-kill.sh
 ```
 
-<a name="create-war"></a>
-## Create WAR
-To create `.war` file, type:
-```
-$ ./gradlew war
-```
-Generated `.war` file should be located in `/build/war` directory. You can directly place this file type in your Tomcat 
-or Jetty web container runtime environment.
-
 <a name="available-endpoints"></a>
 ## Available endpoints
 For detailed endpoint data, go to http://127.0.0.1:8081/swagger-ui/index.html (available only in the spring "dev" profile).
@@ -182,7 +172,7 @@ Created by Miłosz Gilga. If you have any questions about this application, send
 
 <a name="project-status"></a>
 ## Project status
-Project is still in development.
+Project is finished.
 
 <a name="license"></a>
 ## License
