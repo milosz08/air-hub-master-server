@@ -46,7 +46,6 @@ import static pl.miloszgilga.exception.AuthException.UserNotFoundException;
 @Service
 @RequiredArgsConstructor
 class AccountServiceImpl implements AccountService {
-
     private final SmtpUtils smtpUtils;
     private final JwtIssuer jwtIssuer;
     private final JwtService jwtService;

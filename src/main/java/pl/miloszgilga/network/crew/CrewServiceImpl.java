@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 class CrewServiceImpl implements CrewService {
-
     private final SecurityUtils securityUtils;
     private final LocaleMessageService messageService;
 
