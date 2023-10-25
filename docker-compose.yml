@@ -1,71 +1,51 @@
-#
-# Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
-#
-# File name: docker-compose.yml
-# Last modified: 19/05/2023, 20:23
-# Project name: air-hub-master-server
-#
-# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
-# file except in compliance with the License. You may obtain a copy of the License at
-#
-#     <http://www.apache.org/license/LICENSE-2.0>
-#
-# Unless required by applicable law or agreed to in writing, software distributed under
-# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
-# OF ANY KIND, either express or implied. See the License for the specific language
-# governing permissions and limitations under the license.
-#
-
-# docker-compose.yml
-
 version: '3.8'
 
 services:
-    ahmapi-dev:
-        container_name: ahmapi-server-dev
-        ports:
-            - '8086:8080'
-        build:
-            context: .
-            cache_from:
-                - amazoncorretto:17
-            dockerfile: Dockerfile
-        image: ahmapi-dev:${BUILD_DATE}
-        environment:
-            - SPRING_PROFILES_ACTIVE=docker
-            - XMS=${START_JAVA_HEAP_SIZE}
-            - XMX=${MAX_JAVA_HEAP_SIZE}
-        depends_on:
-            mysqldb:
-                condition: service_healthy
-            phpmyadmin:
-                condition: service_healthy
-            fakemail:
-                condition: service_healthy
-    mysqldb:
-        image: mysql:8.0.32
-        ports:
-            - '3306:3306'
-        environment:
-            - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=airhub_db
-        healthcheck:
-            test: "mysqladmin ping -u root -p$root"
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin:latest
-        environment:
-            PMA_HOST: mysqldb
-            PMA_USER: root
-            PMA_PASSWORD: root
-        ports:
-            - '6061:80'
-        healthcheck:
-            test: "exit 0"
-    fakemail:
-        image: mailhog/mailhog
-        container_name: mailhog
-        ports:
-            - '1025:1025'
-            - '8025:8025'
-        healthcheck:
-            test: "exit 0"
+  ahmapi-dev:
+    container_name: ahmapi-server-dev
+    ports:
+      - '8086:8080'
+    build:
+      context: .
+      cache_from:
+        - amazoncorretto:17
+      dockerfile: Dockerfile
+    image: ahmapi-dev:${BUILD_DATE}
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - XMS=${START_JAVA_HEAP_SIZE}
+      - XMX=${MAX_JAVA_HEAP_SIZE}
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+      phpmyadmin:
+        condition: service_healthy
+      fakemail:
+        condition: service_healthy
+  mysqldb:
+    image: mysql:8.0.32
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=airhub_db
+    healthcheck:
+      test: "mysqladmin ping -u root -p$root"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: mysqldb
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - '6061:80'
+    healthcheck:
+      test: "exit 0"
+  fakemail:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+    healthcheck:
+      test: "exit 0"

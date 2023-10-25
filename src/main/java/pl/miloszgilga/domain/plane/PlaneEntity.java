@@ -1,37 +1,18 @@
 /*
- * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
- *
- * File name: PlaneEntity.java
- * Last modified: 6/14/23, 12:42 AM
- * Project name: air-hub-master-server
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     <http://www.apache.org/license/LICENSE-2.0>
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the license.
+ * Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
+ * Silesian University of Technology
  */
-
 package pl.miloszgilga.domain.plane;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
-import jakarta.persistence.*;
+import org.jmpsl.core.db.AbstractAuditableEntity;
+import pl.miloszgilga.domain.category.CategoryEntity;
 
 import java.io.Serial;
 import java.io.Serializable;
-
-import org.jmpsl.core.db.AbstractAuditableEntity;
-
-import pl.miloszgilga.domain.category.CategoryEntity;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Entity
 @Builder
@@ -39,18 +20,24 @@ import pl.miloszgilga.domain.category.CategoryEntity;
 @AllArgsConstructor
 @Table(name = "planes")
 public class PlaneEntity extends AbstractAuditableEntity implements Serializable {
-    @Serial private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    @Column(name = "name")                  private String name;
-    @Column(name = "price")                 private Integer price;
-    @Column(name = "max_hours")             private Integer maxHours;
-    @Column(name = "base_multiplier")       private Double baseMultiplier;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "price")
+    private Integer price;
+
+    @Column(name = "max_hours")
+    private Integer maxHours;
+
+    @Column(name = "base_multiplier")
+    private Double baseMultiplier;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private CategoryEntity category;
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public String getName() {
         return name;
@@ -91,9 +78,7 @@ public class PlaneEntity extends AbstractAuditableEntity implements Serializable
     public void setCategory(CategoryEntity category) {
         this.category = category;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     @Override
     public String toString() {
         return "{" +

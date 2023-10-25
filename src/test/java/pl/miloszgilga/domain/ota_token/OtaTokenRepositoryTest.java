@@ -1,64 +1,48 @@
 /*
- * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
- *
- * File name: OtaTokenRepositoryTest.java
- * Last modified: 26/05/2023, 23:35
- * Project name: air-hub-master-server
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     <http://www.apache.org/license/LICENSE-2.0>
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the license.
+ * Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
+ * Silesian University of Technology
  */
-
 package pl.miloszgilga.domain.ota_token;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.DateUtils;
-
-import org.springframework.boot.test.context.SpringBootTest;
+import org.jmpsl.security.OtaTokenService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-
-import org.jmpsl.security.OtaTokenService;
-
 import pl.miloszgilga.AbstractBaseTest;
 import pl.miloszgilga.config.ApiProperties;
-import pl.miloszgilga.domain.user.IUserRepository;
 import pl.miloszgilga.domain.user.UserEntity;
+import pl.miloszgilga.domain.user.UserRepository;
 import pl.miloszgilga.security.GrantedUserRole;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class OtaTokenRepositoryTest extends AbstractBaseTest {
 
-    @Autowired private IOtaTokenRepository otaTokenRepository;
-    @Autowired private IUserRepository userRepository;
-    @Autowired private OtaTokenService otaTokenService;
-    @Autowired private ApiProperties properties;
+    @Autowired
+    private OtaTokenRepository otaTokenRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private OtaTokenService otaTokenService;
+    @Autowired
+    private ApiProperties properties;
 
     @Autowired
     OtaTokenRepositoryTest(PasswordEncoder passwordEncoder) {
         super(passwordEncoder);
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @BeforeEach
     void cleanupBeforeEveryTest() {

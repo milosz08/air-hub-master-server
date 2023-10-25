@@ -1,60 +1,38 @@
 /*
- * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
- *
- * File name: AppScheduler.java
- * Last modified: 19/05/2023, 13:10
- * Project name: air-hub-master-server
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     <http://www.apache.org/license/LICENSE-2.0>
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the license.
+ * Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
+ * Silesian University of Technology
  */
-
 package pl.miloszgilga.scheduler;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import pl.miloszgilga.config.ApiProperties;
+import pl.miloszgilga.domain.blacklist_jwt.BlacklistJwtRepository;
+import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamRepository;
+import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamRepository;
+import pl.miloszgilga.domain.ota_token.OtaTokenRepository;
+import pl.miloszgilga.domain.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-
-import pl.miloszgilga.config.ApiProperties;
-
-import pl.miloszgilga.domain.user.IUserRepository;
-import pl.miloszgilga.domain.ota_token.IOtaTokenRepository;
-import pl.miloszgilga.domain.blacklist_jwt.IBlacklistJwtRepository;
-import pl.miloszgilga.domain.in_game_plane_params.IInGamePlaneParamRepository;
-import pl.miloszgilga.domain.in_game_worker_params.IInGameWorkerParamRepository;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Slf4j
 @Component
 @EnableAsync
 @RequiredArgsConstructor
 public class AppScheduler {
-
     private final ApiProperties properties;
 
-    private final IUserRepository userRepository;
-    private final IOtaTokenRepository otaTokenRepository;
-    private final IBlacklistJwtRepository blacklistJwtRepository;
-    private final IInGamePlaneParamRepository inGamePlaneParamRepository;
-    private final IInGameWorkerParamRepository inGameWorkerParamRepository;
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private final UserRepository userRepository;
+    private final OtaTokenRepository otaTokenRepository;
+    private final BlacklistJwtRepository blacklistJwtRepository;
+    private final InGamePlaneParamRepository inGamePlaneParamRepository;
+    private final InGameWorkerParamRepository inGameWorkerParamRepository;
 
     @Async
     @Transactional
@@ -64,8 +42,6 @@ public class AppScheduler {
         inGameWorkerParamRepository.revertAvailableWorkersState(LocalDateTime.now());
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @Async
     @Transactional
     @Scheduled(cron = "0 0 */48 * * *") // 48h
@@ -73,8 +49,6 @@ public class AppScheduler {
         userRepository.deleteAllNotActivatedAccount(ZonedDateTime.now().plusHours(properties.getOtaExpiredRegisterHours()));
         log.info("Invoke deleting unactivated account scheduler.");
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Async
     @Transactional
@@ -84,8 +58,6 @@ public class AppScheduler {
         log.info("Revalidate isBlocked param for all users.");
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @Async
     @Transactional
     @Scheduled(cron = "0 0 */1 * * *") // 1h
@@ -93,8 +65,6 @@ public class AppScheduler {
         blacklistJwtRepository.deleteAllExpiredJwts();
         log.info("Invoke deleting expierd JWTs on blacklist scheduler.");
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Async
     @Transactional

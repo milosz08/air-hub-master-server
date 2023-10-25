@@ -1,28 +1,9 @@
-/*
- * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
- *
- * File name: build.gradle
- * Last modified: 13/05/2023, 19:27
- * Project name: air-hub-master-server
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     <http://www.apache.org/license/LICENSE-2.0>
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the license.
- */
-
 plugins {
-    id 'java'
-    id 'war'
-    alias libs.plugins.ssh.gradle
-    alias libs.plugins.dotenv.gradle
-    alias libs.plugins.spring.boot.plugin
-    alias libs.plugins.spring.dept.plugin
+  id 'java'
+  alias libs.plugins.ssh.gradle
+  alias libs.plugins.dotenv.gradle
+  alias libs.plugins.spring.boot.plugin
+  alias libs.plugins.spring.dept.plugin
 }
 
 def props = new Properties()
@@ -37,138 +18,123 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 java.targetCompatibility = JavaVersion.VERSION_17
 
 configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
 }
 
 repositories {
-    mavenCentral()
-    mavenLocal()
-    maven { url 'https://jitpack.io' }
+  mavenCentral()
+  mavenLocal()
+  maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    implementation          libs.lombok
-    implementation          libs.h2.driver
-    implementation          libs.liquibase
-    implementation          libs.mysql.driver
-    implementation          libs.jjwt.api
-    implementation          libs.jjwt.impl
-    implementation          libs.jjwt.jackson
-    implementation          libs.ehcache
-    implementation          libs.jaxb.api
-    implementation          libs.jaxb.impl
-    implementation          libs.openapi.webmvc.starter
-    implementation          libs.commons.text
-    implementation          libs.commons.io
-    implementation          libs.freemarker
+  implementation libs.lombok
+  implementation libs.h2.driver
+  implementation libs.liquibase
+  implementation libs.mysql.driver
+  implementation libs.jjwt.api
+  implementation libs.jjwt.impl
+  implementation libs.jjwt.jackson
+  implementation libs.ehcache
+  implementation libs.jaxb.api
+  implementation libs.jaxb.impl
+  implementation libs.openapi.webmvc.starter
+  implementation libs.commons.text
+  implementation libs.commons.io
+  implementation libs.freemarker
 
-    implementation          libs.jmpsl.core
-    implementation          libs.jmpsl.security
-    implementation          libs.jmpsl.communication
+  implementation libs.jmpsl.core
+  implementation libs.jmpsl.security
+  implementation libs.jmpsl.communication
 
-    developmentOnly         libs.spring.boot.devtools
-    developmentOnly         libs.spring.boot.config.processor
-    implementation          libs.spring.boot.starter.web
-    implementation          libs.spring.boot.starter.mail
-    implementation          libs.spring.boot.starter.cache
-    implementation          libs.spring.boot.starter.security
-    implementation          libs.spring.boot.starter.data.jpa
-    implementation          libs.spring.boot.starter.validation
+  developmentOnly libs.spring.boot.devtools
+  developmentOnly libs.spring.boot.config.processor
+  implementation libs.spring.boot.starter.web
+  implementation libs.spring.boot.starter.mail
+  implementation libs.spring.boot.starter.cache
+  implementation libs.spring.boot.starter.security
+  implementation libs.spring.boot.starter.data.jpa
+  implementation libs.spring.boot.starter.validation
 
-    annotationProcessor     libs.lombok
-    testImplementation      libs.spring.boot.starter.test
+  annotationProcessor libs.lombok
+  testImplementation libs.spring.boot.starter.test
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 ssh.settings {
-    dryRun = project.hasProperty('dryRun')
+  dryRun = project.hasProperty('dryRun')
 }
 
 remotes {
-    webServer {
-        host = env.CICD_HOST.value
-        user = env.CICD_USER.value
-        identity = file('id_rsa')
-        knownHosts = file('known_hosts.dat')
-    }
+  webServer {
+    host = env.CICD_HOST.value
+    user = env.CICD_USER.value
+    identity = file('id_rsa')
+    knownHosts = file('known_hosts.dat')
+  }
 }
 
 bootJar {
-    group 'custom build'
+  group 'custom build'
 
-    archiveFileName = artifactName
-    version =  project.version
+  archiveFileName = artifactName
+  version = project.version
 
-    destinationDir(file("$rootDir/build/jar"))
-    launchScript()
-}
-
-war {
-    enabled = true
-}
-
-bootWar {
-    group 'custom build'
-
-    mainClass = 'pl.miloszgilga.AirHubMasterServerApplication'
-    archiveFileName = "${props.getProperty("project.artifact")}.war"
-    version =  project.version
-
-    destinationDir(file("$rootDir/build/war"))
-    launchScript()
+  destinationDir(file("$rootDir/build/jar"))
+  launchScript()
 }
 
 tasks.register('moveConfigurationFiles', Copy) {
-    from layout.projectDirectory.files([
-        '.env',
-        'run-scripts/jar-run.sh',
-        'run-scripts/jar-kill.sh',
-        'entrypoint.sh',
-    ])
-    into layout.buildDirectory.dir("$rootDir/build/jar")
-    println(rootDir)
+  from layout.projectDirectory.files([
+    '.env',
+    'run-scripts/jar-run.sh',
+    'run-scripts/jar-kill.sh',
+    'entrypoint.sh',
+  ])
+  into layout.buildDirectory.dir("$rootDir/build/jar")
+  println(rootDir)
 }
 
 tasks.register('bootRunDev') {
-    group 'boot'
-    doFirst {
-        tasks.bootRun.configure {
-            systemProperty('spring.profiles.active', 'dev')
-        }
+  group 'boot'
+  doFirst {
+    tasks.bootRun.configure {
+      systemProperty('spring.profiles.active', 'dev')
     }
-    finalizedBy('bootRun')
+  }
+  finalizedBy('bootRun')
 }
 
 tasks.register('bootRunProd') {
-    group 'boot'
-    doFirst {
-        tasks.bootRun.configure {
-            systemProperty('spring.profiles.active', 'prod')
-        }
+  group 'boot'
+  doFirst {
+    tasks.bootRun.configure {
+      systemProperty('spring.profiles.active', 'prod')
     }
-    finalizedBy('bootRun')
+  }
+  finalizedBy('bootRun')
 }
 
 task deployToRemoteServer(dependsOn: bootJar) {
-    group 'deployment'
-    def projectContainer = 'java-runnable/airhubmaster'
-    doLast {
-        ssh.run {
-            session(remotes.webServer) {
-                execute "${projectContainer}/jar-kill.sh ${projectContainer}"
-                put from: "${rootDir}/build/jar/${artifactName}", into: "${projectContainer}/"
-                put from: "${rootDir}/build/jar/.env", into: "${projectContainer}/"
-                put from: "${rootDir}/build/jar/jar-run.sh", into: "${projectContainer}/"
-                put from: "${rootDir}/build/jar/jar-kill.sh", into: "${projectContainer}/"
-                execute "${projectContainer}/jar-run.sh ${projectContainer}"
-            }
-        }
+  group 'deployment'
+  def projectContainer = 'java-runnable/airhubmaster'
+  doLast {
+    ssh.run {
+      session(remotes.webServer) {
+        execute "${projectContainer}/jar-kill.sh ${projectContainer}"
+        put from: "${rootDir}/build/jar/${artifactName}", into: "${projectContainer}/"
+        put from: "${rootDir}/build/jar/.env", into: "${projectContainer}/"
+        put from: "${rootDir}/build/jar/jar-run.sh", into: "${projectContainer}/"
+        put from: "${rootDir}/build/jar/jar-kill.sh", into: "${projectContainer}/"
+        execute "${projectContainer}/jar-run.sh ${projectContainer}"
+      }
     }
+  }
 }
 
 bootJar.finalizedBy moveConfigurationFiles

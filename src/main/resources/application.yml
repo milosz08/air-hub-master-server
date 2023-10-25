@@ -1,75 +1,55 @@
-#
-# Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
-#
-# File name: application.yml
-# Last modified: 13/05/2023, 19:16
-# Project name: air-hub-master-server
-#
-# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
-# file except in compliance with the License. You may obtain a copy of the License at
-#
-#     <http://www.apache.org/license/LICENSE-2.0>
-#
-# Unless required by applicable law or agreed to in writing, software distributed under
-# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
-# OF ANY KIND, either express or implied. See the License for the specific language
-# governing permissions and limitations under the license.
-#
-
-# application.yml
-
 spring:
-    web:
-        resources:
-            add-mappings: false
-        locale: pl_PL
-    mvc:
-        log-resolved-exception: false
-        throw-exception-if-no-handler-found: true
-    config:
-        import: optional:file:.env[.properties]
-    main:
-        banner-mode: off
-    jackson:
-        time-zone: Europe/Warsaw
-    liquibase:
-        enabled: true
-        change-log: classpath:db/changelog/db.changelog.cfg.xml
-    cache:
-        jcache:
-            config: classpath:cache/ehcache.cfg.xml
-    jpa:
-        hibernate:
-            ddl-auto: none
+  web:
+    resources:
+      add-mappings: false
+    locale: pl_PL
+  mvc:
+    log-resolved-exception: false
+    throw-exception-if-no-handler-found: true
+  config:
+    import: optional:file:.env[.properties]
+  main:
+    banner-mode: off
+  jackson:
+    time-zone: Europe/Warsaw
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog.cfg.xml
+  cache:
+    jcache:
+      config: classpath:cache/ehcache.cfg.xml
+  jpa:
+    hibernate:
+      ddl-auto: none
 
 logging:
-    config: classpath:logback/logback-spring.cfg.xml
+  config: classpath:logback/logback-spring.cfg.xml
 
 jmpsl:
-    core:
-        locale:
-            available-locales: pl,en
-            default-locale: pl
-            messages-paths: i18n-api/messages,i18n-mail/messages,i18n-jpa/messages
-    security:
-        oauth2-active: false
-        ota:
-            length: 10
-        password-encoder-strength: 10
-        jwt:
-            issuer: airhubmaster
-            expired-minutes: 5
-            refresh-token-expired-days: 30
-        cors:
-            client: android:airhubmaster
-            max-age: 3600
-    communication:
-        mail:
-            freemarker-templates-dir: classpath:/templates
+  core:
+    locale:
+      available-locales: pl,en
+      default-locale: pl
+      messages-paths: i18n-api/messages,i18n-mail/messages,i18n-jpa/messages
+  security:
+    oauth2-active: false
+    ota:
+      length: 10
+    password-encoder-strength: 10
+    jwt:
+      issuer: airhubmaster
+      expired-minutes: 5
+      refresh-token-expired-days: 30
+    cors:
+      client: android:airhubmaster
+      max-age: 3600
+  communication:
+    mail:
+      freemarker-templates-dir: classpath:/templates
 
 api:
-    prefix: /api/v1
-    app-name: AirHubMaster
-    ota-expired-register-hours: 48
-    ota-expired-password-minutes: 10
-    reply-responder: info@airhubmaster.miloszgilga.pl
+  prefix: /api/v1
+  app-name: AirHubMaster
+  ota-expired-register-hours: 48
+  ota-expired-password-minutes: 10
+  reply-responder: info@airhubmaster.miloszgilga.pl

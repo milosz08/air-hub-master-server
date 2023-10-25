@@ -1,56 +1,47 @@
 /*
- * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
- *
- * File name: InGameWorkerParamEntity.java
- * Last modified: 6/23/23, 2:13 AM
- * Project name: air-hub-master-server
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     <http://www.apache.org/license/LICENSE-2.0>
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the license.
+ * Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
+ * Silesian University of Technology
  */
-
 package pl.miloszgilga.domain.in_game_worker_params;
 
-import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+import org.jmpsl.core.db.AbstractAuditableEntity;
+import pl.miloszgilga.domain.in_game_crew.InGameCrewEntity;
+import pl.miloszgilga.domain.user.UserEntity;
+import pl.miloszgilga.domain.worker.WorkerEntity;
+import pl.miloszgilga.domain.workers_shop.WorkerShopEntity;
 
-import java.util.Set;
-import java.util.HashSet;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import org.jmpsl.core.db.AbstractAuditableEntity;
-
-import pl.miloszgilga.domain.user.UserEntity;
-import pl.miloszgilga.domain.worker.WorkerEntity;
-import pl.miloszgilga.domain.in_game_crew.InGameCrewEntity;
-import pl.miloszgilga.domain.workers_shop.WorkerShopEntity;
+import java.util.HashSet;
+import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @Entity
 @NoArgsConstructor
 @Table(name = "in_game_worker_params")
 public class InGameWorkerParamEntity extends AbstractAuditableEntity implements Serializable {
-    @Serial private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    @Column(name = "skills")                private Integer skills;
-    @Column(name = "available")             private LocalDateTime available;
-    @Column(name = "experience")            private Integer experience;
-    @Column(name = "cooperation")           private Integer cooperation;
-    @Column(name = "rebelliousness")        private Integer rebelliousness;
+    @Column(name = "skills")
+    private Integer skills;
+
+    @Column(name = "available")
+    private LocalDateTime available;
+
+    @Column(name = "experience")
+    private Integer experience;
+
+    @Column(name = "cooperation")
+    private Integer cooperation;
+
+    @Column(name = "rebelliousness")
+    private Integer rebelliousness;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -63,16 +54,12 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "worker", orphanRemoval = true)
     private Set<InGameCrewEntity> crew = new HashSet<>();
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     public InGameWorkerParamEntity(WorkerShopEntity workerShopEntity) {
         skills = workerShopEntity.getSkills();
         experience = workerShopEntity.getExperience();
         cooperation = workerShopEntity.getCooperation();
         rebelliousness = workerShopEntity.getRebelliousness();
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public Integer getSkills() {
         return skills;
@@ -137,9 +124,7 @@ public class InGameWorkerParamEntity extends AbstractAuditableEntity implements 
     void setCrew(Set<InGameCrewEntity> crew) {
         this.crew = crew;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    
     @Override
     public String toString() {
         return "{" +

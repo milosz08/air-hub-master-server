@@ -1,51 +1,31 @@
 /*
- * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
- *
- * File name: UserEntity.java
- * Last modified: 17/05/2023, 15:20
- * Project name: air-hub-master-server
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     <http://www.apache.org/license/LICENSE-2.0>
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the license.
+ * Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
+ * Silesian University of Technology
  */
-
 package pl.miloszgilga.domain.user;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
-import jakarta.persistence.*;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.io.Serial;
-import java.io.Serializable;
-
+import org.jmpsl.core.db.AbstractAuditableEntity;
 import org.jmpsl.security.user.IAuthUserModel;
 import org.jmpsl.security.user.IEnumerableUserRole;
-import org.jmpsl.core.db.AbstractAuditableEntity;
-
-import pl.miloszgilga.security.GrantedUserRole;
-
-import pl.miloszgilga.domain.ota_token.OtaTokenEntity;
-import pl.miloszgilga.domain.workers_shop.WorkerShopEntity;
 import pl.miloszgilga.domain.blacklist_jwt.BlacklistJwtEntity;
-import pl.miloszgilga.domain.refresh_token.RefreshTokenEntity;
 import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
 import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
+import pl.miloszgilga.domain.ota_token.OtaTokenEntity;
+import pl.miloszgilga.domain.refresh_token.RefreshTokenEntity;
+import pl.miloszgilga.domain.workers_shop.WorkerShopEntity;
+import pl.miloszgilga.security.GrantedUserRole;
 
-import static jakarta.persistence.FetchType.LAZY;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import static jakarta.persistence.CascadeType.ALL;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Builder
@@ -53,20 +33,45 @@ import static jakarta.persistence.CascadeType.ALL;
 @AllArgsConstructor
 @Table(name = "users")
 public class UserEntity extends AbstractAuditableEntity implements Serializable, IAuthUserModel {
-    @Serial private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    @Column(name = "first_name")                                private String firstName;
-    @Column(name = "last_name")                                 private String lastName;
-    @Column(name = "login")                                     private String login;
-    @Column(name = "email_address")                             private String emailAddress;
-    @Column(name = "password")                                  private String password;
-    @Column(name = "is_activated")                              private Boolean isActivated;
-    @Column(name = "level", insertable = false)                 private Byte level;
-    @Column(name = "exp", insertable = false)                   private Integer exp;
-    @Column(name = "money", insertable = false)                 private Long money;
-    @Column(name = "role") @Enumerated(EnumType.STRING)         private GrantedUserRole role;
-    @Column(name = "is_workers_blocked", insertable = false)    private Boolean isWorkersBlocked;
-    @Column(name = "is_routes_blocked", insertable = false)     private Boolean isRoutesBlocked;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "login")
+    private String login;
+
+    @Column(name = "email_address")
+    private String emailAddress;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "is_activated")
+    private Boolean isActivated;
+
+    @Column(name = "level", insertable = false)
+    private Byte level;
+
+    @Column(name = "exp", insertable = false)
+    private Integer exp;
+
+    @Column(name = "money", insertable = false)
+    private Long money;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private GrantedUserRole role;
+
+    @Column(name = "is_workers_blocked", insertable = false)
+    private Boolean isWorkersBlocked;
+
+    @Column(name = "is_routes_blocked", insertable = false)
+    private Boolean isRoutesBlocked;
 
     @Builder.Default
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
@@ -87,8 +92,6 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
 
     @OneToMany(cascade = ALL, fetch = LAZY, mappedBy = "user", orphanRemoval = true)
     private Set<WorkerShopEntity> workerShopEntities = new HashSet<>();
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public String getFirstName() {
         return firstName;
@@ -217,6 +220,7 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     void setInGameWorkerParamEntities(Set<InGameWorkerParamEntity> inGameWorkerParamEntities) {
         this.inGameWorkerParamEntities = inGameWorkerParamEntities;
     }
+
     Set<InGamePlaneParamEntity> getInGamePlainParamEntities() {
         return inGamePlainParamEntities;
     }
@@ -232,8 +236,6 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
     void setWorkerShopEntities(Set<WorkerShopEntity> workerShopEntities) {
         this.workerShopEntities = workerShopEntities;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void persistOtaToken(OtaTokenEntity otaTokenEntity) {
         otaTokens.add(otaTokenEntity);
@@ -265,15 +267,26 @@ public class UserEntity extends AbstractAuditableEntity implements Serializable,
         workerShopEntity.setUser(this);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public String getAuthUsername() {
+        return login;
+    }
 
-    @Override public String getAuthUsername()                   { return login; }
-    @Override public String getAuthPassword()                   { return password; }
-    @Override public Set<IEnumerableUserRole> getAuthRoles()    { return Set.of(role); }
-    @Override public boolean isAccountEnabled()                 { return isActivated; }
+    @Override
+    public String getAuthPassword() {
+        return password;
+    }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public Set<IEnumerableUserRole> getAuthRoles() {
+        return Set.of(role);
+    }
 
+    @Override
+    public boolean isAccountEnabled() {
+        return isActivated;
+    }
+    
     @Override
     public String toString() {
         return "{" +

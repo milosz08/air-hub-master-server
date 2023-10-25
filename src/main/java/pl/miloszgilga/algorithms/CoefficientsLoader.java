@@ -1,53 +1,32 @@
 /*
- * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
- *
- * File name: CoefficientsLoader.java
- * Last modified: 6/24/23, 3:12 AM
- * Project name: air-hub-master-server
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     <http://www.apache.org/license/LICENSE-2.0>
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the license.
+ * Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
+ * Silesian University of Technology
  */
-
 package pl.miloszgilga.algorithms;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.function.BiConsumer;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import java.util.*;
+import java.util.function.BiConsumer;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 class CoefficientsLoader {
-
-    private final ResourceLoader resourceLoader;
-
     private static final String BOOST_MAP_FILE_NAME = "classpath:algorithms/boost-map.txt";
     private static final String REQ_EXP_MAP_FILE_NAME = "classpath:algorithms/req-exp-map.txt";
     private static final String EXP_BOOST_MAP_FILE_NAME = "classpath:algorithms/exp-boost-map.txt";
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private final ResourceLoader resourceLoader;
 
     Map<Integer, List<Integer>> loadBoostMap() {
         final Map<Integer, List<Integer>> staffBoostMap = new HashMap<>();
@@ -62,8 +41,6 @@ class CoefficientsLoader {
         return staffBoostMap;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     Map<Integer, Long> loadReqExpMap() {
         final Map<Integer, Long> reqExpMap = new HashMap<>();
         getFileAndExtractData(REQ_EXP_MAP_FILE_NAME, (key, restOfData) ->
@@ -72,8 +49,6 @@ class CoefficientsLoader {
         return reqExpMap;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     Map<Integer, Double> loadExpBoostMap() {
         final Map<Integer, Double> expBoostMap = new HashMap<>();
         getFileAndExtractData(EXP_BOOST_MAP_FILE_NAME, (key, restOfData) ->
@@ -81,8 +56,6 @@ class CoefficientsLoader {
         log.info("Successfully loaded '{}' file from classpath resources", EXP_BOOST_MAP_FILE_NAME);
         return expBoostMap;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void getFileAndExtractData(String filename, BiConsumer<Integer, String[]> extractData) {
         final Resource resource = resourceLoader.getResource(filename);
@@ -96,7 +69,7 @@ class CoefficientsLoader {
                 extractData.accept(key, values);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
     }
 }

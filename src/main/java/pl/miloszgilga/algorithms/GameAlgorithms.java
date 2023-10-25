@@ -1,53 +1,31 @@
 /*
- * Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
- *
- * File name: GameAlgorithms.java
- * Last modified: 6/24/23, 2:31 AM
- * Project name: air-hub-master-server
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- *     <http://www.apache.org/license/LICENSE-2.0>
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the license.
+ * Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
+ * Silesian University of Technology
  */
-
 package pl.miloszgilga.algorithms;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.List;
-import java.util.Random;
-
-import pl.miloszgilga.domain.user.UserEntity;
-import pl.miloszgilga.network.game.dto.PlaneWithWorkersAndRouteDto;
 import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
 import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
+import pl.miloszgilga.domain.user.UserEntity;
+import pl.miloszgilga.network.game.dto.PlaneWithWorkersAndRouteDto;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 @Component
 public class GameAlgorithms {
-
     private final Map<Integer, List<Integer>> staffBoostMap;
     private final Map<Integer, Long> requiredExpMap;
     private final Map<Integer, Double> expBoostMap;
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     GameAlgorithms(CoefficientsLoader coefficientsLoader) {
         staffBoostMap = coefficientsLoader.loadBoostMap();
         requiredExpMap = coefficientsLoader.loadReqExpMap();
         expBoostMap = coefficientsLoader.loadExpBoostMap();
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public LevelBoostRangeDto getLevelBoostRange(int userLevel) {
         if (userLevel == requiredExpMap.size()) {
@@ -73,7 +51,7 @@ public class GameAlgorithms {
     }
 
     private int drawOneStat(int userLevel) {
-        int[] range = {1, 20, 40, 60, 80, 100};
+        int[] range = { 1, 20, 40, 60, 80, 100 };
         final List<Integer> scales = staffBoostMap.get(userLevel);
 
         int sumOfScales = 0;
@@ -85,7 +63,7 @@ public class GameAlgorithms {
 
         int i = 0;
         while (i < range.length - 1 && randomScale >= scales.get(i)) {
-            randomScale-= scales.get(i);
+            randomScale -= scales.get(i);
             i++;
         }
         int lowerLimit = range[i];
@@ -101,8 +79,6 @@ public class GameAlgorithms {
         }
         return drawNumber;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public int generatePrize(PlaneWithWorkersAndRouteDto details, int userLevel) {
         final double baseMultiplier = details.plane().getPlane().getBaseMultiplier();
@@ -136,7 +112,7 @@ public class GameAlgorithms {
     }
 
     public boolean checkForLevelUp(int i, long expAfter, int currentLevel) {
-        if (currentLevel + i == requiredExpMap.size()){
+        if (currentLevel + i == requiredExpMap.size()) {
             return false;
         }
         return requiredExpMap.get(currentLevel + 1 + i) < expAfter;
@@ -145,8 +121,6 @@ public class GameAlgorithms {
     public int getMaxLevel() {
         return requiredExpMap.size();
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void generateDamage(InGamePlaneParamEntity plane) {
         plane.setEngine(generateGeneralDamage(0, 5, plane.getEngine()));

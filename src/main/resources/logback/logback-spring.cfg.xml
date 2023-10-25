@@ -1,55 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-
 <!--
-  ~ Copyright (c) 2023 by MILOSZ GILGA <http://miloszgilga.pl>
-  ~
-  ~ File name: logback-spring.cfg.xml
-  ~ Last modified: 10/04/2023, 23:27
-  ~ Project name: air-hub-master-server
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
-  ~ file except in compliance with the License. You may obtain a copy of the License at
-  ~
-  ~     <http://www.apache.org/license/LICENSE-2.0>
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under
-  ~ the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
-  ~ OF ANY KIND, either express or implied. See the License for the specific language
-  ~ governing permissions and limitations under the license.
+  ~ Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
+  ~ Silesian University of Technology
   -->
-
 <configuration>
 
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <include resource="logback/logback-file-appenders.cfg.xml"/>
-    <include resource="logback/logback-console-appenders.cfg.xml"/>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <include resource="logback/logback-file-appenders.cfg.xml"/>
+  <include resource="logback/logback-console-appenders.cfg.xml"/>
 
-    <import class="ch.qos.logback.classic.AsyncAppender"/>
+  <import class="ch.qos.logback.classic.AsyncAppender"/>
 
-    <property name="appLogsPath" value="logs"/>
+  <property name="appLogsPath" value="logs"/>
 
-    <!-- start of async appenders section -->
+  <!-- start of async appenders section -->
 
-    <appender name="async.appender.file.info" class="AsyncAppender">
-        <appender-ref ref="appender.file.info" />
-    </appender>
-    <appender name="async.appender.file.warn" class="AsyncAppender">
-        <appender-ref ref="appender.file.warn" />
-    </appender>
-    <appender name="async.appender.file.error" class="AsyncAppender">
-        <appender-ref ref="appender.file.error" />
-    </appender>
+  <appender name="async.appender.file.info" class="AsyncAppender">
+    <appender-ref ref="appender.file.info"/>
+  </appender>
+  <appender name="async.appender.file.warn" class="AsyncAppender">
+    <appender-ref ref="appender.file.warn"/>
+  </appender>
+  <appender name="async.appender.file.error" class="AsyncAppender">
+    <appender-ref ref="appender.file.error"/>
+  </appender>
 
-    <!-- end of async appenders section -->
-    <!-- start of applying appenders section  -->
+  <!-- end of async appenders section -->
+  <!-- start of applying appenders section  -->
 
-    <root additivity="false">
-        <appender-ref ref="async.appender.file.info"/>
-        <appender-ref ref="async.appender.file.warn"/>
-        <appender-ref ref="async.appender.file.error"/>
-        <appender-ref ref="appender.console.major"/>
-    </root>
+  <root additivity="false">
+    <appender-ref ref="async.appender.file.info"/>
+    <appender-ref ref="async.appender.file.warn"/>
+    <appender-ref ref="async.appender.file.error"/>
+    <appender-ref ref="appender.console.major"/>
+  </root>
 
-    <!-- end of applying appenders section  -->
+  <!-- end of applying appenders section  -->
 
 </configuration>
