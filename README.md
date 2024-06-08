@@ -1,15 +1,6 @@
 # AirHub Master API
 
-![](https://img.shields.io/badge/Made%20in-Java%20%2017-1abc9c.svg)
-&nbsp;&nbsp;
-![](https://img.shields.io/badge/Made%20with-Spring%20Boot%203.0.6-green.svg)
-&nbsp;&nbsp;
-![](https://img.shields.io/badge/Build%20with-Gradle%207.6.1-brown.svg)
-&nbsp;&nbsp;
-<br>
 > More info about this project you will find [on my personal website](https://miloszgilga.pl/project/air-hub-master-api)
-> <br>
-> See live demo at [api.airhubmaster.com](https://api.airhubmaster.com)
 
 Spring Boot Java server created for the [AirHub Master](https://github.com/Lettulouz/AirHubMaster) mobile application with 
 the Rest API specifications. Provide basic functionalities: signin, signup, password reset via email token and other 
