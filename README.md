@@ -1,6 +1,6 @@
 # AirHub Master API
 
-> More info about this project you will find [on my personal website](https://miloszgilga.pl/project/air-hub-master-api)
+> More info about this project you will find [on my personal website](https://miloszgilga.pl/project/air-hub-master)
 
 Spring Boot Java server created for the [AirHub Master](https://github.com/Lettulouz/AirHubMaster) mobile application with 
 the Rest API specifications. Provide basic functionalities: signin, signup, password reset via email token and other 
