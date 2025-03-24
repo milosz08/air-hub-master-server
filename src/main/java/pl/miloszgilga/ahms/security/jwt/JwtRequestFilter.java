@@ -6,10 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.jmpsl.security.jwt.JwtService;
-import org.jmpsl.security.jwt.JwtValidPayload;
-import org.jmpsl.security.user.UserPrincipalAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,32 +13,34 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.miloszgilga.domain.blacklist_jwt.BlacklistJwtRepository;
+import pl.miloszgilga.ahms.domain.blacklist_jwt.BlacklistJwtRepository;
+import pl.miloszgilga.ahms.security.UserPrincipalAuthenticationToken;
 
 import java.io.IOException;
 import java.util.Optional;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-
     private final BlacklistJwtRepository blacklistJwtRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
-        throws ServletException, IOException {
-        final String token = jwtService.extractToken(req);
+    protected void doFilterInternal(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        FilterChain filterChain
+    ) throws ServletException, IOException {
+        final String token = jwtService.extractToken(request);
         if (!StringUtils.hasText(token)) {
-            chain.doFilter(req, res);
+            filterChain.doFilter(request, response);
             return;
         }
         final JwtValidPayload validationResult = jwtService.isValid(token);
         final Optional<Claims> claims = jwtService.extractClaims(token);
         if (!validationResult.isValid() || claims.isEmpty()) {
-            chain.doFilter(req, res);
+            filterChain.doFilter(request, response);
             return;
         }
         final Claims extractedClaims = claims.get();
@@ -51,16 +49,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             userDetails = userDetailsService.loadUserByUsername(extractedLogin);
         } catch (AuthenticationException ex) {
-            chain.doFilter(req, res);
+            filterChain.doFilter(request, response);
             return;
         }
         if (blacklistJwtRepository.checkIfJwtIsOnBlacklist(token)) {
-            chain.doFilter(req, res);
+            filterChain.doFilter(request, response);
             return;
         }
-        final var authenticationToken = new UserPrincipalAuthenticationToken(req, userDetails);
+        final var authenticationToken = new UserPrincipalAuthenticationToken(request, userDetails);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-        chain.doFilter(req, res);
+        filterChain.doFilter(request, response);
     }
 }

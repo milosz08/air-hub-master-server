@@ -3,10 +3,9 @@ package pl.miloszgilga.ahms.network.auth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.jmpsl.security.user.AuthUser;
-import org.jmpsl.security.user.CurrentUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pl.miloszgilga.ahms.dto.SimpleMessageResDto;
 import pl.miloszgilga.ahms.network.auth.reqdto.ActivateAccountReqDto;
@@ -18,7 +17,7 @@ import pl.miloszgilga.ahms.security.LoggedUser;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/auth")
+@RequestMapping("/api/v1/auth")
 class AuthController {
     private final AuthService authService;
 
@@ -43,7 +42,7 @@ class AuthController {
     }
 
     @GetMapping("/logout")
-    ResponseEntity<SimpleMessageResDto> logout(HttpServletRequest req, @CurrentUser AuthUser authUser) {
-        return new ResponseEntity<>(authService.logout(req, authUser), HttpStatus.OK);
+    ResponseEntity<SimpleMessageResDto> logout(HttpServletRequest req, @AuthenticationPrincipal LoggedUser loggedUser) {
+        return new ResponseEntity<>(authService.logout(req, loggedUser), HttpStatus.OK);
     }
 }
