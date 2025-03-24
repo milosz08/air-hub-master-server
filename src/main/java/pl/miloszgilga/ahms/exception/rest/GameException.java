@@ -1,10 +1,10 @@
 package pl.miloszgilga.ahms.exception.rest;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jmpsl.core.exception.RestServiceServerException;
 import org.springframework.http.HttpStatus;
-import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
-import pl.miloszgilga.i18n.AppLocaleSet;
+import pl.miloszgilga.ahms.domain.in_game_plane_params.InGamePlaneParamEntity;
+import pl.miloszgilga.ahms.exception.RestServiceServerException;
+import pl.miloszgilga.ahms.i18n.AppLocaleSet;
 
 public class GameException {
     @Slf4j

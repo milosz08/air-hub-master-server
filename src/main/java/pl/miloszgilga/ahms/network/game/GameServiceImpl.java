@@ -2,50 +2,46 @@ package pl.miloszgilga.ahms.network.game;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomUtils;
-import org.jmpsl.core.db.AbstractAuditableEntity;
-import org.jmpsl.core.i18n.LocaleMessageService;
-import org.jmpsl.security.user.AuthUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.miloszgilga.algorithms.BoostLevelDto;
-import pl.miloszgilga.algorithms.GameAlgorithms;
-import pl.miloszgilga.domain.in_game_crew.InGameCrewEntity;
-import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
-import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamRepository;
-import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
-import pl.miloszgilga.domain.plane.PlaneEntity;
-import pl.miloszgilga.domain.plane_route.PlaneRouteEntity;
-import pl.miloszgilga.domain.plane_route.PlaneRouteRepository;
-import pl.miloszgilga.domain.temp_stats.TempStatsEntity;
-import pl.miloszgilga.domain.temp_stats.TempStatsRepository;
-import pl.miloszgilga.domain.user.UserEntity;
-import pl.miloszgilga.domain.user.UserRepository;
-import pl.miloszgilga.dto.SimpleMessageResDto;
-import pl.miloszgilga.i18n.AppLocaleSet;
-import pl.miloszgilga.network.game.dto.CrewInFlightDto;
-import pl.miloszgilga.network.game.dto.PlaneWithRoutesDto;
-import pl.miloszgilga.network.game.dto.PlaneWithWorkersAndRouteDto;
-import pl.miloszgilga.network.game.dto.RouteDto;
-import pl.miloszgilga.network.game.reqdto.GenerateStatsReqDto;
-import pl.miloszgilga.network.game.resdto.GeneratedSendPlaneStatsResDto;
-import pl.miloszgilga.network.game.resdto.InFlightPlaneResDto;
-import pl.miloszgilga.network.game.resdto.PlanesWithRoutesResDto;
-import pl.miloszgilga.security.SecurityUtils;
+import pl.miloszgilga.ahms.algorithms.BoostLevelDto;
+import pl.miloszgilga.ahms.algorithms.GameAlgorithms;
+import pl.miloszgilga.ahms.domain.AbstractAuditableEntity;
+import pl.miloszgilga.ahms.domain.in_game_crew.InGameCrewEntity;
+import pl.miloszgilga.ahms.domain.in_game_plane_params.InGamePlaneParamEntity;
+import pl.miloszgilga.ahms.domain.in_game_plane_params.InGamePlaneParamRepository;
+import pl.miloszgilga.ahms.domain.in_game_worker_params.InGameWorkerParamEntity;
+import pl.miloszgilga.ahms.domain.plane.PlaneEntity;
+import pl.miloszgilga.ahms.domain.plane_route.PlaneRouteEntity;
+import pl.miloszgilga.ahms.domain.plane_route.PlaneRouteRepository;
+import pl.miloszgilga.ahms.domain.temp_stats.TempStatsEntity;
+import pl.miloszgilga.ahms.domain.temp_stats.TempStatsRepository;
+import pl.miloszgilga.ahms.domain.user.UserEntity;
+import pl.miloszgilga.ahms.domain.user.UserRepository;
+import pl.miloszgilga.ahms.dto.SimpleMessageResDto;
+import pl.miloszgilga.ahms.exception.rest.GameException;
+import pl.miloszgilga.ahms.exception.rest.ShopException;
+import pl.miloszgilga.ahms.i18n.AppLocaleSet;
+import pl.miloszgilga.ahms.i18n.LocaleMessageService;
+import pl.miloszgilga.ahms.network.game.dto.CrewInFlightDto;
+import pl.miloszgilga.ahms.network.game.dto.PlaneWithRoutesDto;
+import pl.miloszgilga.ahms.network.game.dto.PlaneWithWorkersAndRouteDto;
+import pl.miloszgilga.ahms.network.game.dto.RouteDto;
+import pl.miloszgilga.ahms.network.game.reqdto.GenerateStatsReqDto;
+import pl.miloszgilga.ahms.network.game.resdto.GeneratedSendPlaneStatsResDto;
+import pl.miloszgilga.ahms.network.game.resdto.InFlightPlaneResDto;
+import pl.miloszgilga.ahms.network.game.resdto.PlanesWithRoutesResDto;
+import pl.miloszgilga.ahms.security.LoggedUser;
 
 import java.time.LocalDateTime;
 import java.util.*;
-
-import static pl.miloszgilga.exception.GameException.*;
-import static pl.miloszgilga.exception.ShopException.AccountHasNotEnoughtMoneyException;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 class GameServiceImpl implements GameService {
-    private final SecurityUtils securityUtils;
     private final GameAlgorithms gameAlgorithms;
-    private final LocaleMessageService messageService;
+    private final LocaleMessageService localeMessageService;
 
     private final UserRepository userRepository;
     private final TempStatsRepository tempStatsRepository;
@@ -53,8 +49,8 @@ class GameServiceImpl implements GameService {
     private final InGamePlaneParamRepository inGamePlaneParamRepository;
 
     @Override
-    public PlanesWithRoutesResDto getPlanesWithRoutes(AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public PlanesWithRoutesResDto getPlanesWithRoutes(LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
 
         final List<PlaneWithRoutesDto> planeWithRoutesDtos = new ArrayList<>();
         final List<InGamePlaneParamEntity> planes = inGamePlaneParamRepository.findAllInJoiningTable(userEntity.getId());
@@ -62,19 +58,19 @@ class GameServiceImpl implements GameService {
         for (final InGamePlaneParamEntity plane : planes) {
             final List<PlaneRouteEntity> routes = planeRouteRepository.findAllByPlane_Id(plane.getId());
             if (routes.size() != 3) {
-                throw new NotEnoughtRoutesException(plane);
+                throw new GameException.NotEnoughtRoutesException(plane);
             }
             final PlaneEntity planeEntity = plane.getPlane();
             final List<RouteDto> routeDtos = new ArrayList<>();
 
             final Set<Integer> randomValues = new HashSet<>();
             while (randomValues.size() < 3) {
-                int randomNumber = RandomUtils.nextInt(1, planeEntity.getMaxHours() + 1);
+                int randomNumber = new Random().nextInt(1, planeEntity.getMaxHours() + 1);
                 randomValues.add(randomNumber);
             }
             int i = 0;
             for (final PlaneRouteEntity routeEntity : routes) {
-                if (userEntity.getRoutesBlocked() && !Objects.isNull(routeEntity.getRouteHours())) {
+                if (userEntity.getIsRoutesBlocked() && !Objects.isNull(routeEntity.getRouteHours())) {
                     routeDtos.add(new RouteDto(routeEntity.getId(), routeEntity.getRouteHours()));
                 } else {
                     final int generatedHours = new ArrayList<>(randomValues).get(i++);
@@ -92,7 +88,7 @@ class GameServiceImpl implements GameService {
                 .crew(plane.getCrew().stream().map(AbstractAuditableEntity::getId).toList())
                 .build());
         }
-        userEntity.setRoutesBlocked(true);
+        userEntity.setIsRoutesBlocked(true);
         userRepository.save(userEntity);
 
         final List<String> parsedCategories = planes.stream()
@@ -107,8 +103,8 @@ class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<InFlightPlaneResDto> getInFlightPlanes(AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public List<InFlightPlaneResDto> getInFlightPlanes(LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
         final List<InFlightPlaneResDto> inFlightPlaneResDtos = new ArrayList<>();
 
         final List<InGamePlaneParamEntity> planes = inGamePlaneParamRepository
@@ -124,11 +120,11 @@ class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public GeneratedSendPlaneStatsResDto generateStats(GenerateStatsReqDto reqDto, AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public GeneratedSendPlaneStatsResDto generateStats(GenerateStatsReqDto reqDto, LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
         final PlaneWithWorkersAndRouteDto details = getPlaneDetails(userEntity, reqDto.getPlaneId(), reqDto.getRouteId());
         if (Objects.isNull(details.route().getRouteHours())) {
-            throw new RouteNotFoundException(details.route().getId());
+            throw new GameException.RouteNotFoundException(details.route().getId());
         }
         final LocalDateTime arrival = LocalDateTime.now().plusHours(details.route().getRouteHours());
         final int exp = gameAlgorithms.generateExp(details, userEntity.getLevel());
@@ -137,7 +133,7 @@ class GameServiceImpl implements GameService {
         final int flightCosts = gameAlgorithms.generateFlightCosts(details, prize);
 
         if (userEntity.getMoney() - flightCosts < 0) {
-            throw new AccountHasNotEnoughtMoneyException(userEntity.getMoney(), flightCosts);
+            throw new ShopException.AccountHasNotEnoughtMoneyException(userEntity.getMoney(), flightCosts);
         }
         final TempStatsEntity tempStatsEntity = TempStatsEntity.builder()
             .selectedRoute(details.route().getId())
@@ -146,9 +142,10 @@ class GameServiceImpl implements GameService {
             .addedExp(exp)
             .flightCosts(flightCosts)
             .build();
-        tempStatsEntity.setPlane(details.plane());
+        tempStatsEntity.setInGamePlaneParam(details.plane());
 
-        tempStatsRepository.deleteByPlane_IdAndPlane_User_Id(reqDto.getPlaneId(), userEntity.getId());
+        tempStatsRepository
+            .deleteByInGamePlaneParam_IdAndInGamePlaneParam_User_Id(reqDto.getPlaneId(), userEntity.getId());
         tempStatsRepository.save(tempStatsEntity);
 
         inGamePlaneParamRepository.save(details.plane());
@@ -174,11 +171,11 @@ class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public SimpleMessageResDto sendPlane(Long planeId, AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public SimpleMessageResDto sendPlane(Long planeId, LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
         final TempStatsEntity tempStats = tempStatsRepository
-            .findByPlane_IdAndPlane_User_Id(planeId, userEntity.getId())
-            .orElseThrow(() -> new NonExistingTempStatsException(planeId));
+            .findByInGamePlaneParam_IdAndInGamePlaneParam_User_Id(planeId, userEntity.getId())
+            .orElseThrow(() -> new GameException.NonExistingTempStatsException(planeId));
 
         final PlaneWithWorkersAndRouteDto details = getPlaneDetails(userEntity, planeId, tempStats.getSelectedRoute());
         for (final InGameWorkerParamEntity workerParam : details.workers()) {
@@ -195,30 +192,30 @@ class GameServiceImpl implements GameService {
         tempStatsRepository.delete(tempStats);
 
         log.info("Successfully send plane with id: {} on route with id: {}", planeId, tempStats.getSelectedRoute());
-        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.SEND_PLANE_ON_ROUTE_RES));
+        return new SimpleMessageResDto(localeMessageService.getMessage(AppLocaleSet.SEND_PLANE_ON_ROUTE_RES));
     }
 
     @Override
     @Transactional
-    public SimpleMessageResDto revertPlane(Long planeId, AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
-        tempStatsRepository.deleteByPlane_IdAndPlane_User_Id(planeId, userEntity.getId());
+    public SimpleMessageResDto revertPlane(Long planeId, LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
+        tempStatsRepository.deleteByInGamePlaneParam_IdAndInGamePlaneParam_User_Id(planeId, userEntity.getId());
 
         log.info("Successfully delete temp stats with plane: {}", planeId);
-        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.REVERT_PLANE_ON_ROUTE_RES));
+        return new SimpleMessageResDto(localeMessageService.getMessage(AppLocaleSet.REVERT_PLANE_ON_ROUTE_RES));
     }
 
     private PlaneWithWorkersAndRouteDto getPlaneDetails(UserEntity user, Long planeId, Long routeId) {
         final InGamePlaneParamEntity plane = inGamePlaneParamRepository
             .findByPlaneIdInJoiningTable(user.getId(), planeId)
-            .orElseThrow(() -> new PlaneNotExistException(planeId));
+            .orElseThrow(() -> new GameException.PlaneNotExistException(planeId));
         if (!Objects.isNull(plane.getAvailable())) {
-            throw new LockedPlaneException(planeId);
+            throw new GameException.LockedPlaneException(planeId);
         }
         final PlaneRouteEntity planeRouteEntity = plane.getPlaneRouteEntities().stream()
             .filter(r -> r.getId().equals(routeId))
             .findFirst()
-            .orElseThrow(() -> new RouteNotFoundException(routeId));
+            .orElseThrow(() -> new GameException.RouteNotFoundException(routeId));
 
         final List<InGameWorkerParamEntity> workers = plane.getCrew().stream()
             .map(InGameCrewEntity::getWorker).toList();

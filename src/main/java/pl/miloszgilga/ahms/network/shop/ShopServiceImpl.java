@@ -2,32 +2,31 @@ package pl.miloszgilga.ahms.network.shop;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jmpsl.core.i18n.LocaleMessageService;
-import org.jmpsl.security.user.AuthUser;
 import org.springframework.stereotype.Service;
-import pl.miloszgilga.algorithms.ComputedWorkerValues;
-import pl.miloszgilga.algorithms.GameAlgorithms;
-import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
-import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
-import pl.miloszgilga.domain.plane.PlaneEntity;
-import pl.miloszgilga.domain.plane.PlaneRepository;
-import pl.miloszgilga.domain.plane_route.PlaneRouteEntity;
-import pl.miloszgilga.domain.user.UserEntity;
-import pl.miloszgilga.domain.user.UserRepository;
-import pl.miloszgilga.domain.worker.WorkerEntity;
-import pl.miloszgilga.domain.worker.WorkerRepository;
-import pl.miloszgilga.domain.workers_shop.WorkerShopEntity;
-import pl.miloszgilga.domain.workers_shop.WorkerShopRepository;
-import pl.miloszgilga.exception.GameException.PlaneNotExistException;
-import pl.miloszgilga.exception.ShopException.AccountHasNotEnoughtMoneyException;
-import pl.miloszgilga.exception.ShopException.WorkerInShopNotExistException;
-import pl.miloszgilga.exception.ShopException.WorkerNotExistException;
-import pl.miloszgilga.i18n.AppLocaleSet;
-import pl.miloszgilga.network.shop.resdto.ShopPlanesResDto;
-import pl.miloszgilga.network.shop.resdto.ShopWorkersResDto;
-import pl.miloszgilga.network.shop.resdto.TransactMoneyStatusResDto;
-import pl.miloszgilga.security.SecurityUtils;
-import pl.miloszgilga.utils.Utilities;
+import pl.miloszgilga.ahms.algorithms.ComputedWorkerValues;
+import pl.miloszgilga.ahms.algorithms.GameAlgorithms;
+import pl.miloszgilga.ahms.domain.in_game_plane_params.InGamePlaneParamEntity;
+import pl.miloszgilga.ahms.domain.in_game_worker_params.InGameWorkerParamEntity;
+import pl.miloszgilga.ahms.domain.plane.PlaneEntity;
+import pl.miloszgilga.ahms.domain.plane.PlaneRepository;
+import pl.miloszgilga.ahms.domain.plane_route.PlaneRouteEntity;
+import pl.miloszgilga.ahms.domain.user.UserEntity;
+import pl.miloszgilga.ahms.domain.user.UserRepository;
+import pl.miloszgilga.ahms.domain.worker.WorkerEntity;
+import pl.miloszgilga.ahms.domain.worker.WorkerRepository;
+import pl.miloszgilga.ahms.domain.workers_shop.WorkerShopEntity;
+import pl.miloszgilga.ahms.domain.workers_shop.WorkerShopRepository;
+import pl.miloszgilga.ahms.exception.rest.GameException.PlaneNotExistException;
+import pl.miloszgilga.ahms.exception.rest.ShopException.AccountHasNotEnoughtMoneyException;
+import pl.miloszgilga.ahms.exception.rest.ShopException.WorkerInShopNotExistException;
+import pl.miloszgilga.ahms.exception.rest.ShopException.WorkerNotExistException;
+import pl.miloszgilga.ahms.i18n.AppLocaleSet;
+import pl.miloszgilga.ahms.i18n.LocaleMessageService;
+import pl.miloszgilga.ahms.network.shop.resdto.ShopPlanesResDto;
+import pl.miloszgilga.ahms.network.shop.resdto.ShopWorkersResDto;
+import pl.miloszgilga.ahms.network.shop.resdto.TransactMoneyStatusResDto;
+import pl.miloszgilga.ahms.security.LoggedUser;
+import pl.miloszgilga.ahms.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +37,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 @RequiredArgsConstructor
 class ShopServiceImpl implements ShopService {
-    private final SecurityUtils securityUtils;
     private final GameAlgorithms gameAlgorithms;
-    private final LocaleMessageService messageService;
+    private final LocaleMessageService localeMessageService;
 
     private final UserRepository userRepository;
     private final PlaneRepository planeRepository;
@@ -48,8 +46,8 @@ class ShopServiceImpl implements ShopService {
     private final WorkerShopRepository workerShopRepository;
 
     @Override
-    public List<ShopPlanesResDto> planes(AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public List<ShopPlanesResDto> planes(LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
         final List<PlaneEntity> planeEntities = planeRepository.findAllLazillyLoadedPlanes();
         return planeEntities.stream()
             .filter(p -> userEntity.getLevel() >= p.getCategory().getLevel())
@@ -58,8 +56,8 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<ShopWorkersResDto> workers(AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public List<ShopWorkersResDto> workers(LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
         final List<WorkerEntity> workerEntities = workerRepository.findAllLazillyLoadedWorkers();
 
         final List<WorkerShopEntity> alreadyExisting = workerShopRepository.findByUseId(userEntity.getId());
@@ -75,7 +73,7 @@ class ShopServiceImpl implements ShopService {
                 .filter(s -> s.getWorker().getId().equals(worker.getId()))
                 .findFirst()
                 .ifPresentOrElse(workerShopEntity -> {
-                    if (!userEntity.getWorkersBlocked()) {
+                    if (!userEntity.getIsWorkersBlocked()) {
                         final ComputedWorkerValues computed = gameAlgorithms.computeWorkerValues(userEntity.getLevel());
                         exp.set(computed.exp());
                         coop.set(computed.coop());
@@ -95,10 +93,15 @@ class ShopServiceImpl implements ShopService {
                     reb.set(computed.reb());
                     skills.set(computed.skills());
 
-                    final WorkerShopEntity workerShopEntity = new WorkerShopEntity(exp.get(), coop.get(),
-                        reb.get(), skills.get());
+                    final WorkerShopEntity workerShopEntity = WorkerShopEntity.builder()
+                        .experience(exp.get())
+                        .cooperation(coop.get())
+                        .rebelliousness(reb.get())
+                        .skills(skills.get())
+                        .build();
+
                     workerShopEntity.setWorker(worker);
-                    userEntity.setWorkersBlocked(true);
+                    userEntity.setIsWorkersBlocked(true);
                     userEntity.persistWorkerShopEntity(workerShopEntity);
                 });
             shopWorkersResDtos.add(new ShopWorkersResDto(worker.getId(), Utilities.parseWorkerFullName(worker),
@@ -109,8 +112,8 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public TransactMoneyStatusResDto buyPlane(Long planeId, AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public TransactMoneyStatusResDto buyPlane(Long planeId, LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
 
         final PlaneEntity boughtPlane = planeRepository.findById(planeId)
             .orElseThrow(() -> new PlaneNotExistException(planeId));
@@ -118,7 +121,12 @@ class ShopServiceImpl implements ShopService {
         if (userEntity.getMoney() - boughtPlane.getPrice() < 0) {
             throw new AccountHasNotEnoughtMoneyException(userEntity.getMoney(), boughtPlane.getPrice());
         }
-        final InGamePlaneParamEntity inGamePlaneParamEntity = new InGamePlaneParamEntity();
+        final InGamePlaneParamEntity inGamePlaneParamEntity = InGamePlaneParamEntity.builder()
+            .landingGeer(100)
+            .wings(100)
+            .engine(100)
+            .upgrade(0)
+            .build();
         for (int i = 0; i < 3; i++) {
             final PlaneRouteEntity planeRouteEntity = new PlaneRouteEntity();
             inGamePlaneParamEntity.persistPlaneRouteEntity(planeRouteEntity);
@@ -131,14 +139,14 @@ class ShopServiceImpl implements ShopService {
 
         log.info("Successfully persisted bought plane '{}' for user '{}'", boughtPlane.getName(), userEntity.getLogin());
         return new TransactMoneyStatusResDto(userEntity.getMoney(),
-            messageService.getMessage(AppLocaleSet.BOUGHT_PLANE_RES, Map.of(
+            localeMessageService.getMessage(AppLocaleSet.BOUGHT_PLANE_RES, Map.of(
                 "planeName", boughtPlane.getName()
             )));
     }
 
     @Override
-    public TransactMoneyStatusResDto buyWorker(Long workerId, AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public TransactMoneyStatusResDto buyWorker(Long workerId, LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
 
         final WorkerEntity boughtWorker = workerRepository.findById(workerId)
             .orElseThrow(() -> new WorkerNotExistException(workerId));
@@ -152,7 +160,12 @@ class ShopServiceImpl implements ShopService {
         final WorkerShopEntity workerShopEntity = workerShopRepository.findByWorkerIdAndUserId(workerId, uId)
             .orElseThrow(() -> new WorkerInShopNotExistException(workerId, uId));
 
-        final InGameWorkerParamEntity inGameWorkerParamEntity = new InGameWorkerParamEntity(workerShopEntity);
+        final InGameWorkerParamEntity inGameWorkerParamEntity = InGameWorkerParamEntity.builder()
+            .skills(workerShopEntity.getSkills())
+            .experience(workerShopEntity.getExperience())
+            .cooperation(workerShopEntity.getCooperation())
+            .rebelliousness(workerShopEntity.getRebelliousness())
+            .build();
 
         inGameWorkerParamEntity.setWorker(boughtWorker);
         userEntity.persistInGameWorkerParamEntity(inGameWorkerParamEntity);
@@ -162,7 +175,7 @@ class ShopServiceImpl implements ShopService {
 
         log.info("Successfully persisted bought worker '{}' for user '{}'", fullName, userEntity.getLogin());
         return new TransactMoneyStatusResDto(userEntity.getMoney(),
-            messageService.getMessage(AppLocaleSet.BOUGHT_WORKER_RES, Map.of(
+            localeMessageService.getMessage(AppLocaleSet.BOUGHT_WORKER_RES, Map.of(
                 "workerName", fullName
             )));
     }

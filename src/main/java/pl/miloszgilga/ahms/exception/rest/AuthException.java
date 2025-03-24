@@ -1,11 +1,11 @@
 package pl.miloszgilga.ahms.exception.rest;
 
 import lombok.extern.slf4j.Slf4j;
-import org.jmpsl.core.exception.RestServiceAuthServerException;
 import org.springframework.http.HttpStatus;
-import pl.miloszgilga.domain.user.UserEntity;
-import pl.miloszgilga.i18n.AppLocaleSet;
-import pl.miloszgilga.network.auth.reqdto.RefreshReqDto;
+import pl.miloszgilga.ahms.domain.user.UserEntity;
+import pl.miloszgilga.ahms.exception.RestServiceAuthServerException;
+import pl.miloszgilga.ahms.i18n.AppLocaleSet;
+import pl.miloszgilga.ahms.network.auth.reqdto.RefreshReqDto;
 
 public class AuthException {
     @Slf4j

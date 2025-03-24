@@ -2,25 +2,24 @@ package pl.miloszgilga.ahms.network.crew;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jmpsl.core.i18n.LocaleMessageService;
-import org.jmpsl.security.user.AuthUser;
 import org.springframework.stereotype.Service;
-import pl.miloszgilga.domain.in_game_crew.InGameCrewEntity;
-import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamEntity;
-import pl.miloszgilga.domain.in_game_plane_params.InGamePlaneParamRepository;
-import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamEntity;
-import pl.miloszgilga.domain.in_game_worker_params.InGameWorkerParamRepository;
-import pl.miloszgilga.domain.user.UserEntity;
-import pl.miloszgilga.dto.SimpleMessageResDto;
-import pl.miloszgilga.exception.CrewException.PlaneNotExistOrNotBoughtException;
-import pl.miloszgilga.exception.CrewException.WorkerNotExistOrNotBoughtException;
-import pl.miloszgilga.i18n.AppLocaleSet;
-import pl.miloszgilga.network.crew.dto.CrewPlaneDto;
-import pl.miloszgilga.network.crew.dto.CrewWorkerDto;
-import pl.miloszgilga.network.crew.reqdto.AddCrewReqDto;
-import pl.miloszgilga.network.crew.resdto.CrewDataResDto;
-import pl.miloszgilga.security.SecurityUtils;
-import pl.miloszgilga.utils.Utilities;
+import pl.miloszgilga.ahms.domain.in_game_crew.InGameCrewEntity;
+import pl.miloszgilga.ahms.domain.in_game_plane_params.InGamePlaneParamEntity;
+import pl.miloszgilga.ahms.domain.in_game_plane_params.InGamePlaneParamRepository;
+import pl.miloszgilga.ahms.domain.in_game_worker_params.InGameWorkerParamEntity;
+import pl.miloszgilga.ahms.domain.in_game_worker_params.InGameWorkerParamRepository;
+import pl.miloszgilga.ahms.domain.user.UserEntity;
+import pl.miloszgilga.ahms.dto.SimpleMessageResDto;
+import pl.miloszgilga.ahms.exception.rest.CrewException.PlaneNotExistOrNotBoughtException;
+import pl.miloszgilga.ahms.exception.rest.CrewException.WorkerNotExistOrNotBoughtException;
+import pl.miloszgilga.ahms.i18n.AppLocaleSet;
+import pl.miloszgilga.ahms.i18n.LocaleMessageService;
+import pl.miloszgilga.ahms.network.crew.dto.CrewPlaneDto;
+import pl.miloszgilga.ahms.network.crew.dto.CrewWorkerDto;
+import pl.miloszgilga.ahms.network.crew.reqdto.AddCrewReqDto;
+import pl.miloszgilga.ahms.network.crew.resdto.CrewDataResDto;
+import pl.miloszgilga.ahms.security.LoggedUser;
+import pl.miloszgilga.ahms.utils.Utilities;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,15 +28,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 class CrewServiceImpl implements CrewService {
-    private final SecurityUtils securityUtils;
-    private final LocaleMessageService messageService;
+    private final LocaleMessageService localeMessageService;
 
     private final InGamePlaneParamRepository inGamePlaneParamRepository;
     private final InGameWorkerParamRepository inGameWorkerParamRepository;
 
     @Override
-    public CrewDataResDto getCrew(AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public CrewDataResDto getCrew(LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
 
         final List<InGamePlaneParamEntity> planes = inGamePlaneParamRepository
             .findAllExcInJoiningTable(userEntity.getId());
@@ -69,8 +67,8 @@ class CrewServiceImpl implements CrewService {
     }
 
     @Override
-    public SimpleMessageResDto addCrew(AddCrewReqDto reqDto, AuthUser user) {
-        final UserEntity userEntity = securityUtils.getLoggedUser(user);
+    public SimpleMessageResDto addCrew(AddCrewReqDto reqDto, LoggedUser loggedUser) {
+        final UserEntity userEntity = loggedUser.userEntity();
 
         final InGamePlaneParamEntity plane = inGamePlaneParamRepository
             .findByIdAndUser_Id(reqDto.getPlaneId(), userEntity.getId())
@@ -99,6 +97,6 @@ class CrewServiceImpl implements CrewService {
             .collect(Collectors.joining(", "));
 
         log.info("Crew for plane: {} was successfully added. Crew data: {}", plane.getPlane().getName(), crewParsed);
-        return new SimpleMessageResDto(messageService.getMessage(AppLocaleSet.ADD_NEW_CREW_RES));
+        return new SimpleMessageResDto(localeMessageService.getMessage(AppLocaleSet.ADD_NEW_CREW_RES));
     }
 }

@@ -2,11 +2,10 @@ package pl.miloszgilga.ahms.mail;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jmpsl.communication.mail.IMailEnumeratedTemplate;
 
 @Getter
 @RequiredArgsConstructor
-public enum MailTemplate implements IMailEnumeratedTemplate {
+public enum MailTemplate {
     ACTIVATED_ACCOUNT("/activated-account.template.ftl"),
     REGISTER("/register.template.ftl"),
     REQUEST_CHANGE_PASSWORD("/request-change-password.template.ftl"),

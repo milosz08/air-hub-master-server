@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 
 @Builder
 public record AccountDetailsResDto(
+    long id,
     String firstName,
     String lastName,
     String login,

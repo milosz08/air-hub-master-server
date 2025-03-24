@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2023 by MILOSZ GILGA <https://miloszgilga.pl>
- * Silesian University of Technology
- */
-package pl.miloszgilga.network.category;
+package pl.miloszgilga.ahms.network.category;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,14 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.miloszgilga.network.category.resdto.CategoryResDto;
-import pl.miloszgilga.network.category.resdto.CategoryWithTypeResDto;
+import pl.miloszgilga.ahms.network.category.resdto.CategoryResDto;
+import pl.miloszgilga.ahms.network.category.resdto.CategoryWithTypeResDto;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/category")
+@RequestMapping("/api/v1/category")
 class CategoryController {
     private final CategoryService categoryService;
 
