@@ -21,6 +21,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: milosz08/library-app-tai
+          repository: milosz08/air-hub-master-server
           readme-filepath: ./docker/README.md
           short-description: "AirHubMaster Server for Android app (Java with Spring Boot)."
