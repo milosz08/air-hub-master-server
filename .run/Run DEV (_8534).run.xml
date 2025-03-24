@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run DEV (:8534)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="dev" />
+    <module name="air-hub-master-server.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="pl.miloszgilga.ahms.AirHubMasterServerApplication" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="pl.miloszgilga.ahms.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
