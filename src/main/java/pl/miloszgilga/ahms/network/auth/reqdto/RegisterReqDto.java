@@ -6,17 +6,16 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jmpsl.core.validator.IPasswordValidatorModel;
-import org.jmpsl.core.validator.ValidateMatchingPasswords;
-import pl.miloszgilga.validator.Regex;
-import pl.miloszgilga.validator.email.ValidateAlreadyExistingEmail;
-import pl.miloszgilga.validator.login.ValidateAlreadyExistingLogin;
+import pl.miloszgilga.ahms.validator.Regex;
+import pl.miloszgilga.ahms.validator.email.ValidateAlreadyExistingEmail;
+import pl.miloszgilga.ahms.validator.login.ValidateAlreadyExistingLogin;
+import pl.miloszgilga.ahms.validator.password.PasswordsMatchValidatorModel;
+import pl.miloszgilga.ahms.validator.password.ValidateMatchingPasswords;
 
 @Data
 @NoArgsConstructor
 @ValidateMatchingPasswords(message = "jpa.validator.confirmedPassword.notMatch")
-public class RegisterReqDto implements IPasswordValidatorModel {
-
+public class RegisterReqDto implements PasswordsMatchValidatorModel {
     @NotBlank(message = "jpa.validator.firstName.notBlank")
     @Size(min = 2, max = 70, message = "jpa.validator.firstName.length")
     private String firstName;

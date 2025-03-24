@@ -4,15 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jmpsl.core.validator.IPasswordValidatorModel;
-import org.jmpsl.core.validator.ValidateMatchingPasswords;
-import pl.miloszgilga.validator.Regex;
+import pl.miloszgilga.ahms.validator.Regex;
+import pl.miloszgilga.ahms.validator.password.PasswordsMatchValidatorModel;
+import pl.miloszgilga.ahms.validator.password.ValidateMatchingPasswords;
 
 @Data
 @NoArgsConstructor
 @ValidateMatchingPasswords(message = "jpa.validator.confirmedPassword.notMatch")
-public class ChangePasswordValidatorReqDto implements IPasswordValidatorModel {
-
+public class ChangePasswordValidatorReqDto implements PasswordsMatchValidatorModel {
     @NotBlank(message = "jpa.validator.password.notBlank")
     @Pattern(regexp = Regex.PASSWORD_REQUIREMENTS, message = "jpa.validator.password.regex")
     private String newPassword;
