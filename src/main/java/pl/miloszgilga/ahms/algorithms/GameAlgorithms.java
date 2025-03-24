@@ -12,6 +12,7 @@ import java.util.Random;
 
 @Component
 public class GameAlgorithms {
+    private static final Random RANDOM = new Random();
     private final Map<Integer, List<Integer>> staffBoostMap;
     private final Map<Integer, Long> requiredExpMap;
     private final Map<Integer, Double> expBoostMap;
@@ -41,12 +42,12 @@ public class GameAlgorithms {
     public int generateExp(PlaneWithWorkersAndRouteDto details, int userLevel) {
         final double expBoost = expBoostMap.get(userLevel);
         final double baseMultiplier = details.plane().getPlane().getBaseMultiplier();
-        final double addtlMultiplier = RandomUtils.nextDouble(0.75, 1.25);
+        final double addtlMultiplier = RANDOM.nextDouble(0.75, 1.25);
         return (int) (details.route().getRouteHours() * expBoost * addtlMultiplier * baseMultiplier);
     }
 
     private int drawOneStat(int userLevel) {
-        int[] range = { 1, 20, 40, 60, 80, 100 };
+        int[] range = {1, 20, 40, 60, 80, 100};
         final List<Integer> scales = staffBoostMap.get(userLevel);
 
         int sumOfScales = 0;
@@ -78,7 +79,7 @@ public class GameAlgorithms {
     public int generatePrize(PlaneWithWorkersAndRouteDto details, int userLevel) {
         final double baseMultiplier = details.plane().getPlane().getBaseMultiplier();
         final double expBoost = expBoostMap.get(userLevel);
-        final double additionalPrizeMultiplier = RandomUtils.nextDouble(0.6, 1.4);
+        final double additionalPrizeMultiplier = RANDOM.nextDouble(0.6, 1.4);
         return (int) (details.route().getRouteHours() * baseMultiplier * additionalPrizeMultiplier * expBoost);
     }
 
@@ -86,7 +87,7 @@ public class GameAlgorithms {
         int totalCost = 0;
         for (final InGameWorkerParamEntity worker : details.workers()) {
             final int points = worker.getCooperation() + worker.getSkills() + worker.getExperience();
-            totalCost += RandomUtils.nextInt((points / 10), points);
+            totalCost += RANDOM.nextInt((points / 10), points);
         }
         return prize - totalCost;
     }
@@ -124,10 +125,10 @@ public class GameAlgorithms {
     }
 
     public int generateGeneralDamage(int from, int to, int initialValue) {
-        final boolean isGenerating = RandomUtils.nextBoolean();
+        final boolean isGenerating = RANDOM.nextBoolean();
         int outputDamage = initialValue;
         if (isGenerating) {
-            final int damage = RandomUtils.nextInt(from, to);
+            final int damage = RANDOM.nextInt(from, to);
             outputDamage -= damage;
             return Math.max(outputDamage, 0);
         }
