@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <!-- datatables migrations -->
+  <include file="migrations/2023-05-17_00000_create-users-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-05-17_00001_create-ota-tokens-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-05-17_00002_create-refresh-tokens-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-05-17_00003_create-blacklist-jwts-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-05-19_00000_fixed-blaclist-token-length.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-13_00000_add-stats-user-columns.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-14_00000_add-categories-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-14_00001_add-planes-and-workers-tables.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-23_00000_add-worker-tables.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-23_00001_add-in-game-plane-params-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-23_00002_move-is-blocked-to-user-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-23_00003_add-level-column.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-24_00000_add-price-for-plane-and-worker.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-24_00001_add-skills-for-shop-workers-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-26_00000_add-routes-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-26_00001_add-plane-base-multiplier.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-26_00002_add-temp-stats-table.xml" relativeToChangelogFile="true"/>
+  <include file="migrations/2023-06-27_00000_change-default-money.xml" relativeToChangelogFile="true"/>
+
+  <include file="assertions/2023-06-14_00000_load-data-categories-planes-workers.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>
