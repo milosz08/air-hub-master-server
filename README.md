@@ -1,171 +1,170 @@
-# AirHub Master API
+# AirHub Master Server
 
-> More info about this project you will find [on my personal website](https://miloszgilga.pl/project/air-hub-master)
+[[Docker image](https://hub.docker.com/r/milosz08/air-hub-master-server)] |
+[[About project](https://miloszgilga.pl/project/air-hub-master-server)]
 
-Spring Boot Java server created for the [AirHub Master](https://github.com/Lettulouz/AirHubMaster) mobile application with 
-the Rest API specifications. Provide basic functionalities: signin, signup, password reset via email token and other 
-specific application requirements. All application data are stored in MySQL relational database. More info about this 
-project you will find [here](https://github.com/Lettulouz/AirHubMaster).
-
-This application required newest stable [JMPS library](https://github.com/Milosz08/jmpsl) (required modules: communication,
-core, security). It may happen that the version of JMPSL you are currently using is not yet available in the remote repository.
-In this case, you will have to build the library yourself in your local maven repository (see below).
+Spring Boot Java server created for the [AirHub Master](https://github.com/Lettulouz/AirHubMaster) mobile application
+with the Rest API specifications. Provide basic functionalities: signin, signup, password reset via email token and
+other specific application requirements. All application data are stored in MySQL relational database. More info about
+this project you will find [here](https://github.com/Lettulouz/AirHubMaster).
 
 ## Table of content
-* [Clone script](#clone-script)
-* [Prepare project](#prepare-project)
-* [Run with Docker containers](#run-with-docker-containers)
-* [Run from IDE](#run-from-ide)
-* [Run from JAR](#run-from-jar)
-* [Available endpoints](#available-endpoints)
-* [Change Xmx and Xms parameters (JVM Heap Size)](#change-xmx-and-xms-parameters)
+
+* [Clone and install](#clone-and-install)
+* [Prepare develop environment](#prepare-develop-environment)
+* [Create executable JAR file (bare-metal)](#create-executable-jar-file-bare-metal)
 * [Internationalization (i18n)](#internationalization-i18n)
 * [Tech stack](#tech-stack)
 * [Author](#author)
-* [Project status](#project-status)
 * [License](#license)
 
-<a name="clone-script"></a>
-## Clone script
-To install the program on your computer use the command (or use the built-in GIT system in your IDE environment):
-```
-$ git clone https://github.com/Milosz08/air-hub-master-api air-hub-master-server
-```
-<a name="prepare-project"></a>
-## Prepare project
-Before run the project you must download and build the latest version of the JMPS library. To do this, follow the steps below:
-* Clone the latest version of JMPS library from my GitHub:
-```
-$ git clone -b [latest branch, ex. v1.0.2_05] https://github.com/Milosz08/jmpsl jmps-library
-```
-* Go to root of project and type:
-```
-$ ./gradlew packageAllToLocal
-```
-This command build all library modules in `~/.m2/repositories/pl/miloszgilga/jmpsl` directory.
-* Now, after you clone AirHub Master API project via command in `Clone script` section, make sure than all repository
-paths are typed correctly (in `/gradle/libs.versions.toml` file):
-```toml
-[versions]
-# ...
-jmpsl = '[version from branch WITHOUT "v" character, ex. 1.0.2_05]'
-# ...
+## Clone and install
 
-[libraries]
-# ...
-jmpsl-core          = { module = 'pl.miloszgilga:jmpsl-core',           version.ref = 'jmpsl' }
-jmpsl-security      = { module = 'pl.miloszgilga:jmpsl-security',       version.ref = 'jmpsl' }
-jmpsl-communication = { module = 'pl.miloszgilga:jmpsl-communication',  version.ref = 'jmpsl' }
-# ...
-```
-* Create `.env` file and put necessary values (from `.env.sample` file) (you must be in ROOT of project context):
-```
-$ grep -vE '^\s*$|^#' .env.sample > .env
-$ nano .env
-```
-* Congrats, now you can build the project via:
-```
-$ ./gradlew build
-```
-If it fails, make sure the paths specified are correct and that the `.jar` JMPSL files exist in the local maven repository.
+1. To install the program on your computer, use the command below:
 
-<a name="run-with-docker-containers"></a>
-## Run with Docker containers
-* Build and dockerize application in `development` mode via:
-```
-$ ./docker-assembly.sh
-```
-By default, application should be available on `http://127.0.0.1:8086`.<br>
-Phpmyadmin should be available on `http://127.0.0.1:6061`.<br>
-Fakemail web client should be available on `http://127.0.0.1:8085`.
-
-<a name="run-from-ide"></a>
-## Run from IDE
-To run application via gradle wrapper in IDE, type:
-```
-$ ./gradlew bootRunDev    # for development version
-$ ./gradlew bootRunProd   # for production version
-```
-
-<a name="run-from-jar"></a>
-## Run from JAR
-* First, you must build to executable `.jar` file via:
-```
-$ ./gradlew bootJar
-```
-All files (`.env`, `.jar` and run/kill bash scripts) you will find in `/build/jar` directory.
-* Too run the application, execute `jar-run.sh` script:
-```
-$ cd build/jar
-$ ./jar-run.sh
-```
-Application will run in the background with assigned PID. To check, if application run correctly, type:
-```
-$ ps
-```
-to show all process.
-* Too stop the application, execute `jar-kill.sh` script:
-```
-$ ./jar-kill.sh
-```
-
-<a name="available-endpoints"></a>
-## Available endpoints
-For detailed endpoint data, go to http://127.0.0.1:8081/swagger-ui/index.html (available only in the spring "dev" profile).
-
-<a name="change-xmx-and-xms-parameters"></a>
-## Change Xmx and Xms parameters (JVM Heap Size)
-In `jar-run.sh` bash script file, change this lines of code:
 ```bash
-#!/bin/bash
-
-START_JAVA_HEAP_SIZE="256m"     # -Xms parameter, min. 128MB
-MAX_JAVA_HEAP_SIZE="512m"       # -Xmx parameter
+$ git clone https://github.com/milosz08/air-hub-master-server
 ```
 
-<a name="internationalization-i18n"></a>
+2. Create docker containers for **ahms-mysql-db**, **ahms-phpmyadmin**, **ahms-mailhog** and **ahms-app** via:
+
+```bash
+$ docker-compose up -d
+```
+
+This command should create 4 docker containers:
+
+| Application     | Port                                                         | Description                       |
+|-----------------|--------------------------------------------------------------|-----------------------------------|
+| ahms-mysql-db   | [8530](http://localhost:8530)                                | MySQL database                    |
+| ahms-phpmyadmin | [8531](http://localhost:8531)                                | MySQL database client             |
+| ahms-mailhog    | [8532](http://localhost:8532), [8533](http://localhost:8533) | Mailhog server (fake mail server) |
+| ahms-app        | [8534](http://localhost:8534)                                | Application (REST API)            |
+
+> [!TIP]
+> If you have already MySQL database client, you can omit creating `ahms-phpmyadmin` container. To omit, create only
+> MySQL db container via: `$ docker compose up -d ahms-mysql-db ahms-mailhog ahms-app`.
+
+## Prepare develop environment
+
+1. Clone and install via `git clone` command (see *Clone and install* section).
+2. Create `.env` file based `example.env` in root directory with following content:
+
+```properties
+# ports
+AHMS_MYSQL_PORT=8530
+AHMS_PHPMYADMIN_PORT=8531
+AHMS_MAILHOG_SERVER_PORT=8532
+AHMS_MAILHOG_UI_PORT=8533
+AHMS_APP_PORT=8534
+# other
+AHMS_MYSQL_PASSWORD=<MySQL database password>
+AHMS_APP_JWT_SECRET=<JWT secret token>
+```
+
+3. Go to root directory and run MySQL database and fake mail server via:
+
+```bash
+$ docker-compose up -d ahms-mysql-db ahms-phpmyadmin ahms-mailhog
+```
+
+> [!TIP]
+> If you have already MySQL database client, you can omit creating `ahms-phpmyadmin` container. To omit, create only
+> MySQL db container via: `$ docker compose up -d ahms-mysql-db ahms-mailhog`.
+
+4. Compile and run app via (for UNIX):
+
+```bash
+$ ./gradlew clean build
+$ ./gradlew bootRun --args='--spring.profiles.active=dev'
+```
+
+or for Windows:
+
+```bash
+.\gradlew.cmd clean build
+.\gradlew.cmd bootRun --args='--spring.profiles.active=dev'
+```
+
+5. Check application state via endpoint: [/actuator/health](http://localhost:8534/actuator/health).
+   If response show this:
+
+```json
+{
+  "status": "UP"
+}
+```
+
+## Create executable JAR files (bare-metal)
+
+1. To create executable JAR file for, you must type (for UNIX):
+
+```bash
+$ ./gradlew clean bootJar
+```
+
+or for Windows:
+
+```bash
+.\gradlew.cmd clean bootJar
+```
+
+Output JAR file will be located inside `.bin` directory. With this file you can run app in bare-metal environment
+without virtualization via:
+
+```bash
+$ java \
+  -Xms1024m \
+  -Xmx1024m \
+  -Dspring.profiles.active=dev \
+  -Dserver.port=8080 \
+  -jar air-hub-master-server.jar
+```
+
+> [!NOTE]
+> If you can run app with `prod` Spring Boot profile, you must pass all environment variables defined for `ahms-app` in
+> `docker-compose.yml` file.
+
 ## Internationalization (i18n)
-* To add a new language, create a new resource file in the `classpath:` directory via command:
-```
-$ cd run-scripts
-$ ./add-lang.sh --lang=[i18n tag]
-```
-where [i18n tag] could be ex. `fr` or `en-us` etc. This script will create language files in `classpath:i18n-api`,
-`classpath:i18n-jpa` and `classpath:i18n-mail` based based on a template from a file `messages_en.properties`.
+
+* To add a new language, copy all `i18n-*` message sources with new prefix (message sources are located in `resources`
+  directory)
+
 * After generated files, fill with propriet communicates and declare new lang tag in `application.yml` file:
+
 ```yml
-jmpsl:
-    core:
-        locale:
-            available-locales: pl,en,[i18n tag]
-            default-locale: pl
+application:
+  i18n:
+    available-languages:
+      - en
+      - pl
+      - [ i18n tag ]
+    default-langauge: pl
 ```
+
 * To force language in HTTP requests, be sure that `Accept-Language` header was added in every requests, ex.:
+
 ```
 Accept-Language: fr
 ```
-Without this header, server will return responses in the language you have set as default in the `jmpsl.core.locale.default-locale`
-parameter. Language value in `Accept-Language` header also affects the generated language of the email content.
 
-<a name="tech-stack"></a>
+Without this header, server will return responses in the language you have set as default in the
+`application.i18n.default-langauge` parameter. Language value in `Accept-Language` header also affects the generated
+language of the email content.
+
 ## Tech stack
-* Java 17
-* Spring Boot
-* JMPSL (modules: communication, core, security)
-* MySQL database (for production), H2 database (for development)
-* Freemarker for mail templates
-* Swagger OpenAPI documentation
-* Docker technology (only in development mode)
 
-<a name="author"></a>
+* Java 17,
+* Spring Boot 3,
+* Spring Data JPA, MySQL database, Liquibase,
+* Freemarker for mail templates,
+* Docker containers.
+
 ## Author
-Created by Miłosz Gilga. If you have any questions about this application, send message: [personal@miloszgilga.pl](mailto:personal@miloszgilga.pl).
 
-<a name="project-status"></a>
-## Project status
-Project is finished.
+Created by Miłosz Gilga. If you have any questions about this application, send
+message: [miloszgilga@gmail.com](mailto:miloszgilga@gmail.com).
 
-<a name="license"></a>
 ## License
-This application is on Apache 2.0 License.
 
+This application is on Apache 2.0 License.
