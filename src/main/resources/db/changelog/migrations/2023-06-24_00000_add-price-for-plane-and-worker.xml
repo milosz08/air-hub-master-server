@@ -20,18 +20,15 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-24_00000_add-price-for-plane-and-worker" author="milosz08" context="lq_dev, lq_prod">
-
     <addColumn tableName="planes">
       <column name="price" type="integer" afterColumn="name">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
     <addColumn tableName="workers">
       <column name="price" type="integer" afterColumn="last_name">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
   </changeSet>
 </databaseChangeLog>

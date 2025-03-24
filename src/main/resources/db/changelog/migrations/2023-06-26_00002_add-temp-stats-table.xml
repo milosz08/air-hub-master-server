@@ -20,12 +20,10 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-26_00002_add-temp-stats-table" author="milosz08" context="lq_dev, lq_prod">
-
     <createTable tableName="temp_stats">
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="selected_route" type="${keyType}">
         <constraints nullable="false"/>
       </column>

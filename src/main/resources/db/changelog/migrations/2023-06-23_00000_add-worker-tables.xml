@@ -20,12 +20,10 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-23_00000_add-worker-tables" author="milosz08" context="lq_dev, lq_prod">
-
     <createTable tableName="in_game_worker_params">
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="skills" type="${tinyIntUns}">
         <constraints nullable="false"/>
       </column>
@@ -41,7 +39,6 @@
       <column name="rebelliousness" type="${tinyIntUns}">
         <constraints nullable="false"/>
       </column>
-
       <column name="worker_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>
@@ -61,7 +58,6 @@
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="is_blocked" type="boolean" defaultValue="false">
         <constraints nullable="false"/>
       </column>
@@ -74,7 +70,6 @@
       <column name="rebelliousness" type="${tinyIntUns}">
         <constraints nullable="false"/>
       </column>
-
       <column name="worker_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>

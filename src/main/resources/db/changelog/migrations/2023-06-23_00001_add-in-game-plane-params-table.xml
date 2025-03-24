@@ -20,12 +20,10 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-23_00001_add-in-game-plane-params-table" author="milosz08" context="lq_dev, lq_prod">
-
     <createTable tableName="in_game_plane_params">
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="landing_geer" type="${tinyIntUns}">
         <constraints nullable="false"/>
       </column>
@@ -41,7 +39,6 @@
       <column name="available" type="timestamp">
         <constraints nullable="true"/>
       </column>
-
       <column name="plane_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>

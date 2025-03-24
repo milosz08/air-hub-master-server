@@ -2,7 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.ehcache.org/v3"
         xsi:schemaLocation="http://www.ehcache.org/v3 https://www.ehcache.org/schema/ehcache-core-3.0.xsd">
-
   <cache-template name="cache-template">
     <expiry>
       <ttl unit="hours">1</ttl>
@@ -15,5 +14,4 @@
   <!-- Cache implementations from base template -->
   <cache alias="CategoryEntity.getAll.Cache" uses-template="cache-template"/>
   <cache alias="CategoryEntity.getAllByType.Cache" uses-template="cache-template"/>
-
 </config>

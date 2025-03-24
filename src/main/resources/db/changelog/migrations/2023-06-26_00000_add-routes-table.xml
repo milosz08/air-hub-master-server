@@ -20,24 +20,20 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-26_00000_add-routes-table" author="milosz08" context="lq_dev, lq_prod">
-
     <addColumn tableName="planes">
       <column name="max_hours" type="${tinyIntUns}" afterColumn="price">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
     <addColumn tableName="users">
       <column name="is_routes_blocked" type="boolean" defaultValue="false" afterColumn="is_workers_blocked">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
     <createTable tableName="plane_routes">
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="route_hours" type="${tinyIntUns}">
         <constraints nullable="true"/>
       </column>
@@ -58,7 +54,6 @@
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="plane_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>

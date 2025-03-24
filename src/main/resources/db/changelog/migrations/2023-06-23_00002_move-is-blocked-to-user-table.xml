@@ -20,14 +20,11 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-23_00002_move-is-blocked-to-user-table" author="milosz08" context="lq_dev, lq_prod">
-
     <dropColumn tableName="workers_shop" columnName="is_blocked"/>
-
     <addColumn tableName="users">
       <column name="is_workers_blocked" type="boolean" defaultValue="false" afterColumn="role">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
   </changeSet>
 </databaseChangeLog>

@@ -17,12 +17,10 @@
   <property name="textType" value="varchar(1000000)" dbms="h2"/>
 
   <changeSet id="2023-05-17_00000_create-users-table" author="milosz08" context="lq_dev, lq_prod">
-
     <createTable tableName="users">
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="first_name" type="varchar(70)">
         <constraints nullable="false"/>
       </column>
@@ -44,7 +42,6 @@
       <column name="role" type="enum('ADMIN', 'PREMIUM', 'STANDARD')">
         <constraints nullable="false"/>
       </column>
-
       <column name="created_at" type="timestamp" defaultValue="${now}">
         <constraints nullable="false"/>
       </column>
@@ -52,6 +49,5 @@
         <constraints nullable="false"/>
       </column>
     </createTable>
-
   </changeSet>
 </databaseChangeLog>

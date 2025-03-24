@@ -17,13 +17,11 @@
   <property name="textType" value="varchar(1000000)" dbms="h2"/>
 
   <changeSet id="2023-05-19_00000_fixed-blaclist-token-length" author="milosz08" context="lq_dev, lq_prod">
-
     <dropColumn tableName="blacklist_jwts" columnName="jwt_token"/>
     <addColumn tableName="blacklist_jwts">
       <column name="jwt_token" type="varchar(500)" afterColumn="id">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
   </changeSet>
 </databaseChangeLog>

@@ -20,12 +20,10 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-24_00001_add-skills-for-shop-workers-table" author="milosz08" context="lq_dev, lq_prod">
-
     <addColumn tableName="workers_shop">
       <column name="skills" type="${tinyIntUns}" defaultValue="100" afterColumn="rebelliousness">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
   </changeSet>
 </databaseChangeLog>

@@ -20,12 +20,10 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-26_00001_add-plane-base-multiplier" author="milosz08" context="lq_dev, lq_prod">
-
     <addColumn tableName="planes">
       <column name="base_multiplier" type="${floatType}" afterColumn="max_hours">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
   </changeSet>
 </databaseChangeLog>

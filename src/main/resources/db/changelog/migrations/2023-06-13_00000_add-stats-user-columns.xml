@@ -22,7 +22,6 @@
   <property name="textType" value="varchar(1000000)" dbms="h2"/>
 
   <changeSet id="2023-06-13_00000_add-stats-user-columns" author="milosz08" context="lq_dev, lq_prod">
-
     <addColumn tableName="users">
       <column name="level" type="${tinyIntUns}" afterColumn="is_activated" defaultValue="1" defaultValueNumeric="1">
         <constraints nullable="false"/>
@@ -34,6 +33,5 @@
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
   </changeSet>
 </databaseChangeLog>

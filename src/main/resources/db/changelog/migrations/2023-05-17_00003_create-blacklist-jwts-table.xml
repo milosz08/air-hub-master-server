@@ -17,19 +17,16 @@
   <property name="textType" value="varchar(1000000)" dbms="h2"/>
 
   <changeSet id="2023-05-17_00003_create-blacklist-jwts-table" author="milosz08" context="lq_dev, lq_prod">
-
     <createTable tableName="blacklist_jwts">
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="jwt_token" type="varchar(10)">
         <constraints nullable="false"/>
       </column>
       <column name="expired_at" type="datetime">
         <constraints nullable="false"/>
       </column>
-
       <column name="user_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>

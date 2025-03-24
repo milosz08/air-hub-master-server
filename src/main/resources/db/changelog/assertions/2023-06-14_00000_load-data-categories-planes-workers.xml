@@ -20,26 +20,22 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-14_00000_load-data-categories-planes-workers" author="milosz08" context="lq_dev, lq_prod">
-
     <loadData tableName="categories" file="../data/categories.default.csv" relativeToChangelogFile="true">
       <column name="id" type="${keyType}"/>
       <column name="name" type="varchar(50)"/>
       <column name="type" type="enum('WORKERS', 'PLANES')"/>
       <column name="level" type="${tinyIntUns}"/>
     </loadData>
-
     <loadData tableName="planes" file="../data/planes.default.csv" relativeToChangelogFile="true">
       <column name="id" type="${keyType}"/>
       <column name="name" type="varchar(50)"/>
       <column name="category_id" type="${keyType}"/>
     </loadData>
-
     <loadData tableName="workers" file="../data/workers.default.csv" relativeToChangelogFile="true">
       <column name="id" type="${keyType}"/>
       <column name="first_name" type="varchar(70)"/>
       <column name="last_name" type="varchar(70)"/>
       <column name="category_id" type="${keyType}"/>
     </loadData>
-
   </changeSet>
 </databaseChangeLog>

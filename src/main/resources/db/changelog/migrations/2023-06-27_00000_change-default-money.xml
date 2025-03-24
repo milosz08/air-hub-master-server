@@ -20,13 +20,11 @@
   <property name="tinyIntUns" value="tinyint unsigned" dbms="mysql"/>
 
   <changeSet id="2023-06-27_00000_change-default-money" author="milosz08" context="lq_dev, lq_prod">
-
     <dropColumn tableName="users" columnName="money"/>
     <addColumn tableName="users">
       <column name="money" type="${keyType}" afterColumn="exp" defaultValue="200000" defaultValueNumeric="200000">
         <constraints nullable="false"/>
       </column>
     </addColumn>
-
   </changeSet>
 </databaseChangeLog>

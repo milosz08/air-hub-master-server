@@ -17,12 +17,10 @@
   <property name="textType" value="varchar(1000000)" dbms="h2"/>
 
   <changeSet id="2023-05-17_00001_create-ota-tokens-table" author="milosz08" context="lq_dev, lq_prod">
-
     <createTable tableName="ota_tokens">
       <column name="id" autoIncrement="${autoIncrement}" type="${keyType}">
         <constraints nullable="false" primaryKey="true"/>
       </column>
-
       <column name="token" type="varchar(10)">
         <constraints nullable="false"/>
       </column>
@@ -35,7 +33,6 @@
       <column name="is_used" type="boolean" defaultValue="false">
         <constraints nullable="false"/>
       </column>
-
       <column name="user_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>
