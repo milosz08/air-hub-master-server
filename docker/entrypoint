@@ -1,0 +1,7 @@
+#!/bin/sh
+
+java \
+  -Xms$AHMS_SERVER_XMS \
+  -Xmx$AHMS_SERVER_XMX \
+  -Dspring.profiles.active=prod \
+  -jar $JAR_NAME
