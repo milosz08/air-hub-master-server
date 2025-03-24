@@ -1,6 +1,6 @@
 <#import "common.macro.ftl" as m>
 
-<#assign successfullyActivated = i18n("airhubmaster.email.fragment.successfullyActivated")>
+<#assign successfullyActivated = i18n("ahms.email.fragment.successfullyActivated")>
 
 <@m.commonWrapper>
   <div class="space-y-3">

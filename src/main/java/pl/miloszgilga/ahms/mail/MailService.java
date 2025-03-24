@@ -87,12 +87,12 @@ public class MailService {
         throw new MailException.UnableToSendEmailException(reqDto.getSendTo());
     }
 
-    public MailRequestDto createBaseMailRequest(UserEntity user, AppLocaleSet appLocaleSet) {
+    public MailRequestDto createBaseMailRequest(UserEntity user, AppLocaleSet i18nTitle) {
         return MailRequestDto.builder()
             .sendTo(Set.of(user.getEmailAddress()))
             .sendFrom(mailProperties.getSendEmailAddress())
             .replyAddress(mailProperties.getReplyEmailAddress())
-            .messageSubject(localeMessageService.getMessage(appLocaleSet, Map.of(
+            .messageSubject(localeMessageService.getMessage(i18nTitle, Map.of(
                 "appName", appProperties.getAppName(),
                 "userLogin", user.getLogin()
             )))
