@@ -1,55 +1,65 @@
 spring:
-  web:
-    resources:
-      add-mappings: false
-    locale: pl_PL
   mvc:
     log-resolved-exception: false
-    throw-exception-if-no-handler-found: true
-  config:
-    import: optional:file:.env[.properties]
   main:
     banner-mode: off
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  liquibase:
+    database-change-log-lock-table: _liquibase_changelog_lock
+    database-change-log-table: _liquibase_changelog
+    change-log: classpath:/db/changelog/db.changelog-master.xml
   jackson:
     time-zone: Europe/Warsaw
-  liquibase:
-    enabled: true
-    change-log: classpath:db/changelog/db.changelog.cfg.xml
   cache:
     jcache:
       config: classpath:cache/ehcache.cfg.xml
   jpa:
     hibernate:
       ddl-auto: none
+    properties:
+      hibernate:
+        physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: false
+  mail:
+    host: ${AHMS_MAIL_HOST:127.0.0.1}
+    properties:
+      smtp:
+        starttls:
+          required: ${AHMS_MAIL_SSL_ENABLED:false}
+      mail:
+        smtp:
+          ssl:
+            enabled: ${AHMS_MAIL_SSL_ENABLED:false}
+          auth: ${AHMS_MAIL_AUTH_ENABLED:false}
+          starttls:
+            enabled: ${AHMS_MAIL_SSL_ENABLED:false}
 
 logging:
-  config: classpath:logback/logback-spring.cfg.xml
+  file:
+    path: .logs
 
-jmpsl:
-  core:
-    locale:
-      available-locales: pl,en
-      default-locale: pl
-      messages-paths: i18n-api/messages,i18n-mail/messages,i18n-jpa/messages
-  security:
-    oauth2-active: false
-    ota:
-      length: 10
-    password-encoder-strength: 10
-    jwt:
-      issuer: airhubmaster
-      expired-minutes: 5
-      refresh-token-expired-days: 30
-    cors:
-      client: android:airhubmaster
-      max-age: 3600
-  communication:
-    mail:
-      freemarker-templates-dir: classpath:/templates
-
-api:
-  prefix: /api/v1
+application:
   app-name: AirHubMaster
-  ota-expired-register-hours: 48
-  ota-expired-password-minutes: 10
-  reply-responder: info@airhubmaster.miloszgilga.pl
+  i18n:
+    available-languages:
+      - en
+      - pl
+    default-langauge: pl
+    bundles:
+      - i18n-api/messages
+      - i18n-mail/messages
+      - i18n-jpa/messages
+  mail:
+    templates-dir: classpath:/templates
+    send-email-address: ${AHMS_MAIL_SEND_ADDRESS:noreply@ahms.miloszgilga.pl}
+    reply-email-address: ${AHMS_MAIL_REPLY_ADDRESS:info@ahms.miloszgilga.pl}
+  jwt:
+    issuer: airhubmaster
+    secret: ${AHMS_JWT_SECRET:supersecret}
+    access-expired-sec: 300 # 5 minutes
+    refresh-expired-sec: 2629800 # 1 month
+  ota:
+    register-expired-sec: 172800 # 2 days
+    renew-password-expired-sec: 6000 # 10 minutes
+    length: 10

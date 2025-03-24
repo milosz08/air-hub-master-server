@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8534
 
 spring:
   devtools:
@@ -7,36 +7,32 @@ spring:
       port: 35731
     restart:
       log-condition-evaluation-delta: false
-  h2:
-    console:
-      enabled: true
   liquibase:
     contexts: lq_dev
-    drop-first: false
   datasource:
-    url: jdbc:h2:file:./h2-db
-    username: dbuser
-    password: dbpass
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:8530/ahms-db
+    username: root
+    password: admin
   jpa:
     show-sql: true
   mail:
-    protocol: smtp
-    port: 1025
-    host: 127.0.0.1
-    username: ''
-    password: ''
-    properties:
-      smtp.starttls.required: false
-      mail.smtp:
-        ssl.enable: false
-        auth: false
-        starttls.enable: false
+    port: 8532
+    username: admin
+    password: admin
 
-jmpsl:
-  security:
-    jwt:
-      secret: h64h3hbntohbjk50rp9hgkj03gormgobrwnmgoriwjmhgoithjkgo
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
 
-api:
-  mail-responder: DEVELOPMENT@airhubmaster.com
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+application:
+  app-name: AirHubMaster DEV
+  jwt:
+    issuer: airhubmaster-dev

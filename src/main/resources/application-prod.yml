@@ -1,41 +1,18 @@
-server:
-  port: 8085
-
 spring:
-  h2.console.enabled: false
-  liquibase:
-    drop-first: false
-    contexts: lq_prod
-    database-change-log-lock-table: _liquibase_changelog_lock
-    database-change-log-table: _liquibase_changelog
   datasource:
-    url: ${PROD_DB_JDBC}
-    username: ${PROD_DB_USERNAME}
-    password: ${PROD_DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${AHMS_DB_HOST}:${AHMS_DB_PORT:3306}/${AHMS_DB_NAME}
+    username: ${AHMS_DB_USERNAME}
+    password: ${AHMS_DB_PASSWORD}
+  liquibase:
+    contexts: lq_prod
   mail:
-    protocol: smtp
-    port: 465
-    host: ${PROD_SMTP_MAIL_SERVER}
-    username: ${PROD_SMTP_MAIL_USERNAME}
-    password: ${PROD_SMTP_MAIL_PASSWORD}
-    properties:
-      smtp.starttls.required: true
-      mail.smtp:
-        ssl.enable: true
-        auth: true
-        starttls.enable: true
+    protocol: ${AHMS_MAIL_PROTOCOL:smtp}
+    port: ${AHMS_MAIL_PORT:587}
+    username: ${AHMS_MAIL_USERNAME}
+    password: ${AHMS_MAIL_PASSWORD}
 
-springdoc:
-  api-docs:
-    enabled: false
-  swagger-ui:
-    enabled: false
-
-jmpsl:
-  security:
-    jwt:
-      secret: ${PROD_JWT_SECRET}
-
-api:
-  mail-responder: ${PROD_SMTP_MAIL_USERNAME}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

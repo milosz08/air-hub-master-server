@@ -14,7 +14,7 @@ import pl.miloszgilga.ahms.network.renew_password.reqdto.RequestChangePasswordRe
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/renew-password")
+@RequestMapping("/api/v1/renew-password")
 class RenewPasswordController {
     private final RenewPasswordService renewPasswordService;
 
