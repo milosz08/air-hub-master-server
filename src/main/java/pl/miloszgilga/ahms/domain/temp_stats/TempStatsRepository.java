@@ -7,6 +7,7 @@ import java.util.Optional;
 
 @Repository
 public interface TempStatsRepository extends JpaRepository<TempStatsEntity, Long> {
-    Optional<TempStatsEntity> findByPlane_IdAndPlane_User_Id(Long planeId, Long userId);
-    void deleteByPlane_IdAndPlane_User_Id(Long planeId, Long userId);
+    Optional<TempStatsEntity> findByInGamePlaneParam_IdAndInGamePlaneParam_User_Id(Long planeId, Long userId);
+
+    void deleteByInGamePlaneParam_IdAndInGamePlaneParam_User_Id(Long planeId, Long userId);
 }

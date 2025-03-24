@@ -39,22 +39,14 @@
       <column name="flight_costs" type="integer">
         <constraints nullable="false"/>
       </column>
-
-      <column name="in_game_plane_id" type="${keyType}">
-        <constraints nullable="false"/>
-      </column>
-
-      <column name="created_at" type="timestamp" defaultValue="${now}">
-        <constraints nullable="false"/>
-      </column>
-      <column name="updated_at" type="timestamp" defaultValueComputed="${now} ON UPDATE ${now}">
+      <column name="in_game_plane_param_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>
     </createTable>
 
     <addForeignKeyConstraint
-      baseTableName="temp_stats" baseColumnNames="in_game_plane_id"
-      constraintName="fk_temp_stats_in_game_plane_id"
+      baseTableName="temp_stats" baseColumnNames="in_game_plane_param_id"
+      constraintName="fk_temp_stats_in_game_plane_param_id"
       referencedTableName="in_game_plane_params" referencedColumnNames="id"
       onUpdate="CASCADE" onDelete="CASCADE"/>
   </changeSet>

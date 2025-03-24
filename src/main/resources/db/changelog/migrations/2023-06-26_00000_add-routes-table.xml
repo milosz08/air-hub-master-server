@@ -37,15 +37,7 @@
       <column name="route_hours" type="${tinyIntUns}">
         <constraints nullable="true"/>
       </column>
-
-      <column name="in_game_plane_id" type="${keyType}">
-        <constraints nullable="false"/>
-      </column>
-
-      <column name="created_at" type="timestamp" defaultValue="${now}">
-        <constraints nullable="false"/>
-      </column>
-      <column name="updated_at" type="timestamp" defaultValueComputed="${now} ON UPDATE ${now}">
+      <column name="plane_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>
     </createTable>
@@ -63,8 +55,8 @@
     </createTable>
 
     <addForeignKeyConstraint
-      baseTableName="plane_routes" baseColumnNames="in_game_plane_id"
-      constraintName="fk_plane_routes_in_game_plane_id"
+      baseTableName="plane_routes" baseColumnNames="plane_id"
+      constraintName="fk_plane_routes_plane_id"
       referencedTableName="in_game_plane_params" referencedColumnNames="id"
       onUpdate="CASCADE" onDelete="CASCADE"/>
 
