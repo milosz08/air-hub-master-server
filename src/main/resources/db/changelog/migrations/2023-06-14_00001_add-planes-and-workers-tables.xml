@@ -27,13 +27,6 @@
       <column name="category_id" type="${keyType}">
         <constraints nullable="false"/>
       </column>
-
-      <column name="created_at" type="timestamp" defaultValue="${now}">
-        <constraints nullable="false"/>
-      </column>
-      <column name="updated_at" type="timestamp" defaultValueComputed="${now} ON UPDATE ${now}">
-        <constraints nullable="false"/>
-      </column>
     </createTable>
 
     <createTable tableName="workers">
@@ -47,13 +40,6 @@
         <constraints nullable="false"/>
       </column>
       <column name="category_id" type="${keyType}">
-        <constraints nullable="false"/>
-      </column>
-
-      <column name="created_at" type="timestamp" defaultValue="${now}">
-        <constraints nullable="false"/>
-      </column>
-      <column name="updated_at" type="timestamp" defaultValueComputed="${now} ON UPDATE ${now}">
         <constraints nullable="false"/>
       </column>
     </createTable>
