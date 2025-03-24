@@ -1,13 +1,13 @@
 package pl.miloszgilga.ahms.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import pl.miloszgilga.domain.user.UserEntity;
-import pl.miloszgilga.domain.worker.WorkerEntity;
+import pl.miloszgilga.ahms.domain.user.UserEntity;
+import pl.miloszgilga.ahms.domain.worker.WorkerEntity;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Utilities {
-    private Utilities() {
-    }
-
     public static String parseFullName(UserEntity user) {
         return user.getFirstName() + " " + user.getLastName();
     }

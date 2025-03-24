@@ -40,7 +40,7 @@ class ExceptionListener {
     }
 
     @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
-    public ResponseEntity<GeneralServerExceptionResDto> handleNotFoundError(Exception ex, HttpServletRequest req) {
+    public ResponseEntity<GeneralServerExceptionResDto> handleNotFoundError(HttpServletRequest req) {
         final String message = localeMessageService.getMessage(AppLocaleSet.NO_HANDLER_FOUND_EXC);
         final HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(new GeneralServerExceptionResDto(ServerExceptionResDto.generate(httpStatus, req),
