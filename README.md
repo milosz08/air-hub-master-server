@@ -1,9 +1,9 @@
-# AirHub Master Server
+# AirHubMaster Server
 
 [[Docker image](https://hub.docker.com/r/milosz08/air-hub-master-server)] |
 [[About project](https://miloszgilga.pl/project/air-hub-master-server)]
 
-Spring Boot Java server created for the [AirHub Master](https://github.com/Lettulouz/AirHubMaster) mobile application
+Spring Boot Java server created for the [AirHubMaster](https://github.com/Lettulouz/AirHubMaster) mobile application
 with the Rest API specifications. Provide basic functionalities: signin, signup, password reset via email token and
 other specific application requirements. All application data are stored in MySQL relational database. More info about
 this project you will find [here](https://github.com/Lettulouz/AirHubMaster).
@@ -95,7 +95,9 @@ or for Windows:
 }
 ```
 
-## Create executable JAR files (bare-metal)
+application listening incoming requests.
+
+## Create executable JAR file (bare-metal)
 
 1. To create executable JAR file for, you must type (for UNIX):
 
