@@ -6,17 +6,24 @@ ENV JAR_NAME=air-hub-master-server.jar
 
 WORKDIR $ENTRY_DIR
 
+RUN addgroup -S ahmgroup && \
+    adduser -S ahmuser -G ahmgroup
+
 # copy pre-build jar file from CI/CD build task
-COPY $BUILD_DIR/$JAR_NAME $ENTRY_DIR/$JAR_NAME
+COPY --chown=ahmuser:ahmgroup $BUILD_DIR/$JAR_NAME $ENTRY_DIR/$JAR_NAME
 COPY $BUILD_DIR/entrypoint $ENTRY_DIR/entrypoint
 
 RUN sed -i \
   -e "s/\$JAR_NAME/$JAR_NAME/g" \
   entrypoint
 
-RUN chmod +x entrypoint
+RUN chmod +x entrypoint && \
+    chown ahmuser:ahmgroup entrypoint
 
 LABEL maintainer="Miłosz Gilga <miloszgilga@gmail.pl>"
 
 EXPOSE 8080
+
+USER ahmuser
+
 ENTRYPOINT [ "./entrypoint" ]

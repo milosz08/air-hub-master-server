@@ -31,16 +31,23 @@ ENV JAR_NAME=air-hub-master-server.jar
 
 WORKDIR $ENTRY_DIR
 
-COPY --from=build $BUILD_DIR/.bin/$JAR_NAME $ENTRY_DIR/$JAR_NAME
+RUN addgroup -S ahmgroup && \
+    adduser -S ahmuser -G ahmgroup
+
+COPY --chown=ahmuser:ahmgroup --from=build $BUILD_DIR/.bin/$JAR_NAME $ENTRY_DIR/$JAR_NAME
 COPY --from=build $BUILD_DIR/docker/entrypoint $ENTRY_DIR/entrypoint
 
 RUN sed -i \
   -e "s/\$JAR_NAME/$JAR_NAME/g" \
   entrypoint
 
-RUN chmod +x entrypoint
+RUN chmod +x entrypoint && \
+    chown ahmuser:ahmgroup entrypoint
 
 LABEL maintainer="Miłosz Gilga <miloszgilga@gmail.pl>"
 
 EXPOSE 8080
+
+USER ahmuser
+
 ENTRYPOINT [ "./entrypoint" ]
