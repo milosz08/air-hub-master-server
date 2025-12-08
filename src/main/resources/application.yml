@@ -35,10 +35,6 @@ spring:
           starttls:
             enabled: ${AHMS_MAIL_SSL_ENABLED:false}
 
-logging:
-  file:
-    path: .logs
-
 application:
   app-name: AirHubMaster
   i18n:
