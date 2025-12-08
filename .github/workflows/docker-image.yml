@@ -6,7 +6,8 @@ on:
       - master
     paths:
       - ".github/workflows/docker-image.yml"
-      - "docker/entrypoint"
+      - "docker/**"
+      - "!docker/*.md"
       - "src/**"
       - "Dockerfile.pipeline"
       - "build.gradle"
